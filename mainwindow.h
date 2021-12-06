@@ -5,6 +5,8 @@
 #include <QtSerialPort/QSerialPort>
 #include <QtSerialPort/QSerialPortInfo>
 #include <ch4_chart.h>
+#include <ch4_serial.h>
+#include <savethread.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -25,5 +27,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     CH4_chart *CH4;
+    CH4_serial *CH4_sp;
 };
 #endif // MAINWINDOW_H

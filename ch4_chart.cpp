@@ -28,7 +28,7 @@ void CH4_chart::Chart_init(Ui::MainWindow ui)
           axisY->setTitleText("axisY");
 
           mainChart->legend()->hide();
-          mainChart->setTitle("magnetic_1");
+          mainChart->setTitle("output");
           mainChart->addAxis(axisY, Qt::AlignLeft);
           mainChart->addAxis(axisX, Qt::AlignBottom);
           QVBoxLayout *layout =ui.verticalLayout;

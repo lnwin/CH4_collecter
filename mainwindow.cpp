@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <qdebug.h>
 MainWindow::MainWindow(QWidget *parent)
@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     searchPort();
     CH4 =new CH4_chart;
     CH4->Chart_init(*ui);
+    CH4_sp =new CH4_serial;
 }
 
 MainWindow::~MainWindow()
@@ -18,7 +19,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::searchPort()
 {
-     ui->comboBox->clear();
+    ui->comboBox->clear();
     foreach (const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
     {
         QSerialPort serial;
@@ -34,6 +35,7 @@ void MainWindow::searchPort()
 
 void MainWindow::on_pushButton_clicked()
 {
-     qDebug()<<"dffd";
+     CH4_sp->openPort(ui->comboBox->currentText(),*ui);
+
 };
 
