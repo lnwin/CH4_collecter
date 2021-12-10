@@ -7,6 +7,7 @@
 #include <ch4_chart.h>
 #include <ch4_serial.h>
 #include <savethread.h>
+#include <qfiledialog.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -20,13 +21,18 @@ public:
     ~MainWindow();
     void CH4Chart();
     void searchPort();
-
+signals:
+    void sendFilePath(QString);
+    void sendSaveSig(bool);
 private slots:
     void on_pushButton_clicked();
+    void on_pushButton_fileselect_clicked();
+    void on_checkBox_stateChanged(int);
 
 private:
     Ui::MainWindow *ui;
     CH4_chart *CH4;
     CH4_serial *CH4_sp;
+    savethread *CH4_sv;
 };
 #endif // MAINWINDOW_H

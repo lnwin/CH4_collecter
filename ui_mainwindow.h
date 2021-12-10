@@ -12,8 +12,10 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -35,6 +37,9 @@ public:
     QPushButton *pushButton;
     QWidget *verticalLayoutWidget;
     QVBoxLayout *verticalLayout;
+    QCheckBox *checkBox;
+    QLineEdit *filelineEdit;
+    QPushButton *pushButton_fileselect;
     QMenuBar *menubar;
     QMenu *menu;
 
@@ -68,6 +73,20 @@ public:
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
+        checkBox = new QCheckBox(centralwidget);
+        checkBox->setObjectName(QString::fromUtf8("checkBox"));
+        checkBox->setGeometry(QRect(10, 10, 101, 16));
+        checkBox->setChecked(true);
+        filelineEdit = new QLineEdit(centralwidget);
+        filelineEdit->setObjectName(QString::fromUtf8("filelineEdit"));
+        filelineEdit->setEnabled(true);
+        filelineEdit->setGeometry(QRect(10, 30, 101, 21));
+        filelineEdit->setEchoMode(QLineEdit::Normal);
+        filelineEdit->setDragEnabled(true);
+        filelineEdit->setReadOnly(true);
+        pushButton_fileselect = new QPushButton(centralwidget);
+        pushButton_fileselect->setObjectName(QString::fromUtf8("pushButton_fileselect"));
+        pushButton_fileselect->setGeometry(QRect(115, 30, 21, 23));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -93,6 +112,8 @@ public:
         label->setText(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243\345\217\267", nullptr));
         label_2->setText(QString());
         pushButton->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\350\257\273\345\217\226", nullptr));
+        checkBox->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\346\225\260\346\215\256", nullptr));
+        pushButton_fileselect->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\347\263\273\347\273\237", nullptr));
     } // retranslateUi
 
