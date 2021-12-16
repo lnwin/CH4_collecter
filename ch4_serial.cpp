@@ -44,6 +44,8 @@ void CH4_serial::anlyseData()
     if(SAVEDATA_1)
     {
      // saveData_0(QString path,QString filename);
+        int a;
+        smoothdata
     }
     else
     {

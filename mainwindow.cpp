@@ -14,6 +14,10 @@ MainWindow::MainWindow(QWidget *parent)
     CH4_sv =new savethread;
     ui->filelineEdit->setText("D:/CH4_Collecter_DATA");
     connect(this,SIGNAL(sendSaveSig(bool)),CH4_sp,SLOT(receiveSaveSig(bool)));
+    ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
+
+
 }
 
 MainWindow::~MainWindow()
@@ -67,3 +71,29 @@ void MainWindow::on_checkBox_stateChanged(int a)
       emit sendSaveSig(SAVEDATA_0);
     }
 }
+void MainWindow::contextMenuRequest(QPoint pos)
+{
+
+  QMenu *menu = new QMenu(this);
+  menu->setAttribute(Qt::WA_DeleteOnClose);
+//  if (ui->customPlot->legend->selectTest(pos, false) >= 0) // context menu on legend requested
+//  {
+//    menu->addAction("Move to top left", this, SLOT(moveLegend()))->setData((int)(Qt::AlignTop|Qt::AlignLeft));
+//    menu->addAction("Move to top center", this, SLOT(moveLegend()))->setData((int)(Qt::AlignTop|Qt::AlignHCenter));
+//    menu->addAction("Move to top right", this, SLOT(moveLegend()))->setData((int)(Qt::AlignTop|Qt::AlignRight));
+//    menu->addAction("Move to bottom right", this, SLOT(moveLegend()))->setData((int)(Qt::AlignBottom|Qt::AlignRight));
+//    menu->addAction("Move to bottom left", this, SLOT(moveLegend()))->setData((int)(Qt::AlignBottom|Qt::AlignLeft));
+//  }
+//  else  // general context menu on graphs requested
+ // {
+    menu->addAction(QString::fromLocal8Bit("还原"), this, SLOT(rescaleGraph()));
+ // }
+
+    menu->popup(ui->customPlot->mapToGlobal(pos));
+}
+void MainWindow::rescaleGraph()
+{
+    CH4->Chart_updata(*ui);
+    ui->customPlot->rescaleAxes();
+    ui->customPlot->replot();
+};

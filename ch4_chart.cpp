@@ -1,5 +1,5 @@
 #include "ch4_chart.h"
-
+QVector<double> X(500),Y(500);
 CH4_chart::CH4_chart()
 {
 
@@ -7,33 +7,65 @@ CH4_chart::CH4_chart()
 void CH4_chart::Chart_init(Ui::MainWindow ui)
 {
 
-          mainChart =new QChart;
-          QChartView *chartView = new QChartView(mainChart);
-          chartView->setRubberBand(QChartView::RectangleRubberBand);
-          chartView->setRenderHint(QPainter::Antialiasing);
-          qlineSerie = new QLineSeries;
+    ui.customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
+                                    QCP::iSelectLegend | QCP::iSelectPlottables);
+    ui.customPlot->xAxis->setRange(-100, 100);
+    ui.customPlot->yAxis->setRange(-100, 100);
+    ui.customPlot->axisRect()->setupFullAxesBox();
 
-          mainChart->addSeries(qlineSerie);
-          qlineSerie->setUseOpenGL(true);//openGl 加速
-          qDebug()<<qlineSerie->useOpenGL();
+    ui.customPlot->plotLayout()->insertRow(0);
+    QCPTextElement *title = new QCPTextElement(ui.customPlot, "Interaction Example", QFont("sans", 17, QFont::Bold));
+    ui.customPlot->plotLayout()->addElement(0, 0, title);
 
-          QDateTime now  = QDateTime::currentDateTime();
-          QDateTimeAxis  *axisX = new QDateTimeAxis;
-          axisX->setFormat("MM-dd-HH:mm:ss");//
-         // axisX->setLabelsAngle(60);
-          axisX->setRange(now.addMSecs(-100),now);
-
-          QValueAxis *axisY = new QValueAxis;
-          axisY->setRange(-5,5);
-          axisY->setTitleText("axisY");
-
-          mainChart->legend()->hide();
-          mainChart->setTitle("output");
-          mainChart->addAxis(axisY, Qt::AlignLeft);
-          mainChart->addAxis(axisX, Qt::AlignBottom);
-          QVBoxLayout *layout =ui.verticalLayout;
-          layout->addWidget(chartView);
-          qlineSerie->attachAxis(axisY);// 此二句一定要放在 this->chart()->addAxis 语句之后，不然
-          qlineSerie->attachAxis(axisX);// 没有曲线显示
-          mainChart->setTheme(QChart::ChartThemeDark);
+    ui.customPlot->xAxis->setLabel("x Axis");
+    ui.customPlot->yAxis->setLabel("y Axis");
+    ui.customPlot->legend->setVisible(true);
+    QFont legendFont("Times", 10, QFont::Bold);
+    legendFont.setPointSize(10);
+    ui.customPlot->legend->setFont(legendFont);
+    ui.customPlot->legend->setSelectedFont(legendFont);
+    ui.customPlot->legend->setSelectableParts(QCPLegend::spItems);
+    ui.customPlot->addGraph();
+    // ui.customPlot->graph()->setName(QString::fromLocal8Bit("光谱曲线").arg(ui.customPlot->graphCount()-1));
+    ui.customPlot->graph()->setName("光谱曲线");
+    Chart_updata(ui);
+    ui.customPlot->rescaleAxes();
 };
+
+void CH4_chart::receiveData(QVector<double> x,QVector<double> y)
+{
+    for (int i=0; i<50; i++)
+    {
+      X[i] = i;
+      Y[i] = i;
+    }
+};
+void CH4_chart::Chart_updata(Ui::MainWindow ui)
+{
+    for (int i=0; i<50; i++)
+    {
+      X[i] = i;
+      Y[i] = i;
+    }
+   ui.customPlot->graph()->setData(X,Y);
+   ui.customPlot->graph()->setLineStyle((QCPGraph::lsLine));
+   ui.customPlot->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
+   QPen graphPen;
+//   int r,g,b;
+//   r=std::rand()%245+10;
+//   g=std::rand()%245+10;
+//   b=std::rand()%245+10;
+   graphPen.setColor(QColor(16,177,171));
+//   qDebug()<<r<<"---"<<g<<"---"<<b;
+   graphPen.setWidthF(2);
+   ui.customPlot->graph()->setPen(graphPen);
+   ui.customPlot->replot();
+
+
+};
+
+void CH4_chart::run()
+{
+
+}
+

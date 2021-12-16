@@ -1,4 +1,4 @@
-#include "savethread.h"
+﻿#include "savethread.h"
 QString FN;
 QString FP;
 
@@ -6,7 +6,6 @@ savethread::savethread()
 {
 
 }
-
 void savethread::run()
 {
     SVD(FP,FN);

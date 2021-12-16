@@ -1,4 +1,4 @@
-/********************************************************************************
+﻿/********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.14.2
@@ -20,8 +20,8 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
+#include "qcustomplot.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -35,11 +35,10 @@ public:
     QLabel *label;
     QLabel *label_2;
     QPushButton *pushButton;
-    QWidget *verticalLayoutWidget;
-    QVBoxLayout *verticalLayout;
     QCheckBox *checkBox;
     QLineEdit *filelineEdit;
     QPushButton *pushButton_fileselect;
+    QCustomPlot *customPlot;
     QMenuBar *menubar;
     QMenu *menu;
 
@@ -47,7 +46,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1056, 517);
+        MainWindow->resize(1060, 521);
         action222 = new QAction(MainWindow);
         action222->setObjectName(QString::fromUtf8("action222"));
         actiondd = new QAction(MainWindow);
@@ -67,15 +66,9 @@ public:
         pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(10, 440, 121, 51));
-        verticalLayoutWidget = new QWidget(centralwidget);
-        verticalLayoutWidget->setObjectName(QString::fromUtf8("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(140, 0, 911, 491));
-        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
-        verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
         checkBox = new QCheckBox(centralwidget);
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
-        checkBox->setGeometry(QRect(10, 10, 101, 16));
+        checkBox->setGeometry(QRect(10, 10, 121, 16));
         checkBox->setChecked(true);
         filelineEdit = new QLineEdit(centralwidget);
         filelineEdit->setObjectName(QString::fromUtf8("filelineEdit"));
@@ -87,10 +80,13 @@ public:
         pushButton_fileselect = new QPushButton(centralwidget);
         pushButton_fileselect->setObjectName(QString::fromUtf8("pushButton_fileselect"));
         pushButton_fileselect->setGeometry(QRect(115, 30, 21, 23));
+        customPlot = new QCustomPlot(centralwidget);
+        customPlot->setObjectName(QString::fromUtf8("customPlot"));
+        customPlot->setGeometry(QRect(150, 10, 901, 481));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1056, 23));
+        menubar->setGeometry(QRect(0, 0, 1060, 23));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
         MainWindow->setMenuBar(menubar);

@@ -7,6 +7,7 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include <QDebug>
 #include <savethread.h>
+#include <smoothdata.h>
 class CH4_serial :public QThread
 {
     Q_OBJECT
@@ -15,15 +16,15 @@ public:
     QSerialPort *mainport;
     savethread  *CH4_SDT;
     void openPort(QString, Ui::MainWindow);
-
     void run();
     void anlyseData();
     void saveData_0(QString,QString);
 
+signals:
+    void sendData2Chart(QVector<double>,QVector<double>);
 public slots:
     void readData();
     void receiveSaveSig(bool);
-
 };
 
 #endif // CH4_SERIAL_H
