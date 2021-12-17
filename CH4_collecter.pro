@@ -61,35 +61,7 @@ win32: LIBS += -L'D:/matlab2019/extern/lib/win64/mingw64/' -llibeng
 win32: LIBS += -L'D:/matlab2019/extern/lib/win64/mingw64/' -lmclmcr
 win32: LIBS += -L'D:/matlab2019/extern/lib/win64/mingw64/' -lmclmcrrt
 
-#INCLUDEPATH += 'D:/Program Files/MATLAB/R2018b/extern/lib/win64/microsoft'
-#DEPENDPATH += 'D:/Program Files/MATLAB/R2018b/extern/lib/win64/microsoft'
-#INCLUDEPATH += 'D:/Program Files/MATLAB/R2018b/extern/lib/win64'
-#DEPENDPATH += 'D:/Program Files/MATLAB/R2018b/extern/lib/win64'
 
-#win32:CONFIG(release, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -llibmex
-#else:win32:CONFIG(debug, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -llibmexd
-
-
-
-#win32:CONFIG(release, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -llibmx
-#else:win32:CONFIG(debug, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -llibmxd
-
-
-
-#win32:CONFIG(release, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -llibmat
-#else:win32:CONFIG(debug, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -llibmatd
-
-
-#win32:CONFIG(release, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -llibeng
-#else:win32:CONFIG(debug, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -llibengd
-
-
-#win32:CONFIG(release, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -lmclmcr
-#else:win32:CONFIG(debug, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -lmclmcrd
-
-
-#win32:CONFIG(release, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -lmclmcrrt
-#else:win32:CONFIG(debug, debug|release): LIBS += -LD:/matlab2019/extern/lib/win64/mingw64/ -lmclmcrrtd
 
 INCLUDEPATH += D:/matlab2019/extern/lib/win64/mingw64
 DEPENDPATH += D:/matlab2019/extern/lib/win64/mingw64
