@@ -8,6 +8,7 @@
 #include <ch4_serial.h>
 #include <savethread.h>
 #include <qfiledialog.h>
+#include <smoothdata.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE

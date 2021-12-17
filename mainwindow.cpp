@@ -16,7 +16,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this,SIGNAL(sendSaveSig(bool)),CH4_sp,SLOT(receiveSaveSig(bool)));
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
+    if(smoothdataInitialize())//必须加载
+    {
+      // mwArray matrixA(10,10,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
 
+    }
 
 }
 

@@ -1,10 +1,10 @@
 //
 // MATLAB Compiler: 7.1 (R2019b)
-// Date: Thu Dec 16 22:25:46 2021
+// Date: Fri Dec 17 15:00:57 2021
 // Arguments:
 // "-B""macro_default""-W""cpplib:smoothdata,all,version=1.0""-T""link:lib""-d""
-// C:\Users\Administrator.DESKTOP-04T6SA5\Desktop\dll\smoothdata\for_testing""-v
-// ""I:\4000m¼×Íé´«¸ÐÆ÷\smoothdata.m"
+// C:\Users\Administrator\Desktop\smoothdata\for_testing""-v""C:\Users\Administr
+// ator\Desktop\smoothdata.m"
 //
 
 #ifndef smoothdata_h

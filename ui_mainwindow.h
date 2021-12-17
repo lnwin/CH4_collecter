@@ -1,4 +1,4 @@
-﻿/********************************************************************************
+/********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.14.2
@@ -39,6 +39,7 @@ public:
     QLineEdit *filelineEdit;
     QPushButton *pushButton_fileselect;
     QCustomPlot *customPlot;
+    QCheckBox *use_process;
     QMenuBar *menubar;
     QMenu *menu;
 
@@ -68,21 +69,25 @@ public:
         pushButton->setGeometry(QRect(10, 440, 121, 51));
         checkBox = new QCheckBox(centralwidget);
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
-        checkBox->setGeometry(QRect(10, 10, 121, 16));
+        checkBox->setGeometry(QRect(10, 40, 121, 16));
         checkBox->setChecked(true);
         filelineEdit = new QLineEdit(centralwidget);
         filelineEdit->setObjectName(QString::fromUtf8("filelineEdit"));
         filelineEdit->setEnabled(true);
-        filelineEdit->setGeometry(QRect(10, 30, 101, 21));
+        filelineEdit->setGeometry(QRect(10, 60, 101, 21));
         filelineEdit->setEchoMode(QLineEdit::Normal);
         filelineEdit->setDragEnabled(true);
         filelineEdit->setReadOnly(true);
         pushButton_fileselect = new QPushButton(centralwidget);
         pushButton_fileselect->setObjectName(QString::fromUtf8("pushButton_fileselect"));
-        pushButton_fileselect->setGeometry(QRect(115, 30, 21, 23));
+        pushButton_fileselect->setGeometry(QRect(115, 60, 21, 23));
         customPlot = new QCustomPlot(centralwidget);
         customPlot->setObjectName(QString::fromUtf8("customPlot"));
         customPlot->setGeometry(QRect(150, 10, 901, 481));
+        use_process = new QCheckBox(centralwidget);
+        use_process->setObjectName(QString::fromUtf8("use_process"));
+        use_process->setGeometry(QRect(10, 10, 101, 16));
+        use_process->setChecked(true);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -110,6 +115,7 @@ public:
         pushButton->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\350\257\273\345\217\226", nullptr));
         checkBox->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\346\225\260\346\215\256", nullptr));
         pushButton_fileselect->setText(QCoreApplication::translate("MainWindow", "...", nullptr));
+        use_process->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\220\257\346\273\244\346\263\242\347\256\227\346\263\225", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\347\263\273\347\273\237", nullptr));
     } // retranslateUi
 
