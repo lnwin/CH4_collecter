@@ -53,55 +53,77 @@ void CH4_serial::anlyseData()
 
     if(SAVEDATA_1)
     {
-       // saveData_0(QString path,QString filename);
-       // smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
-        int elementCntA=20;//元素个数
+        int elementCntA=500;//元素个数
         double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
-       // for (int j=0; j<50;j++)
-       // {
-       //    arrayA[j]=j;
-           originData[0]=36967;
-           originData[1]=36964.5;
-           originData[2]=36828;
-           originData[3]=36677.5;
-           originData[4]= 36602;
-           originData[5]=36619;
-           originData[6]=36632.5;
-           originData[7]= 36623.5;
-           originData[8]= 36760;
-           originData[9]=36828.5;
-           originData[10]= 36970;
-           originData[11]= 36971;
-           originData[12]= 36822;
-           originData[13]=36729;
-           originData[14]= 37170.5;
-           originData[15]= 36971;
-           originData[16]= 36766;
-           originData[17]= 36379.5;
-           originData[18]= 36596;
-           originData[19]= 36228.5;
+       // saveData_0(QString path,QString filename);
+       // ***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
+        QString filename = QFileDialog::getOpenFileName();
+        QFile datafile(filename);
+        if(!datafile.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            qDebug()<<"Can't open the file!"<<endl;
+        }
+        int count_N=0;
+        while(!datafile.atEnd())
+        {
+            QByteArray line = datafile.readLine();
+            QString str(line);
+            originData[count_N]=str.toDouble();
+            count_N++;
+        }
 
-
-     //   }
        // sgolay
-        mwArray WINSZ(20,1,mxDOUBLE_CLASS, mxREAL);//需要和output纬度一样
-        mwArray outPut(20,1,mxDOUBLE_CLASS, mxREAL);
+        mwArray WINSZ(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//需要和output纬度一样
+        mwArray outPut(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray varargin(1);//输入参数的个数
-        mwArray matrixA(20,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
+        mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
         matrixA.SetData(originData,elementCntA); //将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
         smoothdata(1,outPut,WINSZ,matrixA,varargin);//
         double  *afterSmooth=new double[elementCntA];
        //  matrixA.GetData(,1);
        //  matrixB(0);
-        for (int j=0; j<20;j++)
+
+        mwArray d(10);
+        mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
+        mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
+        mwArray method("peak");
+        envelope(2,up_01,lo_01,outPut,d,method);//通过测试
+        double *mid_01=new double[elementCntA];
+        double a,b;
+
+        for (int j=0; j<elementCntA;j++)
         {
-            double a;
-            a= outPut.Get(0,j+1);
-            afterSmooth[j]=outPut.Get(0,j+1);
-            qDebug()<<a;
+
+            a = up_01.Get(0,j+1);
+            b = lo_01.Get(0,j+1);
+            mid_01[j]=(a+b)/2;
+
 
         }
+        double *B=new double[200];
+        double *B1=new double[200];
+        double *B2=new double[200];
+        for(int j=150; j<350;j++)
+        {
+              B[j-150]=mid_01[j];
+        }
+        for(int j=0; j<100;j++)
+        {
+              B1[j]=B[j];
 
+        }
+        for(int j=0; j<100;j++)
+        {
+              B2[j]=B[j+100];
+        }
+        Max_Min MN_B;
+        Max_Min MN_B1;
+        Max_Min MN_B2;
+        MN_B=coutMaxMin(B,200);
+        MN_B1=coutMaxMin(B1,100);
+        MN_B2=coutMaxMin(B2,100);
+        MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
+        double X = MN_B.Max-MN_B.Min;
 
         //
     }
@@ -123,3 +145,26 @@ void CH4_serial::receiveSaveSig(bool Y)
 {
     SAVEDATA_1=Y;
 };
+Max_Min CH4_serial::coutMaxMin(double *dataIn,double n)
+{
+    Max_Min mn;
+    mn.Max=dataIn[0];
+    mn.Min=dataIn[0];
+    for(int i=0;i<n;i++ )
+    {
+
+
+        if(dataIn[i]> mn.Max)
+        {
+           mn.Max =dataIn[i];
+         // qDebug()<<Max;
+        }
+        if(dataIn[i]<mn.Min)
+        {
+          mn.Min=dataIn[i];
+        }
+
+    }
+    return mn;
+
+}

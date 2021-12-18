@@ -68,3 +68,9 @@ DEPENDPATH += D:/matlab2019/extern/lib/win64/mingw64
 
 INCLUDEPATH += D:/matlab2019/extern/lib/win64
 DEPENDPATH += D:/matlab2019/extern/lib/win64
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -lenvelope
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lenveloped
+
+INCLUDEPATH += $$PWD/include
+DEPENDPATH += $$PWD/include

@@ -8,6 +8,23 @@
 #include <QDebug>
 #include <savethread.h>
 #include <smoothdata.h>
+#include <envelope.h>
+#include <QMetaType>
+#include <QFile>
+#include <QFileDialog>
+#include <iostream>
+#include <fstream>
+
+struct Max_Min
+{
+
+    double Max;
+    double Min;
+
+};
+Q_DECLARE_METATYPE(Max_Min);
+
+
 class CH4_serial :public QThread
 {
     Q_OBJECT
@@ -19,6 +36,7 @@ public:
     void run();
     void anlyseData();
     void saveData_0(QString,QString);
+    Max_Min coutMaxMin(double*,double);
 
 signals:
     void sendData2Chart(QVector<double>,QVector<double>);
