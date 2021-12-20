@@ -12,7 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
     CH4->Chart_init(*ui);
     CH4_sp =new CH4_serial;
     CH4_sv =new savethread;
-    ui->filelineEdit->setText("D:/CH4_Collecter_DATA");
+
+    //COF = new
+
+    connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));
     connect(this,SIGNAL(sendSaveSig(bool)),CH4_sp,SLOT(receiveSaveSig(bool)));
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
@@ -100,4 +103,12 @@ void MainWindow::rescaleGraph()
     CH4->Chart_updata(*ui);
     ui->customPlot->rescaleAxes();
     ui->customPlot->replot();
+};
+void MainWindow::open_Configuration()
+{
+
+};
+void MainWindow::open_Dataprocess()
+{
+
 };

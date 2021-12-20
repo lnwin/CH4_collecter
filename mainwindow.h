@@ -9,6 +9,8 @@
 #include <savethread.h>
 #include <qfiledialog.h>
 #include <smoothdata.h>
+#include <configuration.h>
+#include <data_process.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -32,11 +34,16 @@ private slots:
     void on_checkBox_stateChanged(int);
     void contextMenuRequest(QPoint pos);
     void rescaleGraph();
+    void open_Configuration();
+    void open_Dataprocess();
 
 private:
     Ui::MainWindow *ui;
     CH4_chart *CH4;
     CH4_serial *CH4_sp;
     savethread *CH4_sv;
+    configuration *COF;
+    data_Process *DAP;
+
 };
 #endif // MAINWINDOW_H

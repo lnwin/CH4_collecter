@@ -20,6 +20,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     ch4_chart.cpp \
     ch4_serial.cpp \
+    configuration.cpp \
+    data_process.cpp \
     main.cpp \
     mainwindow.cpp \
     qcustomplot.cpp \
@@ -28,11 +30,15 @@ SOURCES += \
 HEADERS += \
     ch4_chart.h \
     ch4_serial.h \
+    configuration.h \
+    data_process.h \
     mainwindow.h \
     qcustomplot.h \
     savethread.h
 
 FORMS += \
+    configuration.ui \
+    data_process.ui \
     mainwindow.ui
 
 TRANSLATIONS += \

@@ -70,7 +70,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>40</y>
+      <y>350</y>
       <width>121</width>
       <height>16</height>
      </rect>
@@ -89,7 +89,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>60</y>
+      <y>370</y>
       <width>101</width>
       <height>21</height>
      </rect>
@@ -108,7 +108,7 @@
     <property name="geometry">
      <rect>
       <x>115</x>
-      <y>60</y>
+      <y>370</y>
       <width>21</width>
       <height>23</height>
      </rect>
@@ -131,7 +131,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>160</y>
       <width>101</width>
       <height>16</height>
      </rect>
@@ -157,12 +157,18 @@
     <property name="title">
      <string>系统</string>
     </property>
-    <addaction name="action222"/>
-    <addaction name="actiondd"/>
+    <addaction name="system_Set"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>数据处理</string>
+    </property>
+    <addaction name="data_Process"/>
    </widget>
    <addaction name="menu"/>
+   <addaction name="menu_2"/>
   </widget>
-  <action name="action222">
+  <action name="system_Set">
    <property name="text">
     <string>参数配置</string>
    </property>
@@ -170,6 +176,21 @@
   <action name="actiondd">
    <property name="text">
     <string>光谱</string>
+   </property>
+  </action>
+  <action name="data_process">
+   <property name="text">
+    <string>批量处理数据</string>
+   </property>
+  </action>
+  <action name="actiond">
+   <property name="text">
+    <string>d</string>
+   </property>
+  </action>
+  <action name="data_Process">
+   <property name="text">
+    <string>数据批量处理</string>
    </property>
   </action>
  </widget>
