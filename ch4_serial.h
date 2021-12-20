@@ -23,7 +23,15 @@ struct Max_Min
 
 };
 Q_DECLARE_METATYPE(Max_Min);
+struct Parameter
+{
+   double a;
+   double b;
+   double win_d;
+   QString filepath;
+};
 
+Q_DECLARE_METATYPE(Parameter);
 
 class CH4_serial :public QThread
 {
@@ -42,7 +50,7 @@ signals:
     void sendData2Chart(QVector<double>,QVector<double>);
 public slots:
     void readData();
-    void receiveSaveSig(bool);
+
 };
 
 #endif // CH4_SERIAL_H

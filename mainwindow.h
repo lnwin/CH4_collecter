@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -27,11 +27,8 @@ public:
 
 signals:
     void sendFilePath(QString);
-    void sendSaveSig(bool);
 private slots:
     void on_pushButton_clicked();
-    void on_pushButton_fileselect_clicked();
-    void on_checkBox_stateChanged(int);
     void contextMenuRequest(QPoint pos);
     void rescaleGraph();
     void open_Configuration();

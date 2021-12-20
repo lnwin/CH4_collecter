@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>参数配置</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>C:/Users/Administrator.DESKTOP-04T6SA5/Desktop/背景/src=http___img9.51tietu.net_pic_2019-091100_pqegqxftpkmpqegqxftpkm.jpg&amp;refer=http___img9.51tietu (1).jpg</normaloff>C:/Users/Administrator.DESKTOP-04T6SA5/Desktop/背景/src=http___img9.51tietu.net_pic_2019-091100_pqegqxftpkmpqegqxftpkm.jpg&amp;refer=http___img9.51tietu (1).jpg</iconset>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">

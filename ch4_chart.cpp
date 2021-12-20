@@ -1,4 +1,4 @@
-#include "ch4_chart.h"
+﻿#include "ch4_chart.h"
 QVector<double> X(500),Y(500);
 CH4_chart::CH4_chart()
 {
@@ -12,21 +12,24 @@ void CH4_chart::Chart_init(Ui::MainWindow ui)
     ui.customPlot->xAxis->setRange(-100, 100);
     ui.customPlot->yAxis->setRange(-100, 100);
     ui.customPlot->axisRect()->setupFullAxesBox();
-
     ui.customPlot->plotLayout()->insertRow(0);
     QCPTextElement *title = new QCPTextElement(ui.customPlot, "Interaction Example", QFont("sans", 17, QFont::Bold));
     ui.customPlot->plotLayout()->addElement(0, 0, title);
-
-    ui.customPlot->xAxis->setLabel("x Axis");
-    ui.customPlot->yAxis->setLabel("y Axis");
+    ui.customPlot->xAxis->setLabel("时间");
+    ui.customPlot->yAxis->setLabel("浓度（PPM）");
     ui.customPlot->legend->setVisible(true);
+//    QLinearGradient plotGradient;
+//  //  plotGradient.setStart(0, 0);
+//   // plotGradient.setFinalStop(0, 350);
+//   // plotGradient.setColorAt(0, QColor(80, 80, 80));
+//    plotGradient.setColorAt(1, QColor(50, 50, 50));
+//    ui.customPlot->setBackground(plotGradient);
     QFont legendFont("Times", 10, QFont::Bold);
     legendFont.setPointSize(10);
     ui.customPlot->legend->setFont(legendFont);
     ui.customPlot->legend->setSelectedFont(legendFont);
     ui.customPlot->legend->setSelectableParts(QCPLegend::spItems);
-    ui.customPlot->addGraph();
-    // ui.customPlot->graph()->setName(QString::fromLocal8Bit("光谱曲线").arg(ui.customPlot->graphCount()-1));
+    ui.customPlot->addGraph();   
     ui.customPlot->graph()->setName("光谱曲线");
     Chart_updata(ui);
     ui.customPlot->rescaleAxes();

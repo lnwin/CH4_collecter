@@ -1,7 +1,6 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <qdebug.h>
-bool SAVEDATA_0=true;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -13,16 +12,16 @@ MainWindow::MainWindow(QWidget *parent)
     CH4_sp =new CH4_serial;
     CH4_sv =new savethread;
 
-    //COF = new
+    COF = new configuration();
+    DAP = new data_Process();
 
     connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));
-    connect(this,SIGNAL(sendSaveSig(bool)),CH4_sp,SLOT(receiveSaveSig(bool)));
+    connect(ui->data_Process,SIGNAL(triggered()),this,SLOT(open_Dataprocess()));
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
     if(smoothdataInitialize())//必须加载
     {
       envelopeInitialize();
-
     }
 
 }
@@ -51,33 +50,6 @@ void MainWindow::on_pushButton_clicked()
      CH4_sp->openPort(ui->comboBox->currentText(),*ui);
 
 };
-void MainWindow::on_pushButton_fileselect_clicked()
-{
-    QString  srcDirPath = QFileDialog::getExistingDirectory( this, "Rec path", "/");
-    if (srcDirPath.isEmpty())
-    {
-        return;
-    }
-    else
-    {
-        ui->filelineEdit->setText(srcDirPath) ;
-        sendFilePath(srcDirPath);
-    }
-};
-void MainWindow::on_checkBox_stateChanged(int a)
-{
-   // a==2,checked.
-    if(a==2)
-    {
-       SAVEDATA_0=true;
-       emit sendSaveSig(SAVEDATA_0);
-    }
-    else
-    {
-      SAVEDATA_0=false;
-      emit sendSaveSig(SAVEDATA_0);
-    }
-}
 void MainWindow::contextMenuRequest(QPoint pos)
 {
 
@@ -93,7 +65,7 @@ void MainWindow::contextMenuRequest(QPoint pos)
 //  }
 //  else  // general context menu on graphs requested
  // {
-    menu->addAction(QString::fromLocal8Bit("还原"), this, SLOT(rescaleGraph()));
+    menu->addAction("还原", this, SLOT(rescaleGraph()));
  // }
 
     menu->popup(ui->customPlot->mapToGlobal(pos));
@@ -106,9 +78,9 @@ void MainWindow::rescaleGraph()
 };
 void MainWindow::open_Configuration()
 {
-
+    COF->show();
 };
 void MainWindow::open_Dataprocess()
 {
-
+   DAP->show();
 };

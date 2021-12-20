@@ -1,6 +1,6 @@
 ﻿#include "ch4_serial.h"
 bool needread=false;
-bool SAVEDATA_1=true;
+double a_n=0.0015,b_n=4,d_n=3;
 CH4_serial::CH4_serial()
 {
    mainport =new QSerialPort;
@@ -18,12 +18,9 @@ void CH4_serial::openPort(QString portName,Ui::MainWindow ui)
         mainport->setParity(QSerialPort::NoParity);//校验位
         mainport->setStopBits(QSerialPort::OneStop);//停止位
         ui.comboBox->setEnabled(false);
-        ui.checkBox->setEnabled(false);
-        ui.use_process->setEnabled(false);
-        ui.pushButton_fileselect->setEnabled(false);
         ui.pushButton->setText("停止读取");
         connect(mainport,SIGNAL(readyRead()),this,SLOT(readData()));
-        anlyseData();
+        //anlyseData();
 
 
 
@@ -33,16 +30,12 @@ void CH4_serial::openPort(QString portName,Ui::MainWindow ui)
 
         mainport->close();
         ui.comboBox->setEnabled(true);
-        ui.checkBox->setEnabled(true);
-        ui.use_process->setEnabled(true);
-        ui.pushButton_fileselect->setEnabled(true);
         ui.pushButton->setText("开始读取");
     }
 };
 
 void CH4_serial::readData()
 {
-
     this->start();
 };
 
@@ -51,8 +44,6 @@ void CH4_serial::readData()
 void CH4_serial::anlyseData()
 {
 
-    if(SAVEDATA_1)
-    {
         int elementCntA=500;//元素个数
         double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
        // saveData_0(QString path,QString filename);
@@ -78,12 +69,11 @@ void CH4_serial::anlyseData()
         mwArray varargin(1);//输入参数的个数
         mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
         matrixA.SetData(originData,elementCntA); //将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
-        smoothdata(1,outPut,WINSZ,matrixA,varargin);//
-        double  *afterSmooth=new double[elementCntA];
+        smoothdata(1,outPut,WINSZ,matrixA,varargin);//       
        //  matrixA.GetData(,1);
        //  matrixB(0);
 
-        mwArray d(10);
+        mwArray d(d_n);//串窗口平滑参数
         mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray method("peak");
@@ -125,25 +115,15 @@ void CH4_serial::anlyseData()
         MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
         double X = MN_B.Max-MN_B.Min;
 
-        //
-    }
-    else
-    {
 
-    }
 }
 void CH4_serial::run()
 {
       anlyseData();
-
 }
 void CH4_serial::saveData_0(QString path,QString filename)
 {
     CH4_SDT->saveData_1(path,filename);
-};
-void CH4_serial::receiveSaveSig(bool Y)
-{
-    SAVEDATA_1=Y;
 };
 Max_Min CH4_serial::coutMaxMin(double *dataIn,double n)
 {
