@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/image">
         <file>image/win_icon.jpg</file>
+        <file>image/001.jpg</file>
     </qresource>
 </RCC>

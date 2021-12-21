@@ -1,4 +1,4 @@
-/********************************************************************************
+﻿/********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.14.2
@@ -13,10 +13,12 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLCDNumber>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -41,7 +43,14 @@ public:
     QLabel *label_3;
     QLCDNumber *lcdNumber_2;
     QWidget *widget;
-    QHBoxLayout *horizontalLayout;
+    QHBoxLayout *horizontalLayout_2;
+    QCheckBox *checkBox;
+    QLabel *label_4;
+    QComboBox *comboBox_2;
+    QWidget *widget1;
+    QHBoxLayout *horizontalLayout_3;
+    QLineEdit *filelineEdit;
+    QPushButton *pushButton_fileselect;
     QLabel *label;
     QComboBox *comboBox;
     QPushButton *pushButton;
@@ -59,7 +68,7 @@ public:
         font.setWeight(50);
         MainWindow->setFont(font);
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/image/image/win_icon.jpg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/image/image/001.jpg"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
         MainWindow->setLayoutDirection(Qt::LeftToRight);
         MainWindow->setAutoFillBackground(true);
@@ -77,10 +86,10 @@ public:
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         customPlot = new QCustomPlot(centralwidget);
         customPlot->setObjectName(QString::fromUtf8("customPlot"));
-        customPlot->setGeometry(QRect(10, 50, 1041, 441));
+        customPlot->setGeometry(QRect(10, 60, 1041, 431));
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(570, 0, 71, 47));
+        label_2->setGeometry(QRect(790, 0, 61, 61));
         QFont font1;
         font1.setPointSize(12);
         font1.setBold(false);
@@ -88,7 +97,7 @@ public:
         label_2->setFont(font1);
         lcdNumber = new QLCDNumber(centralwidget);
         lcdNumber->setObjectName(QString::fromUtf8("lcdNumber"));
-        lcdNumber->setGeometry(QRect(90, 0, 281, 50));
+        lcdNumber->setGeometry(QRect(500, 0, 281, 55));
         lcdNumber->setMinimumSize(QSize(0, 0));
         QFont font2;
         font2.setPointSize(20);
@@ -97,43 +106,69 @@ public:
         lcdNumber->setFrameShadow(QFrame::Raised);
         label_3 = new QLabel(centralwidget);
         label_3->setObjectName(QString::fromUtf8("label_3"));
-        label_3->setGeometry(QRect(20, 0, 71, 47));
+        label_3->setGeometry(QRect(430, 0, 71, 61));
         label_3->setFont(font1);
         lcdNumber_2 = new QLCDNumber(centralwidget);
         lcdNumber_2->setObjectName(QString::fromUtf8("lcdNumber_2"));
-        lcdNumber_2->setGeometry(QRect(650, 0, 101, 50));
+        lcdNumber_2->setGeometry(QRect(860, 0, 101, 55));
         widget = new QWidget(centralwidget);
         widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(790, 0, 251, 51));
-        horizontalLayout = new QHBoxLayout(widget);
-        horizontalLayout->setSpacing(2);
-        horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(widget);
+        widget->setGeometry(QRect(210, 0, 211, 31));
+        horizontalLayout_2 = new QHBoxLayout(widget);
+        horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
+        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+        checkBox = new QCheckBox(widget);
+        checkBox->setObjectName(QString::fromUtf8("checkBox"));
+        checkBox->setChecked(true);
+
+        horizontalLayout_2->addWidget(checkBox);
+
+        label_4 = new QLabel(widget);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+
+        horizontalLayout_2->addWidget(label_4);
+
+        comboBox_2 = new QComboBox(widget);
+        comboBox_2->setObjectName(QString::fromUtf8("comboBox_2"));
+
+        horizontalLayout_2->addWidget(comboBox_2);
+
+        widget1 = new QWidget(centralwidget);
+        widget1->setObjectName(QString::fromUtf8("widget1"));
+        widget1->setGeometry(QRect(210, 30, 211, 24));
+        horizontalLayout_3 = new QHBoxLayout(widget1);
+        horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
+        horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
+        filelineEdit = new QLineEdit(widget1);
+        filelineEdit->setObjectName(QString::fromUtf8("filelineEdit"));
+        filelineEdit->setEnabled(true);
+        filelineEdit->setEchoMode(QLineEdit::Normal);
+        filelineEdit->setDragEnabled(true);
+        filelineEdit->setReadOnly(true);
+
+        horizontalLayout_3->addWidget(filelineEdit);
+
+        pushButton_fileselect = new QPushButton(widget1);
+        pushButton_fileselect->setObjectName(QString::fromUtf8("pushButton_fileselect"));
+
+        horizontalLayout_3->addWidget(pushButton_fileselect);
+
+        label = new QLabel(centralwidget);
         label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(10, 10, 36, 41));
         label->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout->addWidget(label);
-
-        comboBox = new QComboBox(widget);
+        comboBox = new QComboBox(centralwidget);
         comboBox->setObjectName(QString::fromUtf8("comboBox"));
+        comboBox->setGeometry(QRect(49, 5, 72, 51));
         comboBox->setMinimumSize(QSize(0, 40));
-
-        horizontalLayout->addWidget(comboBox);
-
-        pushButton = new QPushButton(widget);
+        pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
+        pushButton->setGeometry(QRect(123, 5, 80, 51));
         pushButton->setMinimumSize(QSize(0, 40));
-
-        horizontalLayout->addWidget(pushButton);
-
-        horizontalLayout->setStretch(0, 1);
-        horizontalLayout->setStretch(1, 1);
-        horizontalLayout->setStretch(2, 2);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1060, 23));
+        menubar->setGeometry(QRect(0, 0, 1060, 22));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
         menu_2 = new QMenu(menubar);
@@ -160,6 +195,9 @@ public:
         data_Process->setText(QCoreApplication::translate("MainWindow", "\346\225\260\346\215\256\346\211\271\351\207\217\345\244\204\347\220\206", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "\345\275\223\345\211\215\346\265\223\345\272\246", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "\345\275\223\345\211\215\346\227\266\351\227\264", nullptr));
+        checkBox->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\346\225\260\346\215\256", nullptr));
+        label_4->setText(QCoreApplication::translate("MainWindow", "\345\255\230\345\202\250\351\227\264\351\232\224", nullptr));
+        pushButton_fileselect->setText(QCoreApplication::translate("MainWindow", "\351\200\211\346\213\251\345\255\230\345\202\250\350\267\257\345\276\204", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243\345\217\267", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\350\257\273\345\217\226", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\347\263\273\347\273\237", nullptr));

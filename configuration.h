@@ -16,9 +16,8 @@ public:
     ~configuration();
 
 private slots:
-    void on_buttonBox_accepted();
 
-    void on_pushButton_fileselect_clicked();
+
 
 private:
     Ui::configuration *ui;

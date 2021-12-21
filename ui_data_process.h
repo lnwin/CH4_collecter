@@ -38,7 +38,7 @@ public:
             data_Process->setObjectName(QString::fromUtf8("data_Process"));
         data_Process->resize(701, 428);
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/image/image/win_icon.jpg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/image/image/001.jpg"), QSize(), QIcon::Normal, QIcon::Off);
         data_Process->setWindowIcon(icon);
         select_files = new QPushButton(data_Process);
         select_files->setObjectName(QString::fromUtf8("select_files"));

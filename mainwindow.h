@@ -36,6 +36,7 @@ private slots:
     void open_Configuration();
     void open_Dataprocess();
     void onTimeOut();
+    void on_pushButton_fileselect_clicked();
 
 private:
     Ui::MainWindow *ui;

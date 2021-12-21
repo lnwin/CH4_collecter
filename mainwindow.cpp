@@ -1,6 +1,7 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <qdebug.h>
+QString  srcDirPath;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -92,4 +93,16 @@ void MainWindow::onTimeOut()
     QDateTime time = QDateTime::currentDateTime();
     QString timestring=time.toString("yyyy-MM-dd HH:mm:ss");
     ui->lcdNumber->display(timestring);
+}
+void MainWindow::on_pushButton_fileselect_clicked()
+{
+    srcDirPath = QFileDialog::getExistingDirectory( this, "Rec path", "/");
+    if (srcDirPath.isEmpty())
+    {
+        return;
+    }
+    else
+    {
+        ui->filelineEdit->setText(srcDirPath) ;
+    }
 }

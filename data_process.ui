@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="image.qrc">
-    <normaloff>:/image/image/win_icon.jpg</normaloff>:/image/image/win_icon.jpg</iconset>
+    <normaloff>:/image/image/001.jpg</normaloff>:/image/image/001.jpg</iconset>
   </property>
   <widget class="QPushButton" name="select_files">
    <property name="geometry">
