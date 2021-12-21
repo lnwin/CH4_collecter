@@ -14,8 +14,8 @@
    <string>数据处理</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>C:/Users/Administrator.DESKTOP-04T6SA5/Desktop/背景/src=http___img9.51tietu.net_pic_2019-091100_pqegqxftpkmpqegqxftpkm.jpg&amp;refer=http___img9.51tietu.jpg</normaloff>C:/Users/Administrator.DESKTOP-04T6SA5/Desktop/背景/src=http___img9.51tietu.net_pic_2019-091100_pqegqxftpkmpqegqxftpkm.jpg&amp;refer=http___img9.51tietu.jpg</iconset>
+   <iconset resource="image.qrc">
+    <normaloff>:/image/image/win_icon.jpg</normaloff>:/image/image/win_icon.jpg</iconset>
   </property>
   <widget class="QPushButton" name="select_files">
    <property name="geometry">
@@ -100,6 +100,8 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="image.qrc"/>
+ </resources>
  <connections/>
 </ui>

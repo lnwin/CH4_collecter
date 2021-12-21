@@ -11,6 +11,8 @@
 #include <smoothdata.h>
 #include <configuration.h>
 #include <data_process.h>
+#include <QTimer>
+#include <QDateTime>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -33,6 +35,7 @@ private slots:
     void rescaleGraph();
     void open_Configuration();
     void open_Dataprocess();
+    void onTimeOut();
 
 private:
     Ui::MainWindow *ui;

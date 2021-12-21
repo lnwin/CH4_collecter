@@ -80,3 +80,6 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lenveloped
 
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
+
+RESOURCES += \
+    image.qrc

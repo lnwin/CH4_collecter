@@ -6,15 +6,17 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->lcdNumber->setDigitCount(19);
+    ui->lcdNumber->setStyleSheet("border: 0px solid green;color: green; background: black;");
+    QTimer *clock =new QTimer(this);
+    clock->setInterval(1000);
     searchPort();
     CH4 =new CH4_chart;
     CH4->Chart_init(*ui);
     CH4_sp =new CH4_serial;
     CH4_sv =new savethread;
-
     COF = new configuration();
     DAP = new data_Process();
-
     connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));
     connect(ui->data_Process,SIGNAL(triggered()),this,SLOT(open_Dataprocess()));
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -23,7 +25,8 @@ MainWindow::MainWindow(QWidget *parent)
     {
       envelopeInitialize();
     }
-
+    connect(clock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
+    clock->start();
 }
 
 MainWindow::~MainWindow()
@@ -84,3 +87,9 @@ void MainWindow::open_Dataprocess()
 {
    DAP->show();
 };
+void MainWindow::onTimeOut()
+{
+    QDateTime time = QDateTime::currentDateTime();
+    QString timestring=time.toString("yyyy-MM-dd HH:mm:ss");
+    ui->lcdNumber->display(timestring);
+}
