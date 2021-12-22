@@ -25,6 +25,7 @@ struct Max_Min
 Q_DECLARE_METATYPE(Max_Min);
 struct Parameter
 {
+   double acc;
    double a;
    double b;
    double win_d;

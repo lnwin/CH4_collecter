@@ -26,6 +26,7 @@ public:
     ~MainWindow();
     void CH4Chart();
     void searchPort();
+    void readConf();
 
 signals:
     void sendFilePath(QString);

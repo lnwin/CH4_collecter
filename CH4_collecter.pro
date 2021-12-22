@@ -83,3 +83,6 @@ DEPENDPATH += $$PWD/include
 
 RESOURCES += \
     image.qrc
+
+DISTFILES += \
+    cof/configuration.txt

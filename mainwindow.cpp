@@ -2,11 +2,13 @@
 #include "ui_mainwindow.h"
 #include <qdebug.h>
 QString  srcDirPath;
+Parameter M_parameter;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    readConf();
     ui->lcdNumber->setDigitCount(19);
     ui->lcdNumber->setStyleSheet("border: 0px solid green;color: green; background: black;");
     QTimer *clock =new QTimer(this);
@@ -106,3 +108,23 @@ void MainWindow::on_pushButton_fileselect_clicked()
         ui->filelineEdit->setText(srcDirPath) ;
     }
 }
+void MainWindow::readConf()
+{
+   QFile confFile (QApplication::applicationDirPath()+"/configuration.txt");
+   confFile.open(QIODevice::ReadOnly|QIODevice::Text);
+   QList<QString> sk;
+   while(!confFile.atEnd())
+   {
+       QByteArray line = confFile.readLine();
+       QString str(line);
+
+       sk.append(str);
+   }
+
+   M_parameter.acc =sk.at(1).toDouble();
+   M_parameter.win_d=sk.at(3).toDouble();
+   M_parameter.a =sk.at(5).toDouble();
+   M_parameter.b =sk.at(7).toDouble();
+
+
+};
