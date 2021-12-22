@@ -1,4 +1,4 @@
-﻿/********************************************************************************
+/********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.14.2
@@ -24,7 +24,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
-#include "qcustomplot.h"
+#include <qcustomplot.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -42,12 +42,12 @@ public:
     QLCDNumber *lcdNumber;
     QLabel *label_3;
     QLCDNumber *lcdNumber_2;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout_2;
     QCheckBox *checkBox;
     QLabel *label_4;
     QComboBox *comboBox_2;
-    QWidget *widget1;
+    QWidget *layoutWidget1;
     QHBoxLayout *horizontalLayout_3;
     QLineEdit *filelineEdit;
     QPushButton *pushButton_fileselect;
@@ -111,35 +111,35 @@ public:
         lcdNumber_2 = new QLCDNumber(centralwidget);
         lcdNumber_2->setObjectName(QString::fromUtf8("lcdNumber_2"));
         lcdNumber_2->setGeometry(QRect(860, 0, 101, 55));
-        widget = new QWidget(centralwidget);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(210, 0, 211, 31));
-        horizontalLayout_2 = new QHBoxLayout(widget);
+        layoutWidget = new QWidget(centralwidget);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(210, 0, 211, 31));
+        horizontalLayout_2 = new QHBoxLayout(layoutWidget);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        checkBox = new QCheckBox(widget);
+        checkBox = new QCheckBox(layoutWidget);
         checkBox->setObjectName(QString::fromUtf8("checkBox"));
         checkBox->setChecked(true);
 
         horizontalLayout_2->addWidget(checkBox);
 
-        label_4 = new QLabel(widget);
+        label_4 = new QLabel(layoutWidget);
         label_4->setObjectName(QString::fromUtf8("label_4"));
 
         horizontalLayout_2->addWidget(label_4);
 
-        comboBox_2 = new QComboBox(widget);
+        comboBox_2 = new QComboBox(layoutWidget);
         comboBox_2->setObjectName(QString::fromUtf8("comboBox_2"));
 
         horizontalLayout_2->addWidget(comboBox_2);
 
-        widget1 = new QWidget(centralwidget);
-        widget1->setObjectName(QString::fromUtf8("widget1"));
-        widget1->setGeometry(QRect(210, 30, 211, 24));
-        horizontalLayout_3 = new QHBoxLayout(widget1);
+        layoutWidget1 = new QWidget(centralwidget);
+        layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(210, 30, 211, 24));
+        horizontalLayout_3 = new QHBoxLayout(layoutWidget1);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
-        filelineEdit = new QLineEdit(widget1);
+        filelineEdit = new QLineEdit(layoutWidget1);
         filelineEdit->setObjectName(QString::fromUtf8("filelineEdit"));
         filelineEdit->setEnabled(true);
         filelineEdit->setEchoMode(QLineEdit::Normal);
@@ -148,7 +148,7 @@ public:
 
         horizontalLayout_3->addWidget(filelineEdit);
 
-        pushButton_fileselect = new QPushButton(widget1);
+        pushButton_fileselect = new QPushButton(layoutWidget1);
         pushButton_fileselect->setObjectName(QString::fromUtf8("pushButton_fileselect"));
 
         horizontalLayout_3->addWidget(pushButton_fileselect);

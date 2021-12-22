@@ -7,8 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    ui->setupUi(this);
-    readConf();
+    ui->setupUi(this);  
     ui->lcdNumber->setDigitCount(19);
     ui->lcdNumber->setStyleSheet("border: 0px solid green;color: green; background: black;");
     QTimer *clock =new QTimer(this);
@@ -22,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
     DAP = new data_Process();
     connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));
     connect(ui->data_Process,SIGNAL(triggered()),this,SLOT(open_Dataprocess()));
+    connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
+    connect(COF,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
     if(smoothdataInitialize())//必须加载
@@ -83,7 +84,7 @@ void MainWindow::rescaleGraph()
     ui->customPlot->replot();
 };
 void MainWindow::open_Configuration()
-{
+{    
     COF->show();
 };
 void MainWindow::open_Dataprocess()
@@ -106,25 +107,40 @@ void MainWindow::on_pushButton_fileselect_clicked()
     else
     {
         ui->filelineEdit->setText(srcDirPath) ;
+        M_parameter.COCNfilepath =srcDirPath;
+        emit sendCof2serial(M_parameter);
+
     }
 }
 void MainWindow::readConf()
 {
-   QFile confFile (QApplication::applicationDirPath()+"/configuration.txt");
-   confFile.open(QIODevice::ReadOnly|QIODevice::Text);
-   QList<QString> sk;
-   while(!confFile.atEnd())
-   {
-       QByteArray line = confFile.readLine();
-       QString str(line);
+    QFile confFile (QApplication::applicationDirPath()+"/configuration.txt");
 
-       sk.append(str);
+    if(confFile.open(QIODevice::ReadOnly|QIODevice::Text))
+    {
+        QList<QString> sk;
+        while(!confFile.atEnd())
+        {
+            QByteArray line = confFile.readLine();
+            QString str(line);
+            sk.append(str.split("\n").first());
+        }
+
+        M_parameter.acc =sk.at(1).toDouble();
+        M_parameter.win_d=sk.at(3).toDouble();
+        M_parameter.a =sk.at(5).toDouble();
+        M_parameter.b =sk.at(7).toDouble();
+        M_parameter.saveSpectrum =sk.at(9).toDouble();
+        M_parameter.spectrumfilepath =sk.at(11);
+        M_parameter.COCNfilepath =sk.at(13);
+        emit sendCof2serial(M_parameter);
+        confFile.close();
+
    }
-
-   M_parameter.acc =sk.at(1).toDouble();
-   M_parameter.win_d=sk.at(3).toDouble();
-   M_parameter.a =sk.at(5).toDouble();
-   M_parameter.b =sk.at(7).toDouble();
-
-
+    else
+    {
+       QMessageBox msgBox ;
+       msgBox.setText("配置文件缺失！");
+       msgBox.exec();
+    }
 };

@@ -14,10 +14,15 @@ class configuration : public QDialog
 public:
     explicit configuration(QWidget *parent = nullptr);
     ~configuration();
+     void readConf();
+
+
+signals:
+     void sendCof2serial(Parameter);
 
 private slots:
 
-
+     void on_pushButton_3_clicked();
 
 private:
     Ui::configuration *ui;

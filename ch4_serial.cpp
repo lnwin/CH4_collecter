@@ -1,11 +1,14 @@
 ﻿#include "ch4_serial.h"
+#include <mutex>
+std::mutex MUTEX;
 bool needread=false;
-double a_n=0.0015,b_n=4,d_n=3;
+double acc=0,a_n=0.0015,b_n=4,win_n=3,COCN;
+QString spectrumfilepath,COCNfilepath;
+double saveSpectrum;
 CH4_serial::CH4_serial()
 {
    mainport =new QSerialPort;
    CH4_SDT  =new savethread;
-
 }
 void CH4_serial::openPort(QString portName,Ui::MainWindow ui)
 {
@@ -36,11 +39,10 @@ void CH4_serial::openPort(QString portName,Ui::MainWindow ui)
 
 void CH4_serial::readData()
 {
+    MUTEX.lock();
     this->start();
+    MUTEX.unlock();
 };
-
-   // mwArray matrixA(10,10,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
-
 void CH4_serial::anlyseData()
 {
 
@@ -73,7 +75,7 @@ void CH4_serial::anlyseData()
        //  matrixA.GetData(,1);
        //  matrixB(0);
 
-        mwArray d(d_n);//串窗口平滑参数
+        mwArray d(win_n);//串窗口平滑参数
         mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray method("peak");
@@ -114,6 +116,8 @@ void CH4_serial::anlyseData()
         MN_B2=coutMaxMin(B2,100);
         MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
         double X = MN_B.Max-MN_B.Min;
+        COCN = a_n*X+b_n;
+
 
 
 }
@@ -148,3 +152,14 @@ Max_Min CH4_serial::coutMaxMin(double *dataIn,double n)
     return mn;
 
 }
+void CH4_serial::receiveCof(Parameter PM)
+{
+    acc=PM.acc;
+    a_n=PM.a;
+    b_n=PM.b;
+    win_n=PM.win_d;
+    spectrumfilepath=PM.spectrumfilepath;
+    saveSpectrum=PM.saveSpectrum;
+    COCNfilepath=PM.COCNfilepath;
+}
+

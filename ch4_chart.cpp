@@ -15,8 +15,8 @@ void CH4_chart::Chart_init(Ui::MainWindow ui)
     ui.customPlot->plotLayout()->insertRow(0);
     QCPTextElement *title = new QCPTextElement(ui.customPlot, "Interaction Example", QFont("sans", 17, QFont::Bold));
     ui.customPlot->plotLayout()->addElement(0, 0, title);
-    ui.customPlot->xAxis->setLabel("时间");
-    ui.customPlot->yAxis->setLabel("浓度（PPM）");
+   // ui.customPlot->xAxis->setLabel("时间");
+   // ui.customPlot->yAxis->setLabel("浓度（PPM）");
     ui.customPlot->legend->setVisible(true);
 //    QLinearGradient plotGradient;
 //  //  plotGradient.setStart(0, 0);
@@ -45,7 +45,7 @@ void CH4_chart::receiveData(QVector<double> x,QVector<double> y)
 };
 void CH4_chart::Chart_updata(Ui::MainWindow ui)
 {
-    for (int i=0; i<50; i++)
+    for (int i=0; i<200; i++)
     {
       X[i] = i;
       Y[i] = i;

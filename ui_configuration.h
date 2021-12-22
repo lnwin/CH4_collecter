@@ -13,13 +13,12 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
-#include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QPushButton>
-#include <QtWidgets/QWidget>
+#include <qcustomplot.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -32,15 +31,16 @@ public:
     QLineEdit *b_n;
     QLineEdit *a_n;
     QPushButton *pushButton;
-    QComboBox *comboBox;
     QLabel *label_4;
     QLabel *label;
-    QLineEdit *D_n;
-    QCheckBox *checkBox;
-    QLineEdit *lineEdit;
+    QLineEdit *win_n;
+    QCheckBox *ifSave;
+    QLineEdit *Spectrumline;
     QPushButton *pushButton_2;
-    QWidget *widget;
+    QCustomPlot *widget;
     QPushButton *pushButton_3;
+    QLineEdit *add_lin;
+    QPushButton *read_Button;
 
     void setupUi(QDialog *configuration)
     {
@@ -52,7 +52,7 @@ public:
         configuration->setWindowIcon(icon);
         groupBox = new QGroupBox(configuration);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(10, 210, 111, 71));
+        groupBox->setGeometry(QRect(10, 290, 111, 71));
         label_3 = new QLabel(groupBox);
         label_3->setObjectName(QString::fromUtf8("label_3"));
         label_3->setGeometry(QRect(12, 45, 30, 16));
@@ -70,34 +70,37 @@ public:
         pushButton = new QPushButton(configuration);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(10, 10, 111, 41));
-        comboBox = new QComboBox(configuration);
-        comboBox->setObjectName(QString::fromUtf8("comboBox"));
-        comboBox->setGeometry(QRect(60, 60, 61, 31));
         label_4 = new QLabel(configuration);
         label_4->setObjectName(QString::fromUtf8("label_4"));
         label_4->setGeometry(QRect(10, 100, 51, 31));
         label = new QLabel(configuration);
         label->setObjectName(QString::fromUtf8("label"));
         label->setGeometry(QRect(10, 60, 54, 31));
-        D_n = new QLineEdit(configuration);
-        D_n->setObjectName(QString::fromUtf8("D_n"));
-        D_n->setEnabled(true);
-        D_n->setGeometry(QRect(60, 100, 61, 31));
-        checkBox = new QCheckBox(configuration);
-        checkBox->setObjectName(QString::fromUtf8("checkBox"));
-        checkBox->setGeometry(QRect(10, 150, 111, 18));
-        lineEdit = new QLineEdit(configuration);
-        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setGeometry(QRect(10, 180, 71, 20));
+        win_n = new QLineEdit(configuration);
+        win_n->setObjectName(QString::fromUtf8("win_n"));
+        win_n->setEnabled(true);
+        win_n->setGeometry(QRect(60, 100, 61, 31));
+        ifSave = new QCheckBox(configuration);
+        ifSave->setObjectName(QString::fromUtf8("ifSave"));
+        ifSave->setGeometry(QRect(10, 150, 111, 18));
+        Spectrumline = new QLineEdit(configuration);
+        Spectrumline->setObjectName(QString::fromUtf8("Spectrumline"));
+        Spectrumline->setGeometry(QRect(10, 180, 71, 20));
         pushButton_2 = new QPushButton(configuration);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         pushButton_2->setGeometry(QRect(80, 180, 41, 20));
-        widget = new QWidget(configuration);
+        widget = new QCustomPlot(configuration);
         widget->setObjectName(QString::fromUtf8("widget"));
         widget->setGeometry(QRect(130, 10, 881, 421));
         pushButton_3 = new QPushButton(configuration);
         pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
         pushButton_3->setGeometry(QRect(10, 370, 111, 51));
+        add_lin = new QLineEdit(configuration);
+        add_lin->setObjectName(QString::fromUtf8("add_lin"));
+        add_lin->setGeometry(QRect(60, 59, 61, 31));
+        read_Button = new QPushButton(configuration);
+        read_Button->setObjectName(QString::fromUtf8("read_Button"));
+        read_Button->setGeometry(QRect(10, 220, 111, 51));
 
         retranslateUi(configuration);
 
@@ -115,10 +118,11 @@ public:
         pushButton->setText(QCoreApplication::translate("configuration", "\346\216\247\345\210\266\345\217\202\346\225\260\350\256\276\347\275\256", nullptr));
         label_4->setText(QCoreApplication::translate("configuration", "\346\273\244\346\263\242\347\252\227\345\217\243", nullptr));
         label->setText(QCoreApplication::translate("configuration", "\347\264\257\345\212\240\346\254\241\346\225\260", nullptr));
-        D_n->setText(QCoreApplication::translate("configuration", "3", nullptr));
-        checkBox->setText(QCoreApplication::translate("configuration", "\344\277\235\345\255\230\345\205\211\350\260\261\346\225\260\346\215\256", nullptr));
+        win_n->setText(QCoreApplication::translate("configuration", "3", nullptr));
+        ifSave->setText(QCoreApplication::translate("configuration", "\344\277\235\345\255\230\345\205\211\350\260\261\346\225\260\346\215\256", nullptr));
         pushButton_2->setText(QCoreApplication::translate("configuration", "Path", nullptr));
         pushButton_3->setText(QCoreApplication::translate("configuration", "\344\277\235\345\255\230\351\205\215\347\275\256", nullptr));
+        read_Button->setText(QCoreApplication::translate("configuration", "\345\274\200\345\247\213\350\257\273\345\217\226\345\205\211\350\260\261\346\225\260\346\215\256", nullptr));
     } // retranslateUi
 
 };

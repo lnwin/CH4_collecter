@@ -29,7 +29,9 @@ struct Parameter
    double a;
    double b;
    double win_d;
-   QString filepath;
+   double saveSpectrum;
+   QString spectrumfilepath;
+   QString COCNfilepath;
 };
 
 Q_DECLARE_METATYPE(Parameter);
@@ -51,6 +53,8 @@ signals:
     void sendData2Chart(QVector<double>,QVector<double>);
 public slots:
     void readData();
+    void receiveCof(Parameter);
+
 
 };
 
