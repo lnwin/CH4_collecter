@@ -1,4 +1,4 @@
-#ifndef CH4_CHART_H
+﻿#ifndef CH4_CHART_H
 #define CH4_CHART_H
 #include <ui_mainwindow.h>
 #include "QLineSeries"
@@ -13,6 +13,7 @@
 #include <QWidget>
 #include <qfont.h>
 #include <ui_configuration.h>
+#include <ui_data_process.h>
 QT_CHARTS_USE_NAMESPACE
 class CH4_chart :public QThread
 {
@@ -23,8 +24,8 @@ public:
     void Chart_Mupdata(Ui::MainWindow);
     void Chart_Cinit(Ui::configuration);
     void Chart_Cupdata(Ui::configuration);
-
-
+    void Chart_Pinit(Ui::data_Process);
+    void Chart_Pupdata(Ui::data_Process,double * origin,double*after_s,double *after_s_e);
     void run();
 
 public slots:

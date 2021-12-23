@@ -51,7 +51,7 @@ public:
     Max_Min coutMaxMin(double*,double);
 
 signals:
-    void sendData2Chart(QVector<double>,QVector<double>);
+    void sendData2CChart(mwArray origin,mwArray afterP);
     void sendSSig2Conf(bool);
 public slots:
     void readData();

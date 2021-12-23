@@ -18,6 +18,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTableView>
 #include <QtWidgets/QTextEdit>
+#include <qcustomplot.h>
 
 QT_BEGIN_NAMESPACE
 
@@ -31,37 +32,41 @@ public:
     QTableView *tableView_2;
     QPushButton *select_algorithm;
     QTextEdit *textEdit;
+    QCustomPlot *p_chart;
 
     void setupUi(QDialog *data_Process)
     {
         if (data_Process->objectName().isEmpty())
             data_Process->setObjectName(QString::fromUtf8("data_Process"));
-        data_Process->resize(701, 428);
+        data_Process->resize(1059, 437);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/image/image/001.jpg"), QSize(), QIcon::Normal, QIcon::Off);
         data_Process->setWindowIcon(icon);
         select_files = new QPushButton(data_Process);
         select_files->setObjectName(QString::fromUtf8("select_files"));
-        select_files->setGeometry(QRect(350, 340, 101, 51));
+        select_files->setGeometry(QRect(720, 340, 101, 51));
         start_process = new QPushButton(data_Process);
         start_process->setObjectName(QString::fromUtf8("start_process"));
-        start_process->setGeometry(QRect(560, 340, 121, 51));
+        start_process->setGeometry(QRect(930, 340, 121, 51));
         progressBar = new QProgressBar(data_Process);
         progressBar->setObjectName(QString::fromUtf8("progressBar"));
-        progressBar->setGeometry(QRect(20, 400, 671, 23));
+        progressBar->setGeometry(QRect(20, 400, 1031, 23));
         progressBar->setValue(0);
         tableView = new QTableView(data_Process);
         tableView->setObjectName(QString::fromUtf8("tableView"));
-        tableView->setGeometry(QRect(20, 20, 311, 311));
+        tableView->setGeometry(QRect(20, 20, 180, 311));
         tableView_2 = new QTableView(data_Process);
         tableView_2->setObjectName(QString::fromUtf8("tableView_2"));
-        tableView_2->setGeometry(QRect(350, 20, 331, 311));
+        tableView_2->setGeometry(QRect(210, 20, 180, 311));
         select_algorithm = new QPushButton(data_Process);
         select_algorithm->setObjectName(QString::fromUtf8("select_algorithm"));
-        select_algorithm->setGeometry(QRect(460, 340, 91, 51));
+        select_algorithm->setGeometry(QRect(830, 340, 91, 51));
         textEdit = new QTextEdit(data_Process);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setGeometry(QRect(20, 339, 311, 51));
+        textEdit->setGeometry(QRect(20, 339, 691, 51));
+        p_chart = new QCustomPlot(data_Process);
+        p_chart->setObjectName(QString::fromUtf8("p_chart"));
+        p_chart->setGeometry(QRect(400, 20, 651, 311));
 
         retranslateUi(data_Process);
 

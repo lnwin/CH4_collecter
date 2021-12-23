@@ -206,7 +206,14 @@ void MainWindow::readConf()
         M_parameter.COCNfilepath =sk.at(13);
         ui->COCN_filepath->setText(sk.at(13));
         M_parameter.saveCOCN =sk.at(15).toDouble();
-        ui->saveCOCN->setText(sk.at(15));
+        if(sk.at(15)=="0")
+        {
+            ui->saveCOCN->setChecked(false);
+        }
+        else
+        {
+            ui->saveCOCN->setChecked(true);
+        }
         M_parameter.COCN_intercal=sk.at(17).toDouble();
         ui->COCN_interval->setCurrentIndex(sk.at(17).toDouble());
         emit sendCof2serial(M_parameter);
