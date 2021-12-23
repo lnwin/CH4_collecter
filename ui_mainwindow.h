@@ -44,12 +44,12 @@ public:
     QLCDNumber *lcdNumber_2;
     QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout_2;
-    QCheckBox *checkBox;
+    QCheckBox *saveCOCN;
     QLabel *label_4;
-    QComboBox *comboBox_2;
+    QComboBox *COCN_interval;
     QWidget *layoutWidget1;
     QHBoxLayout *horizontalLayout_3;
-    QLineEdit *filelineEdit;
+    QLineEdit *COCN_filepath;
     QPushButton *pushButton_fileselect;
     QLabel *label;
     QComboBox *comboBox;
@@ -117,36 +117,36 @@ public:
         horizontalLayout_2 = new QHBoxLayout(layoutWidget);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        checkBox = new QCheckBox(layoutWidget);
-        checkBox->setObjectName(QString::fromUtf8("checkBox"));
-        checkBox->setChecked(true);
+        saveCOCN = new QCheckBox(layoutWidget);
+        saveCOCN->setObjectName(QString::fromUtf8("saveCOCN"));
+        saveCOCN->setChecked(true);
 
-        horizontalLayout_2->addWidget(checkBox);
+        horizontalLayout_2->addWidget(saveCOCN);
 
         label_4 = new QLabel(layoutWidget);
         label_4->setObjectName(QString::fromUtf8("label_4"));
 
         horizontalLayout_2->addWidget(label_4);
 
-        comboBox_2 = new QComboBox(layoutWidget);
-        comboBox_2->setObjectName(QString::fromUtf8("comboBox_2"));
+        COCN_interval = new QComboBox(layoutWidget);
+        COCN_interval->setObjectName(QString::fromUtf8("COCN_interval"));
 
-        horizontalLayout_2->addWidget(comboBox_2);
+        horizontalLayout_2->addWidget(COCN_interval);
 
         layoutWidget1 = new QWidget(centralwidget);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(210, 30, 211, 24));
+        layoutWidget1->setGeometry(QRect(210, 30, 211, 25));
         horizontalLayout_3 = new QHBoxLayout(layoutWidget1);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
-        filelineEdit = new QLineEdit(layoutWidget1);
-        filelineEdit->setObjectName(QString::fromUtf8("filelineEdit"));
-        filelineEdit->setEnabled(true);
-        filelineEdit->setEchoMode(QLineEdit::Normal);
-        filelineEdit->setDragEnabled(true);
-        filelineEdit->setReadOnly(true);
+        COCN_filepath = new QLineEdit(layoutWidget1);
+        COCN_filepath->setObjectName(QString::fromUtf8("COCN_filepath"));
+        COCN_filepath->setEnabled(true);
+        COCN_filepath->setEchoMode(QLineEdit::Normal);
+        COCN_filepath->setDragEnabled(true);
+        COCN_filepath->setReadOnly(true);
 
-        horizontalLayout_3->addWidget(filelineEdit);
+        horizontalLayout_3->addWidget(COCN_filepath);
 
         pushButton_fileselect = new QPushButton(layoutWidget1);
         pushButton_fileselect->setObjectName(QString::fromUtf8("pushButton_fileselect"));
@@ -168,7 +168,7 @@ public:
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1060, 22));
+        menubar->setGeometry(QRect(0, 0, 1060, 23));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
         menu_2 = new QMenu(menubar);
@@ -195,7 +195,7 @@ public:
         data_Process->setText(QCoreApplication::translate("MainWindow", "\346\225\260\346\215\256\346\211\271\351\207\217\345\244\204\347\220\206", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "\345\275\223\345\211\215\346\265\223\345\272\246", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "\345\275\223\345\211\215\346\227\266\351\227\264", nullptr));
-        checkBox->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\346\225\260\346\215\256", nullptr));
+        saveCOCN->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\346\225\260\346\215\256", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\345\255\230\345\202\250\351\227\264\351\232\224", nullptr));
         pushButton_fileselect->setText(QCoreApplication::translate("MainWindow", "\351\200\211\346\213\251\345\255\230\345\202\250\350\267\257\345\276\204", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243\345\217\267", nullptr));

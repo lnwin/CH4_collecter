@@ -13,6 +13,7 @@
 #include <data_process.h>
 #include <QTimer>
 #include <QDateTime>
+#include <QInputDialog>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -39,6 +40,7 @@ private slots:
     void open_Dataprocess();
     void onTimeOut();
     void on_pushButton_fileselect_clicked();
+    void receiveSerialSIGFromConf();
 
 private:
     Ui::MainWindow *ui;

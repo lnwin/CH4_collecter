@@ -37,7 +37,7 @@ public:
     QCheckBox *ifSave;
     QLineEdit *Spectrumline;
     QPushButton *pushButton_2;
-    QCustomPlot *widget;
+    QCustomPlot *chart_widget;
     QPushButton *pushButton_3;
     QLineEdit *add_lin;
     QPushButton *read_Button;
@@ -62,11 +62,11 @@ public:
         b_n = new QLineEdit(groupBox);
         b_n->setObjectName(QString::fromUtf8("b_n"));
         b_n->setEnabled(true);
-        b_n->setGeometry(QRect(48, 45, 61, 22));
+        b_n->setGeometry(QRect(48, 45, 51, 16));
         a_n = new QLineEdit(groupBox);
         a_n->setObjectName(QString::fromUtf8("a_n"));
         a_n->setEnabled(true);
-        a_n->setGeometry(QRect(48, 22, 61, 22));
+        a_n->setGeometry(QRect(48, 22, 51, 16));
         pushButton = new QPushButton(configuration);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(10, 10, 111, 41));
@@ -89,9 +89,9 @@ public:
         pushButton_2 = new QPushButton(configuration);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         pushButton_2->setGeometry(QRect(80, 180, 41, 20));
-        widget = new QCustomPlot(configuration);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(130, 10, 881, 421));
+        chart_widget = new QCustomPlot(configuration);
+        chart_widget->setObjectName(QString::fromUtf8("chart_widget"));
+        chart_widget->setGeometry(QRect(130, 10, 881, 421));
         pushButton_3 = new QPushButton(configuration);
         pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
         pushButton_3->setGeometry(QRect(10, 370, 111, 51));

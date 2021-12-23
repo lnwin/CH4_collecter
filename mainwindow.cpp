@@ -3,18 +3,23 @@
 #include <qdebug.h>
 QString  srcDirPath;
 Parameter M_parameter;
+bool serialisopen;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);  
+    QStringList intercal_List;
+    intercal_List<<"1分钟"<<"10分钟"<<"20分钟"<<"30分钟"<<"40分钟"<<"50分钟";
+    ui->COCN_interval->addItems(intercal_List);
     ui->lcdNumber->setDigitCount(19);
     ui->lcdNumber->setStyleSheet("border: 0px solid green;color: green; background: black;");
     QTimer *clock =new QTimer(this);
     clock->setInterval(1000);
+    readConf();
     searchPort();
     CH4 =new CH4_chart;
-    CH4->Chart_init(*ui);
+    CH4->Chart_Minit(*ui);
     CH4_sp =new CH4_serial;
     CH4_sv =new savethread;
     COF = new configuration();
@@ -23,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->data_Process,SIGNAL(triggered()),this,SLOT(open_Dataprocess()));
     connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
     connect(COF,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
+    connect(COF,SIGNAL(sendSerialSIG2Main()),this,SLOT(receiveSerialSIGFromConf()));
+    connect(CH4_sp,SIGNAL(sendSSig2Conf(bool)),COF,SLOT(receiveSSig(bool)));
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
     if(smoothdataInitialize())//必须加载
@@ -54,7 +61,26 @@ void MainWindow::searchPort()
 };
 void MainWindow::on_pushButton_clicked()
 {
-     CH4_sp->openPort(ui->comboBox->currentText(),*ui);
+     M_parameter.COCNfilepath =ui->COCN_filepath->text();
+    if(ui->saveCOCN->isChecked())
+   {
+       M_parameter.saveCOCN =1;
+   }
+    else
+   {
+       M_parameter.saveCOCN =0;
+   }
+
+     M_parameter.COCN_intercal=ui->COCN_interval->currentIndex();
+     emit sendCof2serial(M_parameter);
+     if(CH4_sp->openPort(ui->comboBox->currentText(),*ui))
+     {
+              serialisopen=true;
+     }
+     else
+     {
+              serialisopen=false;
+     }
 
 };
 void MainWindow::contextMenuRequest(QPoint pos)
@@ -79,13 +105,58 @@ void MainWindow::contextMenuRequest(QPoint pos)
 }
 void MainWindow::rescaleGraph()
 {
-    CH4->Chart_updata(*ui);
+    CH4->Chart_Mupdata(*ui);
     ui->customPlot->rescaleAxes();
     ui->customPlot->replot();
 };
 void MainWindow::open_Configuration()
-{    
-    COF->show();
+{
+    if(serialisopen)
+    {
+        QMessageBox ms;
+        ms.setIcon(QMessageBox::Icon::Warning);
+        ms.setWindowIcon(QIcon(":/image/image/001.jpg"));
+        ms.setWindowTitle("注意");
+        ms.setText("串口未关闭！");
+        ms.exec();
+    }
+
+
+     else
+      {
+        bool ok;
+         QString text = QInputDialog::getText(this, tr("后台管理"),tr("请输入配置密码"), QLineEdit::Password,0, &ok);
+         if (ok && !text.isEmpty())
+         {
+             if(text=="1023")
+             {
+                 COF->show();
+             }
+             else
+             {
+                QMessageBox ms;
+                ms.setIcon(QMessageBox::Icon::Warning);
+                ms.setWindowIcon(QIcon(":/image/image/001.jpg"));
+                ms.setWindowTitle("注意");
+                ms.setText("密码错误！");
+                ms.exec();
+
+             }
+         }
+         else
+         {
+             QMessageBox ms;
+             ms.setIcon(QMessageBox::Icon::Warning);
+             ms.setWindowIcon(QIcon(":/image/image/001.jpg"));
+             ms.setWindowTitle("注意");
+             ms.setText("密码不能为空！");
+             ms.exec();
+         }
+      }
+
+
+
+
 };
 void MainWindow::open_Dataprocess()
 {
@@ -106,7 +177,7 @@ void MainWindow::on_pushButton_fileselect_clicked()
     }
     else
     {
-        ui->filelineEdit->setText(srcDirPath) ;
+        ui->COCN_filepath->setText(srcDirPath) ;
         M_parameter.COCNfilepath =srcDirPath;
         emit sendCof2serial(M_parameter);
 
@@ -133,6 +204,11 @@ void MainWindow::readConf()
         M_parameter.saveSpectrum =sk.at(9).toDouble();
         M_parameter.spectrumfilepath =sk.at(11);
         M_parameter.COCNfilepath =sk.at(13);
+        ui->COCN_filepath->setText(sk.at(13));
+        M_parameter.saveCOCN =sk.at(15).toDouble();
+        ui->saveCOCN->setText(sk.at(15));
+        M_parameter.COCN_intercal=sk.at(17).toDouble();
+        ui->COCN_interval->setCurrentIndex(sk.at(17).toDouble());
         emit sendCof2serial(M_parameter);
         confFile.close();
 
@@ -140,7 +216,13 @@ void MainWindow::readConf()
     else
     {
        QMessageBox msgBox ;
+       msgBox.setIcon(QMessageBox::Icon::Warning);
+       msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
        msgBox.setText("配置文件缺失！");
        msgBox.exec();
     }
 };
+void MainWindow::receiveSerialSIGFromConf()
+{
+     CH4_sp->openPort(ui->comboBox->currentText(),*ui);
+}

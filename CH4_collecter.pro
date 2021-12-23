@@ -85,4 +85,5 @@ RESOURCES += \
     image.qrc
 
 DISTFILES += \
-    cof/configuration.txt
+    cof/configuration.txt \
+    release/configuration.txt

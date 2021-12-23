@@ -12,16 +12,19 @@
 #include <qcustomplot.h>
 #include <QWidget>
 #include <qfont.h>
+#include <ui_configuration.h>
 QT_CHARTS_USE_NAMESPACE
 class CH4_chart :public QThread
 {
     Q_OBJECT
 public:
     CH4_chart();
-    void Chart_init(Ui::MainWindow);
-    QChart *mainChart;
-    void Chart_updata(Ui::MainWindow);
-    QLineSeries *qlineSerie;
+    void Chart_Minit(Ui::MainWindow);
+    void Chart_Mupdata(Ui::MainWindow);
+    void Chart_Cinit(Ui::configuration);
+    void Chart_Cupdata(Ui::configuration);
+
+
     void run();
 
 public slots:

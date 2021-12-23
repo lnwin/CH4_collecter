@@ -4,13 +4,16 @@ std::mutex MUTEX;
 bool needread=false;
 double acc=0,a_n=0.0015,b_n=4,win_n=3,COCN;
 QString spectrumfilepath,COCNfilepath;
-double saveSpectrum;
+double saveSpectrum,saveCOCN,COCN_interval;
+QList <QString> COCN_data;
+QList <QString> sp_data;
+QString saveTime;
 CH4_serial::CH4_serial()
 {
    mainport =new QSerialPort;
    CH4_SDT  =new savethread;
 }
-void CH4_serial::openPort(QString portName,Ui::MainWindow ui)
+bool CH4_serial::openPort(QString portName,Ui::MainWindow ui)
 {
      if(!mainport->isOpen())
     {
@@ -24,6 +27,8 @@ void CH4_serial::openPort(QString portName,Ui::MainWindow ui)
         ui.pushButton->setText("停止读取");
         connect(mainport,SIGNAL(readyRead()),this,SLOT(readData()));
         //anlyseData();
+        emit sendSSig2Conf(true);
+        return true;
 
 
 
@@ -34,7 +39,12 @@ void CH4_serial::openPort(QString portName,Ui::MainWindow ui)
         mainport->close();
         ui.comboBox->setEnabled(true);
         ui.pushButton->setText("开始读取");
+        emit sendSSig2Conf(false);
+        return false;
+
     }
+
+
 };
 
 void CH4_serial::readData()
@@ -115,8 +125,14 @@ void CH4_serial::anlyseData()
         MN_B1=coutMaxMin(B1,100);
         MN_B2=coutMaxMin(B2,100);
         MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
-        double X = MN_B.Max-MN_B.Min;
+        double X = MN_B.Max-MN_B.Min;        
         COCN = a_n*X+b_n;
+        //==============================================
+        COCN_data.clear();
+        QTime datatime =QTime::currentTime();
+        QString timeString =datatime.toString("HH:mm:ss");
+        COCN_data.append(timeString);
+        COCN_data.append(QString::number(COCN));
 
 
 
@@ -124,10 +140,18 @@ void CH4_serial::anlyseData()
 void CH4_serial::run()
 {
       anlyseData();
+      if((saveSpectrum!=0)&&(saveCOCN!=0))
+      {
+          saveData_0();
+      }
+
 }
-void CH4_serial::saveData_0(QString path,QString filename)
+void CH4_serial::saveData_0()
 {
-    CH4_SDT->saveData_1(path,filename);
+    QTime datatime =QTime::currentTime();
+    QString saveTime =datatime.toString("yyyy-MM-dd-HH:mm:ss");
+    CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,sp_data,spectrumfilepath,COCNfilepath,saveTime);
+
 };
 Max_Min CH4_serial::coutMaxMin(double *dataIn,double n)
 {
@@ -160,6 +184,8 @@ void CH4_serial::receiveCof(Parameter PM)
     win_n=PM.win_d;
     spectrumfilepath=PM.spectrumfilepath;
     saveSpectrum=PM.saveSpectrum;
+    saveCOCN =PM.saveCOCN;
     COCNfilepath=PM.COCNfilepath;
+    COCN_interval =PM.COCN_intercal;
 }
 
