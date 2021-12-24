@@ -56,7 +56,6 @@ public:
     QPushButton *pushButton;
     QMenuBar *menubar;
     QMenu *menu;
-    QMenu *menu_2;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -171,14 +170,10 @@ public:
         menubar->setGeometry(QRect(0, 0, 1060, 23));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
-        menu_2 = new QMenu(menubar);
-        menu_2->setObjectName(QString::fromUtf8("menu_2"));
         MainWindow->setMenuBar(menubar);
 
         menubar->addAction(menu->menuAction());
-        menubar->addAction(menu_2->menuAction());
         menu->addAction(system_Set);
-        menu_2->addAction(data_Process);
 
         retranslateUi(MainWindow);
 
@@ -188,7 +183,7 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "CH4_Monitor", nullptr));
-        system_Set->setText(QCoreApplication::translate("MainWindow", "\345\217\202\346\225\260\351\205\215\347\275\256", nullptr));
+        system_Set->setText(QCoreApplication::translate("MainWindow", "\345\217\202\346\225\260\351\205\215\347\275\256||\346\226\207\344\273\266\345\244\204\347\220\206", nullptr));
         actiondd->setText(QCoreApplication::translate("MainWindow", "\345\205\211\350\260\261", nullptr));
         data_process->setText(QCoreApplication::translate("MainWindow", "\346\211\271\351\207\217\345\244\204\347\220\206\346\225\260\346\215\256", nullptr));
         actiond->setText(QCoreApplication::translate("MainWindow", "d", nullptr));
@@ -200,8 +195,7 @@ public:
         pushButton_fileselect->setText(QCoreApplication::translate("MainWindow", "\351\200\211\346\213\251\345\255\230\345\202\250\350\267\257\345\276\204", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243\345\217\267", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\350\257\273\345\217\226", nullptr));
-        menu->setTitle(QCoreApplication::translate("MainWindow", "\347\263\273\347\273\237", nullptr));
-        menu_2->setTitle(QCoreApplication::translate("MainWindow", "\346\225\260\346\215\256\345\244\204\347\220\206", nullptr));
+        menu->setTitle(QCoreApplication::translate("MainWindow", "\347\263\273\347\273\237\345\220\216\345\217\260", nullptr));
     } // retranslateUi
 
 };

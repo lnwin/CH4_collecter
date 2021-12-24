@@ -247,22 +247,15 @@
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
-     <string>系统</string>
+     <string>系统后台</string>
     </property>
     <addaction name="system_Set"/>
    </widget>
-   <widget class="QMenu" name="menu_2">
-    <property name="title">
-     <string>数据处理</string>
-    </property>
-    <addaction name="data_Process"/>
-   </widget>
    <addaction name="menu"/>
-   <addaction name="menu_2"/>
   </widget>
   <action name="system_Set">
    <property name="text">
-    <string>参数配置</string>
+    <string>参数配置||文件处理</string>
    </property>
   </action>
   <action name="actiondd">

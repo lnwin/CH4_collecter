@@ -98,33 +98,33 @@ void CH4_chart::Chart_Cupdata(Ui::configuration ui_cof)
 {
 
 };
-void CH4_chart::Chart_Pinit(Ui::data_Process ui)
+void CH4_chart::Chart_Pinit(Ui::configuration ui)
 
 {
 
 
-    ui.p_chart->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
-                                                        QCP::iSelectLegend | QCP::iSelectPlottables);
+    ui.chart_widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
+                                                      QCP::iSelectLegend | QCP::iSelectPlottables);
 
-    ui.p_chart->xAxis->setRange(-1000, 1000);
-    ui.p_chart->yAxis->setRange(-1000, 1000);
-    ui.p_chart->axisRect()->setupFullAxesBox();
-    ui.p_chart->plotLayout()->insertRow(0);
-    QCPTextElement *title = new QCPTextElement( ui.p_chart, "光谱信号曲线图", QFont("sans", 10, QFont::Bold));
-    ui.p_chart->plotLayout()->addElement(0, 0, title);
-    ui.p_chart->xAxis->setLabel("数据个数");
-    ui.p_chart->yAxis->setLabel("光谱信号");
-    ui.p_chart->legend->setVisible(true);
+    ui.chart_widget->xAxis->setRange(-1000, 1000);
+    ui.chart_widget->yAxis->setRange(-1000, 1000);
+    ui.chart_widget->axisRect()->setupFullAxesBox();
+    ui.chart_widget->plotLayout()->insertRow(0);
+    QCPTextElement *title = new QCPTextElement( ui.chart_widget, "光谱信号曲线图", QFont("sans", 10, QFont::Bold));
+    ui.chart_widget->plotLayout()->addElement(0, 0, title);
+    ui.chart_widget->xAxis->setLabel("数据个数");
+    ui.chart_widget->yAxis->setLabel("光谱信号");
+    ui.chart_widget->legend->setVisible(true);
     QFont legendFont("Times", 10, QFont::Bold);
     legendFont.setPointSize(10);
-    ui.p_chart->legend->setFont(legendFont);
-    ui.p_chart->legend->setSelectedFont(legendFont);
-    ui.p_chart->legend->setSelectableParts(QCPLegend::spItems);
-    ui.p_chart->rescaleAxes();
+    ui.chart_widget->legend->setFont(legendFont);
+    ui.chart_widget->legend->setSelectedFont(legendFont);
+    ui.chart_widget->legend->setSelectableParts(QCPLegend::spItems);
+    ui.chart_widget->rescaleAxes();
 };
-void CH4_chart::Chart_Pupdata(Ui::data_Process ui,double *origin,double*after_s,double *after_s_e)
+void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s,double *after_s_e)
 {
-    ui.p_chart->clearGraphs();
+    ui.chart_widget->clearGraphs();
     for (int i=0; i<500; i++)
     {
       origin_y[i] = origin[i];
@@ -134,40 +134,40 @@ void CH4_chart::Chart_Pupdata(Ui::data_Process ui,double *origin,double*after_s,
       after_p_s_e_y[i]=after_s_e[i];
       after_p_s_e_x[i]=i;
     }
-    ui.p_chart->addGraph();
-    ui.p_chart->graph()->setName("origin data");
-    ui.p_chart->graph()->setData(origin_x,origin_y);
-    ui.p_chart->graph()->setLineStyle((QCPGraph::lsLine));
-    ui.p_chart->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
+    ui.chart_widget->addGraph();
+    ui.chart_widget->graph()->setName("origin data");
+    ui.chart_widget->graph()->setData(origin_x,origin_y);
+    ui.chart_widget->graph()->setLineStyle((QCPGraph::lsLine));
+    ui.chart_widget->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
     QPen graphPen;
     graphPen.setColor(QColor(16,1,171));
  //   qDebug()<<r<<"---"<<g<<"---"<<b;
     graphPen.setWidthF(2);
-    ui.p_chart->graph()->setPen(graphPen);
-    ui.p_chart->replot();
+    ui.chart_widget->graph()->setPen(graphPen);
+    ui.chart_widget->replot();
     //==========================
-    ui.p_chart->addGraph();
-    ui.p_chart->graph()->setName("after smooth");
-    ui.p_chart->graph()->setData(after_p_x,after_p_y);
-    ui.p_chart->graph()->setLineStyle((QCPGraph::lsLine));
-    ui.p_chart->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
+    ui.chart_widget->addGraph();
+    ui.chart_widget->graph()->setName("after smooth");
+    ui.chart_widget->graph()->setData(after_p_x,after_p_y);
+    ui.chart_widget->graph()->setLineStyle((QCPGraph::lsLine));
+    ui.chart_widget->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
     QPen graphPen1;
     graphPen1.setColor(QColor(1,222,5));
  //   qDebug()<<r<<"---"<<g<<"---"<<b;
     graphPen1.setWidthF(2);
-    ui.p_chart->graph()->setPen(graphPen1);
-    ui.p_chart->replot();
-    ui.p_chart->addGraph();
-    ui.p_chart->graph()->setName("after smooth&envelop");
-    ui.p_chart->graph()->setData(after_p_s_e_x,after_p_s_e_y);
-    ui.p_chart->graph()->setLineStyle((QCPGraph::lsLine));
-    ui.p_chart->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
+    ui.chart_widget->graph()->setPen(graphPen1);
+    ui.chart_widget->replot();
+    ui.chart_widget->addGraph();
+    ui.chart_widget->graph()->setName("after smooth&envelop");
+    ui.chart_widget->graph()->setData(after_p_s_e_x,after_p_s_e_y);
+    ui.chart_widget->graph()->setLineStyle((QCPGraph::lsLine));
+    ui.chart_widget->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
     QPen graphPen2;
     graphPen2.setColor(QColor(222,2,222));
  //   qDebug()<<r<<"---"<<g<<"---"<<b;
     graphPen2.setWidthF(2);
-    ui.p_chart->graph()->setPen(graphPen2);
-    ui.p_chart->replot();
-    ui.p_chart->rescaleAxes();
+    ui.chart_widget->graph()->setPen(graphPen2);
+    ui.chart_widget->replot();
+    ui.chart_widget->rescaleAxes();
 
 }

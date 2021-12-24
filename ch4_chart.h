@@ -24,8 +24,8 @@ public:
     void Chart_Mupdata(Ui::MainWindow);
     void Chart_Cinit(Ui::configuration);
     void Chart_Cupdata(Ui::configuration);
-    void Chart_Pinit(Ui::data_Process);
-    void Chart_Pupdata(Ui::data_Process,double * origin,double*after_s,double *after_s_e);
+    void Chart_Pinit(Ui::configuration);
+    void Chart_Pupdata(Ui::configuration,double * origin,double*after_s,double *after_s_e);
     void run();
 
 public slots:

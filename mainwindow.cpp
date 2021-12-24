@@ -22,10 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
     CH4->Chart_Minit(*ui);
     CH4_sp =new CH4_serial;
     CH4_sv =new savethread;
-    COF = new configuration();
-    DAP = new data_Process();
-    connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));
-    connect(ui->data_Process,SIGNAL(triggered()),this,SLOT(open_Dataprocess()));
+    COF = new configuration();   
+    connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));    
     connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
     connect(COF,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
     connect(COF,SIGNAL(sendSerialSIG2Main()),this,SLOT(receiveSerialSIGFromConf()));
@@ -158,10 +156,7 @@ void MainWindow::open_Configuration()
 
 
 };
-void MainWindow::open_Dataprocess()
-{
-   DAP->show();
-};
+
 void MainWindow::onTimeOut()
 {
     QDateTime time = QDateTime::currentDateTime();

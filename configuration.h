@@ -16,7 +16,7 @@ public:
     explicit configuration(QWidget *parent = nullptr);
     ~configuration();
      void readConf();
-
+     void doProcess();
 
 signals:
      void sendCof2serial(Parameter);
@@ -28,6 +28,8 @@ private slots:
      void on_pushButton_2_clicked();
      void on_read_Button_clicked();
      void receiveSSig(bool);
+     void on_select_files_clicked();
+     void on_start_process_clicked();
 
 private:
     Ui::configuration *ui_cof;

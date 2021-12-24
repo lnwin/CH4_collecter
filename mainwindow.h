@@ -10,7 +10,6 @@
 #include <qfiledialog.h>
 #include <smoothdata.h>
 #include <configuration.h>
-#include <data_process.h>
 #include <QTimer>
 #include <QDateTime>
 #include <QInputDialog>
@@ -36,8 +35,7 @@ private slots:
     void on_pushButton_clicked();
     void contextMenuRequest(QPoint pos);
     void rescaleGraph();
-    void open_Configuration();
-    void open_Dataprocess();
+    void open_Configuration();   
     void onTimeOut();
     void on_pushButton_fileselect_clicked();
     void receiveSerialSIGFromConf();
@@ -48,7 +46,7 @@ private:
     CH4_serial *CH4_sp;
     savethread *CH4_sv;
     configuration *COF;
-    data_Process *DAP;
+
 
 };
 #endif // MAINWINDOW_H
