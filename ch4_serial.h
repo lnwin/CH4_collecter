@@ -53,9 +53,12 @@ public:
 signals:
     void sendData2CChart(mwArray origin,mwArray afterP);
     void sendSSig2Conf(bool);
+    void sendData2M(double,double);
+    void sendData2C( double *originData,double  *after_s,double  *after_s_e);
 public slots:
     void readData();
     void receiveCof(Parameter);
+    void receiveNeedSIG(bool);
 
 
 };

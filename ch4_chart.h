@@ -21,7 +21,7 @@ class CH4_chart :public QThread
 public:
     CH4_chart();
     void Chart_Minit(Ui::MainWindow);
-    void Chart_Mupdata(Ui::MainWindow);
+    void Chart_Mupdata(Ui::MainWindow,double,double);
     void Chart_Cinit(Ui::configuration);
     void Chart_Cupdata(Ui::configuration);
     void Chart_Pinit(Ui::configuration);

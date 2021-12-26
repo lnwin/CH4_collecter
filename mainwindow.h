@@ -39,6 +39,7 @@ private slots:
     void onTimeOut();
     void on_pushButton_fileselect_clicked();
     void receiveSerialSIGFromConf();
+    void receiveDataFromS(double time,double data);
 
 private:
     Ui::MainWindow *ui;

@@ -22,12 +22,10 @@ MainWindow::MainWindow(QWidget *parent)
     CH4->Chart_Minit(*ui);
     CH4_sp =new CH4_serial;
     CH4_sv =new savethread;
-    COF = new configuration();   
+
     connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));    
-    connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
-    connect(COF,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
-    connect(COF,SIGNAL(sendSerialSIG2Main()),this,SLOT(receiveSerialSIGFromConf()));
-    connect(CH4_sp,SIGNAL(sendSSig2Conf(bool)),COF,SLOT(receiveSSig(bool)));
+    connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));   
+    connect(CH4_sp,SIGNAL(sendData2M(double,double)),this,SLOT(receiveDataFromS(double,double)));
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
     if(smoothdataInitialize())//必须加载
@@ -103,7 +101,6 @@ void MainWindow::contextMenuRequest(QPoint pos)
 }
 void MainWindow::rescaleGraph()
 {
-    CH4->Chart_Mupdata(*ui);
     ui->customPlot->rescaleAxes();
     ui->customPlot->replot();
 };
@@ -128,7 +125,13 @@ void MainWindow::open_Configuration()
          {
              if(text=="1023")
              {
-                 COF->show();
+                  COF = new configuration();
+                  connect(COF,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
+                  connect(COF,SIGNAL(sendSerialSIG2Main()),this,SLOT(receiveSerialSIGFromConf()));
+                  connect(CH4_sp,SIGNAL(sendSSig2Conf(bool)),COF,SLOT(receiveSSig(bool)));
+                  connect(COF,SIGNAL(needData(bool)),CH4_sp,SLOT(receiveNeedSIG(bool)));
+
+                  COF->show();
              }
              else
              {
@@ -156,7 +159,6 @@ void MainWindow::open_Configuration()
 
 
 };
-
 void MainWindow::onTimeOut()
 {
     QDateTime time = QDateTime::currentDateTime();
@@ -227,4 +229,10 @@ void MainWindow::readConf()
 void MainWindow::receiveSerialSIGFromConf()
 {
      CH4_sp->openPort(ui->comboBox->currentText(),*ui);
+}
+void MainWindow::receiveDataFromS(double time, double data)
+{
+
+   CH4->Chart_Mupdata(*ui,time,data);
+
 }

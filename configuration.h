@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <ch4_serial.h>
 #include <ch4_chart.h>
+#include <QCloseEvent>
 namespace Ui {
 class configuration;
 }
@@ -17,10 +18,12 @@ public:
     ~configuration();
      void readConf();
      void doProcess();
+     void closeEvent(QCloseEvent *);
 
 signals:
      void sendCof2serial(Parameter);
      void sendSerialSIG2Main();
+     void needData(bool);
 
 private slots:
 
@@ -29,7 +32,9 @@ private slots:
      void on_read_Button_clicked();
      void receiveSSig(bool);
      void on_select_files_clicked();
-     void on_start_process_clicked();
+     void on_start_process_clicked();   
+     void on_pushButton_4_clicked();
+     void receiveDataFromS(double *originData,double  *after_s_e,double  *after_s);
 
 private:
     Ui::configuration *ui_cof;

@@ -2,6 +2,7 @@
 #include <mutex>
 std::mutex MUTEX;
 bool needread=false;
+bool cNeedData;
 double acc=0,a_n=0.0015,b_n=4,win_n=3,COCN;
 QString spectrumfilepath,COCNfilepath;
 double saveSpectrum,saveCOCN,COCN_interval;
@@ -58,6 +59,7 @@ void CH4_serial::anlyseData()
 
         int elementCntA=500;//元素个数
         double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
+        double  * after_s=new double[elementCntA];
        // saveData_0(QString path,QString filename);
        // ***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
         QString filename = QFileDialog::getOpenFileName();
@@ -81,9 +83,14 @@ void CH4_serial::anlyseData()
         mwArray varargin(1);//输入参数的个数
         mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
         matrixA.SetData(originData,elementCntA); //将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
-        smoothdata(1,outPut,WINSZ,matrixA,varargin);//       
-       //  matrixA.GetData(,1);
-       //  matrixB(0);
+        smoothdata(1,outPut,WINSZ,matrixA,varargin);//
+
+        for (int j=0; j<elementCntA;j++)
+        {
+
+            after_s[j]=outPut.Get(0,j+1);
+
+        }
 
         mwArray d(win_n);//串窗口平滑参数
         mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
@@ -128,22 +135,33 @@ void CH4_serial::anlyseData()
         double X = MN_B.Max-MN_B.Min;        
         COCN = a_n*X+b_n;
         //==============================================
+        if(cNeedData)
+        {
+            emit sendData2C(originData,after_s,mid_01);
+        }
+        //==============================================
+        double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
+        QList<double>CCD;
+        COCN=34;
+        emit sendData2M(nowTime,COCN);
+        //==============================================
         COCN_data.clear();
         QTime datatime =QTime::currentTime();
         QString timeString =datatime.toString("HH:mm:ss");
         COCN_data.append(timeString);
         COCN_data.append(QString::number(COCN));
 
+        if((saveSpectrum!=0)&&(saveCOCN!=0))
+        {
+            saveData_0();
+        }
 
 
 }
 void CH4_serial::run()
 {
-      anlyseData();
-      if((saveSpectrum!=0)&&(saveCOCN!=0))
-      {
-          saveData_0();
-      }
+
+     anlyseData();
 
 }
 void CH4_serial::saveData_0()
@@ -188,4 +206,8 @@ void CH4_serial::receiveCof(Parameter PM)
     COCNfilepath=PM.COCNfilepath;
     COCN_interval =PM.COCN_intercal;
 }
-
+void CH4_serial::receiveNeedSIG(bool need)
+{
+    cNeedData=need;
+    qDebug()<<cNeedData;
+};

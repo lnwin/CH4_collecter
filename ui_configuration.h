@@ -48,6 +48,7 @@ public:
     QPushButton *select_files;
     QTextEdit *textEdit;
     QTableView *tableView;
+    QPushButton *pushButton_4;
 
     void setupUi(QDialog *configuration)
     {
@@ -114,14 +115,17 @@ public:
         start_process->setMinimumSize(QSize(0, 50));
         select_files = new QPushButton(configuration);
         select_files->setObjectName(QString::fromUtf8("select_files"));
-        select_files->setGeometry(QRect(980, 340, 171, 50));
+        select_files->setGeometry(QRect(980, 290, 171, 50));
         select_files->setMinimumSize(QSize(0, 50));
         textEdit = new QTextEdit(configuration);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
         textEdit->setGeometry(QRect(10, 400, 961, 51));
         tableView = new QTableView(configuration);
         tableView->setObjectName(QString::fromUtf8("tableView"));
-        tableView->setGeometry(QRect(980, 10, 171, 321));
+        tableView->setGeometry(QRect(980, 10, 171, 271));
+        pushButton_4 = new QPushButton(configuration);
+        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
+        pushButton_4->setGeometry(QRect(980, 350, 171, 41));
 
         retranslateUi(configuration);
 
@@ -146,6 +150,7 @@ public:
         read_Button->setText(QCoreApplication::translate("configuration", "\345\274\200\345\247\213\350\257\273\345\217\226\345\205\211\350\260\261\346\225\260\346\215\256", nullptr));
         start_process->setText(QCoreApplication::translate("configuration", "\345\274\200\345\247\213\345\244\204\347\220\206", nullptr));
         select_files->setText(QCoreApplication::translate("configuration", "\346\211\271\351\207\217\351\200\211\346\213\251\346\226\207\344\273\266", nullptr));
+        pushButton_4->setText(QCoreApplication::translate("configuration", "\350\276\223\345\207\272\350\267\257\345\276\204", nullptr));
     } // retranslateUi
 
 };

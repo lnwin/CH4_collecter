@@ -1,5 +1,5 @@
 ﻿#include "ch4_chart.h"
-QVector<double> X(500),Y(500),origin_y(500),origin_x(500),after_p_y(500),after_p_x(500),after_p_s_e_y(500),after_p_s_e_x(500);
+QVector<double> X(500),Y(500),origin_y(500),origin_x(500),after_p_y(500),after_p_x(500),after_p_s_e_y(500),after_p_s_e_x(500),COCNt,COCNd;
 CH4_chart::CH4_chart()
 {
 
@@ -9,7 +9,10 @@ void CH4_chart::Chart_Minit(Ui::MainWindow ui)
 
     ui.customPlot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
                                     QCP::iSelectLegend | QCP::iSelectPlottables);
-    ui.customPlot->xAxis->setRange(-100, 100);
+    QSharedPointer<QCPAxisTickerDateTime> dateTicker(new QCPAxisTickerDateTime);
+    dateTicker->setDateTimeFormat("hh:mm:ss");
+    ui.customPlot->xAxis->setTicker(dateTicker);
+   // ui.customPlot->xAxis->setRange(-100, 100);
     ui.customPlot->yAxis->setRange(-100, 100);
     ui.customPlot->axisRect()->setupFullAxesBox();
     ui.customPlot->plotLayout()->insertRow(0);
@@ -31,7 +34,7 @@ void CH4_chart::Chart_Minit(Ui::MainWindow ui)
     ui.customPlot->legend->setSelectableParts(QCPLegend::spItems);
     ui.customPlot->addGraph();   
     ui.customPlot->graph()->setName("气体浓度");
-    Chart_Mupdata(ui);
+   // Chart_Mupdata(ui);
     ui.customPlot->rescaleAxes();
 };
 void CH4_chart::receiveData(QVector<double> x,QVector<double> y)
@@ -42,14 +45,22 @@ void CH4_chart::receiveData(QVector<double> x,QVector<double> y)
       Y[i] = i;
     }
 };
-void CH4_chart::Chart_Mupdata(Ui::MainWindow ui)
+void CH4_chart::Chart_Mupdata(Ui::MainWindow ui,double time,double data)
 {
-    for (int i=0; i<200; i++)
-    {
-      X[i] = i;
-      Y[i] = i;
-    }
-   ui.customPlot->graph()->setData(X,Y);
+
+   if(COCNd.length()>500)
+   {
+       COCNt.removeAt(0);
+       COCNd.removeAt(0);
+       COCNt.append(time);
+       COCNd.append(data);
+   }
+   else
+   {
+       COCNt.append(time);
+       COCNd.append(data);
+   }
+   ui.customPlot->graph()->setData(COCNt,COCNd);
    ui.customPlot->graph()->setLineStyle((QCPGraph::lsLine));
    ui.customPlot->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
    QPen graphPen;
@@ -61,6 +72,7 @@ void CH4_chart::Chart_Mupdata(Ui::MainWindow ui)
 //   qDebug()<<r<<"---"<<g<<"---"<<b;
    graphPen.setWidthF(2);
    ui.customPlot->graph()->setPen(graphPen);
+   ui.customPlot->rescaleAxes();
    ui.customPlot->replot();
 
 
@@ -99,7 +111,6 @@ void CH4_chart::Chart_Cupdata(Ui::configuration ui_cof)
 
 };
 void CH4_chart::Chart_Pinit(Ui::configuration ui)
-
 {
 
 
@@ -121,7 +132,7 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
     ui.chart_widget->legend->setSelectedFont(legendFont);
     ui.chart_widget->legend->setSelectableParts(QCPLegend::spItems);
     ui.chart_widget->rescaleAxes();
-};
+}
 void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s,double *after_s_e)
 {
     ui.chart_widget->clearGraphs();

@@ -5,26 +5,31 @@ QStringList filenames;
 QStringList filepaths;
 QStandardItemModel *OriginModel =new QStandardItemModel;
 bool showChart;
+bool CneedData;
 Parameter C_parameter;
 configuration::configuration(QWidget *parent) :
     QDialog(parent),
     ui_cof(new Ui::configuration)
 {
+
     ui_cof->setupUi(this);
     ch4 =new CH4_chart();
     ch4->Chart_Cinit(*ui_cof);
     readConf();
-        OriginModel->setHorizontalHeaderLabels({"文件名"});
-        ui_cof->tableView->setModel(OriginModel);  //
-        ui_cof->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-        ui_cof->tableView->resizeColumnsToContents();
-        ui_cof->tableView->show();
+     OriginModel->setHorizontalHeaderLabels({"文件名"});
+     ui_cof->tableView->setModel(OriginModel);  //
+     ui_cof->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+     ui_cof->tableView->resizeColumnsToContents();
+     ui_cof->tableView->show();
+
+     //this->setAttribute(Qt::WA_DeleteOnClose,true);
 
 }
 
 configuration::~configuration()
 {
     delete ui_cof;
+
 }
 void configuration::readConf()
 {
@@ -155,6 +160,7 @@ void configuration::receiveSSig(bool isopen)
 {
     if(isopen)
     {
+
        ui_cof->a_n->setEnabled(false);
        ui_cof->b_n->setEnabled(false);
        ui_cof->Spectrumline->setEnabled(false);
@@ -164,6 +170,8 @@ void configuration::receiveSSig(bool isopen)
        ui_cof->pushButton_2->setEnabled(false);
        ui_cof->read_Button->setText("停止读取光谱数据");
        showChart=true;
+       CneedData=true;
+       emit needData(CneedData);
     }
     else
     {
@@ -176,6 +184,8 @@ void configuration::receiveSSig(bool isopen)
         ui_cof->pushButton_2->setEnabled(true);
         ui_cof->read_Button->setText("开始读取光谱数据");
         showChart=false;
+        CneedData=false;
+        emit needData(CneedData);
     }
 
 }
@@ -184,9 +194,7 @@ void configuration::on_select_files_clicked()
 
      IDidex=0;
      filenames = QFileDialog::getOpenFileNames(this,"选择数据文件",tr(""),tr("*.txt"));
-     QString path = QFileDialog::getExistingDirectory(this,"选择处理后数据存储路径");
-     ui_cof->textEdit->append("数据输出文件路径："+path);
-     qDebug()<<path;
+
      for(int i=0;i<filenames.count();i++)
      {
          OriginModel->setItem(IDidex, 0, new QStandardItem(filenames[i].split('/').last()));
@@ -205,10 +213,7 @@ void configuration::doProcess()
     double  *after_s=new double[elementCntA];
    // saveData_0(QString path,QString filename);
    // ***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
-    QDir *afterSMfilepath =new QDir;
-    QDir *afterSMEfilepath =new QDir;
-    QDir *cocnfilepath =new QDir;
-    for (int i=0;i<IDidex;i++)
+       for (int i=0;i<IDidex;i++)
     {
         QString filename = filenames[i];
         QFile datafile(filename);
@@ -237,7 +242,7 @@ void configuration::doProcess()
            // bool E1 = afterSMfilepath->exists(filename.split('/').)
             QString filesname_after_s=filename.remove(filename.length()-4,4)+"_After_smooth.txt";
             QString filesname_after_s_e=filename+"_After_smooth&envelop.txt";
-            //qDebug()<<filesname_after_s_e;
+            qDebug()<<filesname_after_s_e;
             QFile datafile(filesname_after_s);
             QTextStream stream(&datafile);
             if(datafile.open(QIODevice::WriteOnly | QIODevice::Text))
@@ -296,4 +301,22 @@ void configuration::doProcess()
 void configuration::on_start_process_clicked()
 {
     doProcess();
+};
+void configuration::on_pushButton_4_clicked()
+{
+    QString path = QFileDialog::getExistingDirectory(this,"选择处理后数据存储路径");
+    ui_cof->textEdit->append("数据输出文件路径："+path);
+    qDebug()<<path;
+}
+void configuration::closeEvent(QCloseEvent *event) //关闭窗体
+{
+     CneedData=false;
+     emit needData(CneedData);
+}
+void configuration::receiveDataFromS(double *originData,double  *after_s_e,double  *after_s)
+{
+
+    ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e);
+    ui_cof->chart_widget->replot();
+
 };
