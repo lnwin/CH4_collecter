@@ -57,9 +57,23 @@ void CH4_serial::readData()
 void CH4_serial::anlyseData()
 {
 
+
+        QByteArray serialBuffer;
+
+        serialBuffer=mainport->readAll();
+         if(!serialBuffer.isEmpty())
+         {
+
+
+
+
+
+
+         }
+
         int elementCntA=500;//元素个数
         double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
-        double  * after_s=new double[elementCntA];
+        double  *after_s=new double[elementCntA];
        // saveData_0(QString path,QString filename);
        // ***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
         QString filename = QFileDialog::getOpenFileName();
@@ -143,7 +157,7 @@ void CH4_serial::anlyseData()
         double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
         QList<double>CCD;
         COCN=34;
-        emit sendData2M(nowTime,COCN);
+            emit sendData2M(nowTime,COCN);
         //==============================================
         COCN_data.clear();
         QTime datatime =QTime::currentTime();
