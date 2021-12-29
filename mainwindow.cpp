@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lcdNumber->setStyleSheet("border: 0px solid green;color: green; background: black;");
     QTimer *clock =new QTimer(this);
     clock->setInterval(1000);
-    readConf();
+
     searchPort();
     CH4 =new CH4_chart;
     CH4->Chart_Minit(*ui);
@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     connect(clock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
     clock->start();
+    readConf();
 }
 
 MainWindow::~MainWindow()
@@ -130,6 +131,7 @@ void MainWindow::open_Configuration()
                   connect(COF,SIGNAL(sendSerialSIG2Main()),this,SLOT(receiveSerialSIGFromConf()));
                   connect(CH4_sp,SIGNAL(sendSSig2Conf(bool)),COF,SLOT(receiveSSig(bool)));
                   connect(COF,SIGNAL(needData(bool)),CH4_sp,SLOT(receiveNeedSIG(bool)));
+                  connect(CH4_sp,SIGNAL(sendData2C(double*,double*,double*)),COF,SLOT(receiveDataFromS(double*,double*,double*)));
 
                   COF->show();
              }

@@ -48,11 +48,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -lsmoothdata
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lsmoothdatad
 
-INCLUDEPATH += $$PWD/include
-DEPENDPATH += $$PWD/include
 #=================================
 INCLUDEPATH += D:/matlab2019/extern/include
 INCLUDEPATH += D:/matlab2019/extern/include/win64
@@ -65,18 +61,13 @@ win32: LIBS += -L'D:/matlab2019/extern/lib/win64/mingw64/' -lmclmcr
 win32: LIBS += -L'D:/matlab2019/extern/lib/win64/mingw64/' -lmclmcrrt
 
 
-
 INCLUDEPATH += D:/matlab2019/extern/lib/win64/mingw64
 DEPENDPATH += D:/matlab2019/extern/lib/win64/mingw64
 
 INCLUDEPATH += D:/matlab2019/extern/lib/win64
 DEPENDPATH += D:/matlab2019/extern/lib/win64
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -lenvelope
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lenveloped
 
-INCLUDEPATH += $$PWD/include
-DEPENDPATH += $$PWD/include
 
 RESOURCES += \
     image.qrc
@@ -84,3 +75,15 @@ RESOURCES += \
 DISTFILES += \
     cof/configuration.txt \
     release/configuration.txt
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -lenvelope
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lenveloped
+
+INCLUDEPATH += $$PWD/include
+DEPENDPATH += $$PWD/include
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -lsmoothdata
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lsmoothdatad
+
+INCLUDEPATH += $$PWD/include
+DEPENDPATH += $$PWD/include

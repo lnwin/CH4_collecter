@@ -37,13 +37,9 @@ void CH4_chart::Chart_Minit(Ui::MainWindow ui)
    // Chart_Mupdata(ui);
     ui.customPlot->rescaleAxes();
 };
-void CH4_chart::receiveData(QVector<double> x,QVector<double> y)
+void CH4_chart::receiveDataFromS(double *originData,double  *after_s,double  *after_s_e)
 {
-    for (int i=0; i<50; i++)
-    {
-      X[i] = i;
-      Y[i] = i;
-    }
+   //Chart_Pupdata(originData,after_s,after_s_e);
 };
 void CH4_chart::Chart_Mupdata(Ui::MainWindow ui,double time,double data)
 {

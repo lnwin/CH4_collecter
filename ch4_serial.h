@@ -49,7 +49,7 @@ public:
     void anlyseData();
     void saveData_0();
     Max_Min coutMaxMin(double*,double);
-
+    float Hex2Dec_yrp(QByteArray hex);
 signals:
     void sendData2CChart(mwArray origin,mwArray afterP);
     void sendSSig2Conf(bool);

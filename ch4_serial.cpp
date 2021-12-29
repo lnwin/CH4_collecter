@@ -9,6 +9,10 @@ double saveSpectrum,saveCOCN,COCN_interval;
 QList <QString> COCN_data;
 QList <QString> sp_data;
 QString saveTime;
+QByteArray FBuffer;
+double *originBuffer=new double[500];
+double *accBuffer=new double[500];
+double localAcc=0;
 CH4_serial::CH4_serial()
 {
    mainport =new QSerialPort;
@@ -20,7 +24,7 @@ bool CH4_serial::openPort(QString portName,Ui::MainWindow ui)
     {
         mainport->setPortName(portName);//设置串口名
         mainport->open(QIODevice::ReadWrite);//以读写方式打开串口
-        mainport->setBaudRate(QSerialPort::Baud9600);//波特率
+        mainport->setBaudRate(QSerialPort::Baud115200);//波特率
         mainport->setDataBits(QSerialPort::Data8);//数据位
         mainport->setParity(QSerialPort::NoParity);//校验位
         mainport->setStopBits(QSerialPort::OneStop);//停止位
@@ -50,53 +54,80 @@ bool CH4_serial::openPort(QString portName,Ui::MainWindow ui)
 
 void CH4_serial::readData()
 {
-    MUTEX.lock();
+
+
+    QByteArray serialBuffer;
+    serialBuffer=mainport->readAll();
+    // if(!serialBuffer.isEmpty()&&(QString(serialBuffer.at(0))=="0xaa")&&(serialBuffer.length()==1012))
+     if(!serialBuffer.isEmpty())
+     {
+           FBuffer.append(serialBuffer);
+           if(FBuffer.length()==1012)
+        {
+
+                  bool ok;
+              // qDebug()<<FBuffer.mid(9,1).toHex().toInt(&ok,16);
+
+            FBuffer.remove(0,9);
+
+         for(int i=0;i<1000;i++)
+         {
+
+            originBuffer[i/2] = (FBuffer.mid(i,1).toHex().toInt(&ok,16))*256+(FBuffer.mid(i+1,1).toHex().toInt(&ok,16));
+            i=i+1;
+         }
+
+         if((localAcc<acc)&&(acc!=0))
+         {
+            for(int i=0;i<500;i++)
+            {
+             accBuffer[i]=originBuffer[i]+accBuffer[i];
+             //qDebug()<<accBuffer[i];
+            }
+            localAcc++;
+         }
+         if(localAcc==acc)
+         {
+             for(int i=0;i<500;i++)
+             {
+              accBuffer[i]=accBuffer[i]/localAcc;
+             }
+            // FBuffer.clear();
+             localAcc=0;
+         }
+
+
+            FBuffer.clear();
+       }
+
+     }
+     else
+     {
+//         qDebug()<<QString(serialBuffer.at(0));
+//         qDebug()<<serialBuffer.length();
+//        // qDebug()<<;
+     }
+
+
     this->start();
-    MUTEX.unlock();
+
 };
 void CH4_serial::anlyseData()
 {
 
 
-        QByteArray serialBuffer;
-
-        serialBuffer=mainport->readAll();
-         if(!serialBuffer.isEmpty())
-         {
-
-
-
-
-
-
-         }
 
         int elementCntA=500;//元素个数
-        double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
+       // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
         double  *after_s=new double[elementCntA];
        // saveData_0(QString path,QString filename);
        // ***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
-        QString filename = QFileDialog::getOpenFileName();
-        QFile datafile(filename);
-        if(!datafile.open(QIODevice::ReadOnly | QIODevice::Text))
-        {
-            qDebug()<<"Can't open the file!"<<endl;
-        }
-        int count_N=0;
-        while(!datafile.atEnd())
-        {
-            QByteArray line = datafile.readLine();
-            QString str(line);
-            originData[count_N]=str.toDouble();
-            count_N++;
-        }
-
        // sgolay
         mwArray WINSZ(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//需要和output纬度一样
         mwArray outPut(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray varargin(1);//输入参数的个数
         mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
-        matrixA.SetData(originData,elementCntA); //将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
+        matrixA.SetData(accBuffer,elementCntA); //将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
         smoothdata(1,outPut,WINSZ,matrixA,varargin);//
 
         for (int j=0; j<elementCntA;j++)
@@ -151,7 +182,8 @@ void CH4_serial::anlyseData()
         //==============================================
         if(cNeedData)
         {
-            emit sendData2C(originData,after_s,mid_01);
+            emit sendData2C(accBuffer,after_s,mid_01);
+           // qDebug()<<"Cneed dATA";
         }
         //==============================================
         double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
@@ -174,8 +206,9 @@ void CH4_serial::anlyseData()
 }
 void CH4_serial::run()
 {
-
-     anlyseData();
+    MUTEX.lock();
+    anlyseData();
+    MUTEX.unlock();
 
 }
 void CH4_serial::saveData_0()
@@ -210,7 +243,7 @@ Max_Min CH4_serial::coutMaxMin(double *dataIn,double n)
 }
 void CH4_serial::receiveCof(Parameter PM)
 {
-    acc=PM.acc;
+    acc=PM.acc+1;
     a_n=PM.a;
     b_n=PM.b;
     win_n=PM.win_d;
@@ -218,10 +251,49 @@ void CH4_serial::receiveCof(Parameter PM)
     saveSpectrum=PM.saveSpectrum;
     saveCOCN =PM.saveCOCN;
     COCNfilepath=PM.COCNfilepath;
-    COCN_interval =PM.COCN_intercal;
+    COCN_interval =PM.COCN_intercal;    
 }
 void CH4_serial::receiveNeedSIG(bool need)
 {
     cNeedData=need;
-    qDebug()<<cNeedData;
+
 };
+float CH4_serial::Hex2Dec_yrp(QByteArray hex)
+ {
+    bool ok;
+    float finaldata;
+//    QByteArray zz;
+//    zz.append(hex.at(1));
+//    zz.append(hex.at(0));
+//    int a = zz.toHex().toInt(&ok,16);
+ //   int b = zz.mid(0,1).toHex().toInt(&ok,16);
+    int a = hex.toHex().toInt(&ok,16);
+    int b = hex.mid(0,1).toHex().toInt(&ok,16);
+    QString bin =QString::number(a,2);
+    int datalength =bin.length();
+    if(b>=128)
+ {
+
+           for (int i=0;i<datalength;i++)
+           {
+               if(bin[i]=="0")
+               {
+                   bin[i]='1';
+               }
+               else
+               {
+                   bin[i]='0';
+               }
+
+           }
+
+           finaldata = (float)(-(bin.toInt(&ok,2)+1));
+           return finaldata;
+
+     }
+    else
+    {
+          finaldata = (float)((bin.toInt(&ok,2)));
+          return finaldata;
+    }
+ };

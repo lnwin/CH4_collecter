@@ -29,7 +29,7 @@ public:
     void run();
 
 public slots:
-   void receiveData(QVector<double> ,QVector<double> );
+   void receiveDataFromS(double *originData,double  *after_s,double  *after_s_e);
 };
 
 #endif // CH4_CHART_H
