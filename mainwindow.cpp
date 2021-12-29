@@ -13,7 +13,9 @@ MainWindow::MainWindow(QWidget *parent)
     intercal_List<<"1分钟"<<"10分钟"<<"20分钟"<<"30分钟"<<"40分钟"<<"50分钟";
     ui->COCN_interval->addItems(intercal_List);
     ui->lcdNumber->setDigitCount(19);
-    ui->lcdNumber->setStyleSheet("border: 0px solid green;color: green; background: black;");
+    ui->lcdNumber->setStyleSheet("border: 0px solid green;color: green; background: black;");   
+    ui->lcdNumber_2->setDigitCount(7);
+    ui->lcdNumber_2->setStyleSheet("border: 0px solid green;color: green; background: black;");
     QTimer *clock =new QTimer(this);
     clock->setInterval(1000);
 
@@ -132,8 +134,8 @@ void MainWindow::open_Configuration()
                   connect(CH4_sp,SIGNAL(sendSSig2Conf(bool)),COF,SLOT(receiveSSig(bool)));
                   connect(COF,SIGNAL(needData(bool)),CH4_sp,SLOT(receiveNeedSIG(bool)));
                   connect(CH4_sp,SIGNAL(sendData2C(double*,double*,double*)),COF,SLOT(receiveDataFromS(double*,double*,double*)));
-
                   COF->show();
+
              }
              else
              {
@@ -235,6 +237,7 @@ void MainWindow::receiveSerialSIGFromConf()
 void MainWindow::receiveDataFromS(double time, double data)
 {
 
-   CH4->Chart_Mupdata(*ui,time,data);
+   CH4->Chart_Mupdata(*ui,time,data);   
+   ui->lcdNumber_2->display(QString::number(data,'f',1));
 
 }

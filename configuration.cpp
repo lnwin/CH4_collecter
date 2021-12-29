@@ -14,7 +14,8 @@ configuration::configuration(QWidget *parent) :
 
     ui_cof->setupUi(this);
     ch4 =new CH4_chart();
-    ch4->Chart_Cinit(*ui_cof);
+    //ch4->Chart_Cinit(*ui_cof);
+    ch4->Chart_Pinit(*ui_cof);
     readConf();
      OriginModel->setHorizontalHeaderLabels({"文件名"});
      ui_cof->tableView->setModel(OriginModel);  //

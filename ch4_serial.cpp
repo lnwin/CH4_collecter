@@ -10,7 +10,7 @@ QList <QString> COCN_data;
 QList <QString> sp_data;
 QString saveTime;
 QByteArray FBuffer;
-double *originBuffer=new double[500];
+
 double *accBuffer=new double[500];
 double localAcc=0;
 CH4_serial::CH4_serial()
@@ -55,6 +55,7 @@ bool CH4_serial::openPort(QString portName,Ui::MainWindow ui)
 void CH4_serial::readData()
 {
 
+      MUTEX.lock();
 
     QByteArray serialBuffer;
     serialBuffer=mainport->readAll();
@@ -62,18 +63,16 @@ void CH4_serial::readData()
      if(!serialBuffer.isEmpty())
      {
            FBuffer.append(serialBuffer);
-           if(FBuffer.length()==1012)
+           if((FBuffer.length()==1012))
         {
 
-                  bool ok;
-              // qDebug()<<FBuffer.mid(9,1).toHex().toInt(&ok,16);
-
+            double *originBuffer=new double[500];
             FBuffer.remove(0,9);
 
          for(int i=0;i<1000;i++)
          {
 
-            originBuffer[i/2] = (FBuffer.mid(i,1).toHex().toInt(&ok,16))*256+(FBuffer.mid(i+1,1).toHex().toInt(&ok,16));
+            originBuffer[i/2] = quint8(FBuffer[i])*256+quint8(FBuffer[i+1]);
             i=i+1;
          }
 
@@ -81,8 +80,9 @@ void CH4_serial::readData()
          {
             for(int i=0;i<500;i++)
             {
-             accBuffer[i]=originBuffer[i]+accBuffer[i];
-             //qDebug()<<accBuffer[i];
+
+                accBuffer[i]+=originBuffer[i];
+
             }
             localAcc++;
          }
@@ -90,9 +90,12 @@ void CH4_serial::readData()
          {
              for(int i=0;i<500;i++)
              {
-              accBuffer[i]=accBuffer[i]/localAcc;
+
+                 accBuffer[i]=accBuffer[i]/localAcc;
+
              }
-            // FBuffer.clear();
+
+             this->start();
              localAcc=0;
          }
 
@@ -103,13 +106,11 @@ void CH4_serial::readData()
      }
      else
      {
-//         qDebug()<<QString(serialBuffer.at(0));
-//         qDebug()<<serialBuffer.length();
-//        // qDebug()<<;
+         //FBuffer
      }
 
+ MUTEX.unlock();
 
-    this->start();
 
 };
 void CH4_serial::anlyseData()
@@ -179,16 +180,22 @@ void CH4_serial::anlyseData()
         MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
         double X = MN_B.Max-MN_B.Min;        
         COCN = a_n*X+b_n;
+        qDebug()<<COCN;
         //==============================================
         if(cNeedData)
         {
             emit sendData2C(accBuffer,after_s,mid_01);
-           // qDebug()<<"Cneed dATA";
+            Delay_MSec(50);
+            //memset(accBuffer,0,sizeof (accBuffer));
+            for(int i=0;i<500;i++)
+            {
+                accBuffer[i]=0;
+               // qDebug()<<accBuffer[i];
+            }
+
         }
         //==============================================
-        double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
-        QList<double>CCD;
-        COCN=34;
+        double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;             
             emit sendData2M(nowTime,COCN);
         //==============================================
         COCN_data.clear();
@@ -209,6 +216,7 @@ void CH4_serial::run()
     MUTEX.lock();
     anlyseData();
     MUTEX.unlock();
+
 
 }
 void CH4_serial::saveData_0()
@@ -297,3 +305,13 @@ float CH4_serial::Hex2Dec_yrp(QByteArray hex)
           return finaldata;
     }
  };
+void CH4_serial::Delay_MSec(unsigned int msec)
+{
+
+        QTime _Timer = QTime::currentTime().addMSecs(msec);
+
+        while( QTime::currentTime() < _Timer )
+
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
+
+};
