@@ -63,7 +63,7 @@ void CH4_serial::readData()
      if(!serialBuffer.isEmpty())
      {
            FBuffer.append(serialBuffer);
-           if((FBuffer.length()==1012))
+           if((FBuffer.length()==1012)&&(quint8(FBuffer.at(0))==170))
         {
 
             double *originBuffer=new double[500];
@@ -102,11 +102,14 @@ void CH4_serial::readData()
 
             FBuffer.clear();
        }
-
+           else
+           {
+              // FBuffer.clear();
+           }
      }
      else
      {
-         //FBuffer
+        // FBuffer
      }
 
  MUTEX.unlock();
@@ -117,6 +120,7 @@ void CH4_serial::anlyseData()
 {
 
 
+        COCN=0;
 
         int elementCntA=500;//元素个数
        // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
@@ -179,35 +183,43 @@ void CH4_serial::anlyseData()
         MN_B2=coutMaxMin(B2,100);
         MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
         double X = MN_B.Max-MN_B.Min;        
-        COCN = a_n*X+b_n;
-        qDebug()<<COCN;
+        COCN = (a_n*X)+b_n;
+
         //==============================================
         if(cNeedData)
         {
             emit sendData2C(accBuffer,after_s,mid_01);
             Delay_MSec(50);
-            //memset(accBuffer,0,sizeof (accBuffer));
-            for(int i=0;i<500;i++)
-            {
-                accBuffer[i]=0;
-               // qDebug()<<accBuffer[i];
-            }
 
         }
+
         //==============================================
         double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;             
-            emit sendData2M(nowTime,COCN);
+            emit sendData2M(nowTime,COCN);        
         //==============================================
         COCN_data.clear();
-        QTime datatime =QTime::currentTime();
+        QDateTime datatime =QDateTime::currentDateTime();
         QString timeString =datatime.toString("HH:mm:ss");
         COCN_data.append(timeString);
         COCN_data.append(QString::number(COCN));
 
-        if((saveSpectrum!=0)&&(saveCOCN!=0))
+        if((saveSpectrum!=0)||(saveCOCN!=0))
         {
+            for(int i=0;i<500;i++)
+            {
+                 sp_data.append(QString::number(accBuffer[i]));
+            }
+            Delay_MSec(50);
             saveData_0();
+
         }
+        for(int i=0;i<500;i++)
+        {
+            accBuffer[i]=0;
+
+        }
+
+
 
 
 }
@@ -221,8 +233,9 @@ void CH4_serial::run()
 }
 void CH4_serial::saveData_0()
 {
-    QTime datatime =QTime::currentTime();
-    QString saveTime =datatime.toString("yyyy-MM-dd-HH:mm:ss");
+    QDateTime datatime =QDateTime::currentDateTime();
+    QString saveTime =datatime.toString("yyyy-MM-dd-HH-mm-ss");
+
     CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,sp_data,spectrumfilepath,COCNfilepath,saveTime);
 
 };

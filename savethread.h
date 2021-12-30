@@ -27,7 +27,7 @@ class savethread: public QThread
     Q_OBJECT
 public:
     savethread();
-
+    void Delay_MSec(unsigned int msec);
     void run();
     void saveData_1(double saveCOCN,double saveSp,double COCN_inter,QList <QString>COCN_data,QList <QString>sp_data,QString spFilePath,QString COCNFilePath,QString savetime);
     void saveCOCN(QList<QString>,QString);

@@ -13,10 +13,12 @@ void savethread::run()
    if(save_COCN==1)
    {
        saveCOCN(COCNDATA,COCN_FP);
+
    }
    if(save_SP==1)
    {
        saveSP(spdata,sp_FP,SAVETime);
+
    }
 }
 void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
@@ -31,13 +33,15 @@ void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
       COCNDATA=COCN_data;
       spdata=sp_data;
       SAVETime=savetime;
+      Delay_MSec(50);
       this->start();
 }
 void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH)
 {
-    QTime time =QTime::currentTime();
+    QDateTime time =QDateTime::currentDateTime();
     QString filename =time.toString("yyyy-MM-dd")+"_COCN_DATA.txt";
-    filename=PATH+"/"+filename;
+    PATH+="COCN_DATA/";
+    filename=PATH+filename;
     QFile datafile(filename);
     QTextStream stream(&datafile);
     if(!datafile.exists())
@@ -62,7 +66,9 @@ void savethread::saveSP(QList<QString> SP_data,QString PATH,QString saveTime)
 {
 
     QString filename =saveTime+"_SP_DATA.txt";
-    filename=PATH+"/"+filename;
+    PATH+="origin_DATA/";
+    filename=PATH+filename;
+
     QFile cloudfile(filename);
     QTextStream stream(&cloudfile);
     if(!cloudfile.exists())
@@ -90,4 +96,13 @@ void savethread::saveSP(QList<QString> SP_data,QString PATH,QString saveTime)
     }
     cloudfile.close();
 }
+void savethread::Delay_MSec(unsigned int msec)
+{
 
+        QTime _Timer = QTime::currentTime().addMSecs(msec);
+
+        while( QTime::currentTime() < _Timer )
+
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
+
+};

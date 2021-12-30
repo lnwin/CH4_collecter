@@ -75,6 +75,7 @@ void MainWindow::on_pushButton_clicked()
      if(CH4_sp->openPort(ui->comboBox->currentText(),*ui))
      {
               serialisopen=true;
+
      }
      else
      {
