@@ -53,6 +53,8 @@ void configuration::readConf()
        C_parameter.saveSpectrum =sk.at(9).toDouble();
        C_parameter.spectrumfilepath =sk.at(11);
        C_parameter.COCNfilepath =sk.at(13);
+       C_parameter.USE_SMOOTH=sk.at(15).toDouble();
+       qDebug()<<C_parameter.USE_SMOOTH;
        ui_cof->add_lin->setText(sk.at(1));
        ui_cof->win_n->setText(sk.at(3));
        ui_cof->a_n->setText(sk.at(5));
@@ -64,6 +66,14 @@ void configuration::readConf()
        else
        {
            ui_cof->ifSave->setChecked(true);
+       }
+       if(C_parameter.USE_SMOOTH !=1)
+       {
+           ui_cof->ifsmooth->setChecked(false);
+       }
+       else
+       {
+           ui_cof->ifsmooth->setChecked(true);
        }
        ui_cof->Spectrumline->setText(sk.at(11));
        confFile.close();
@@ -114,18 +124,35 @@ void configuration::on_pushButton_3_clicked()
             confFile.write("0");
              C_parameter.saveSpectrum=0;
         }
+
         confFile.write("\n");
         confFile.write("spectrumfilepath");
         confFile.write("\n");
         confFile.write(ui_cof->Spectrumline->text().toLatin1().data());
+        confFile.write("\n");
+        confFile.write("COCNfilepath");
+        confFile.write("\n");
+        confFile.write(C_parameter.COCNfilepath.toStdString().data());
+        confFile.write("\n");
+        confFile.write("use_smooth");
+        confFile.write("\n");
+        if(ui_cof->ifsmooth->isChecked())
+        {
+            confFile.write("1");
+            C_parameter.USE_SMOOTH=1;
+        }
+        else
+        {
+            confFile.write("0");
+             C_parameter.USE_SMOOTH=0;
+        }
+        confFile.write("\n");
         C_parameter.acc =ui_cof->add_lin->text().toDouble();
         C_parameter.win_d=ui_cof->win_n->text().toDouble();
         C_parameter.a =ui_cof->a_n->text().toDouble();
         C_parameter.b =ui_cof->b_n->text().toDouble();
         C_parameter.spectrumfilepath =ui_cof->Spectrumline->text();
         emit sendCof2serial(C_parameter);
-
-
 
    }
     else
@@ -314,10 +341,17 @@ void configuration::closeEvent(QCloseEvent *event) //关闭窗体
      CneedData=false;
      emit needData(CneedData);
 }
-void configuration::receiveDataFromS(double *originData,double  *after_s_e,double  *after_s)
+void configuration::receiveDataFromS(double *originData,double *after_s,double  *after_s_e)
 {
 
+    if(C_parameter.USE_SMOOTH !=1)
+    {
+        ch4->Chart_Pupdata_1(*ui_cof,originData,after_s_e);
+    }
+    else
+    {
     ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e);
+    }
     ui_cof->chart_widget->replot();
 
 };

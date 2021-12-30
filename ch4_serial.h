@@ -33,6 +33,7 @@ struct Parameter
    double COCN_intercal;
    QString spectrumfilepath;
    QString COCNfilepath;
+   double USE_SMOOTH;
 };
 
 Q_DECLARE_METATYPE(Parameter);

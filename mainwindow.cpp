@@ -30,9 +30,19 @@ MainWindow::MainWindow(QWidget *parent)
     connect(CH4_sp,SIGNAL(sendData2M(double,double)),this,SLOT(receiveDataFromS(double,double)));
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
-    if(smoothdataInitialize())//必须加载
+    QMessageBox msgBox ;
+   // msgBox.setIcon(QMessageBox::Icon::Warning);
+    msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
+    msgBox.setText("开始加载配置，点击OK继续");
+    msgBox.exec();
+    if(smoothdataInitialize()&&envelopeInitialize())//必须加载
     {
-      envelopeInitialize();
+
+        QMessageBox msgBox ;
+       // msgBox.setIcon(QMessageBox::Icon::Warning);
+        msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
+        msgBox.setText("配置加载完毕");
+        msgBox.exec();
     }
     connect(clock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
     clock->start();
@@ -75,11 +85,16 @@ void MainWindow::on_pushButton_clicked()
      if(CH4_sp->openPort(ui->comboBox->currentText(),*ui))
      {
               serialisopen=true;
+              ui->pushButton_fileselect->setEnabled(false);
+              ui->saveCOCN->setEnabled(false);
+
 
      }
      else
      {
               serialisopen=false;
+              ui->pushButton_fileselect->setEnabled(true);
+              ui->saveCOCN->setEnabled(true);
      }
 
 };
@@ -207,8 +222,17 @@ void MainWindow::readConf()
         M_parameter.spectrumfilepath =sk.at(11);
         M_parameter.COCNfilepath =sk.at(13);
         ui->COCN_filepath->setText(sk.at(13));
-        M_parameter.saveCOCN =sk.at(15).toDouble();
+        M_parameter.USE_SMOOTH=sk.at(15).toDouble();
         if(sk.at(15)=="0")
+        {
+            M_parameter.USE_SMOOTH=0;
+        }
+        else
+        {
+            M_parameter.USE_SMOOTH=1;
+        }
+        M_parameter.saveCOCN =sk.at(17).toDouble();
+        if(sk.at(17)=="0")
         {
             ui->saveCOCN->setChecked(false);
         }
@@ -216,8 +240,8 @@ void MainWindow::readConf()
         {
             ui->saveCOCN->setChecked(true);
         }
-        M_parameter.COCN_intercal=sk.at(17).toDouble();
-        ui->COCN_interval->setCurrentIndex(sk.at(17).toDouble());
+        M_parameter.COCN_intercal=sk.at(19).toDouble();
+        ui->COCN_interval->setCurrentIndex(sk.at(19).toDouble());
         emit sendCof2serial(M_parameter);
         confFile.close();
 

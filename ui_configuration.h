@@ -49,6 +49,7 @@ public:
     QTextEdit *textEdit;
     QTableView *tableView;
     QPushButton *pushButton_4;
+    QCheckBox *ifsmooth;
 
     void setupUi(QDialog *configuration)
     {
@@ -80,17 +81,17 @@ public:
         pushButton->setGeometry(QRect(10, 10, 111, 41));
         label_4 = new QLabel(configuration);
         label_4->setObjectName(QString::fromUtf8("label_4"));
-        label_4->setGeometry(QRect(10, 100, 51, 31));
+        label_4->setGeometry(QRect(10, 90, 51, 21));
         label = new QLabel(configuration);
         label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(10, 60, 54, 31));
+        label->setGeometry(QRect(10, 61, 54, 20));
         win_n = new QLineEdit(configuration);
         win_n->setObjectName(QString::fromUtf8("win_n"));
         win_n->setEnabled(true);
-        win_n->setGeometry(QRect(60, 100, 61, 31));
+        win_n->setGeometry(QRect(60, 90, 61, 21));
         ifSave = new QCheckBox(configuration);
         ifSave->setObjectName(QString::fromUtf8("ifSave"));
-        ifSave->setGeometry(QRect(10, 140, 111, 18));
+        ifSave->setGeometry(QRect(10, 140, 101, 18));
         Spectrumline = new QLineEdit(configuration);
         Spectrumline->setObjectName(QString::fromUtf8("Spectrumline"));
         Spectrumline->setGeometry(QRect(10, 170, 71, 20));
@@ -105,7 +106,7 @@ public:
         pushButton_3->setGeometry(QRect(10, 340, 111, 51));
         add_lin = new QLineEdit(configuration);
         add_lin->setObjectName(QString::fromUtf8("add_lin"));
-        add_lin->setGeometry(QRect(60, 59, 61, 31));
+        add_lin->setGeometry(QRect(60, 59, 61, 21));
         read_Button = new QPushButton(configuration);
         read_Button->setObjectName(QString::fromUtf8("read_Button"));
         read_Button->setGeometry(QRect(10, 200, 111, 51));
@@ -126,6 +127,9 @@ public:
         pushButton_4 = new QPushButton(configuration);
         pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
         pushButton_4->setGeometry(QRect(980, 350, 171, 41));
+        ifsmooth = new QCheckBox(configuration);
+        ifsmooth->setObjectName(QString::fromUtf8("ifsmooth"));
+        ifsmooth->setGeometry(QRect(10, 120, 71, 21));
 
         retranslateUi(configuration);
 
@@ -151,6 +155,7 @@ public:
         start_process->setText(QCoreApplication::translate("configuration", "\345\274\200\345\247\213\345\244\204\347\220\206", nullptr));
         select_files->setText(QCoreApplication::translate("configuration", "\346\211\271\351\207\217\351\200\211\346\213\251\346\226\207\344\273\266", nullptr));
         pushButton_4->setText(QCoreApplication::translate("configuration", "\350\276\223\345\207\272\350\267\257\345\276\204", nullptr));
+        ifsmooth->setText(QCoreApplication::translate("configuration", "\346\230\257\345\220\246\345\271\263\346\273\221", nullptr));
     } // retranslateUi
 
 };

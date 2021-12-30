@@ -54,6 +54,7 @@ public:
     QLabel *label;
     QComboBox *comboBox;
     QPushButton *pushButton;
+    QLabel *label_5;
     QMenuBar *menubar;
     QMenu *menu;
 
@@ -164,6 +165,9 @@ public:
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(123, 5, 80, 51));
         pushButton->setMinimumSize(QSize(0, 40));
+        label_5 = new QLabel(centralwidget);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+        label_5->setGeometry(QRect(980, 40, 54, 12));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -195,6 +199,7 @@ public:
         pushButton_fileselect->setText(QCoreApplication::translate("MainWindow", "\351\200\211\346\213\251\345\255\230\345\202\250\350\267\257\345\276\204", nullptr));
         label->setText(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243\345\217\267", nullptr));
         pushButton->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\350\257\273\345\217\226", nullptr));
+        label_5->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\347\263\273\347\273\237\345\220\216\345\217\260", nullptr));
     } // retranslateUi
 

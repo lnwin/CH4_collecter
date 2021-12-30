@@ -2,7 +2,7 @@
 QString sp_FP;
 QString COCN_FP,SAVETime;
 double save_SP,save_COCN,COCNInter;
-QList <QString>COCNDATA,spdata;
+QList <QString>COCNDATA,spdata,spdata_after;
 
 savethread::savethread()
 {
@@ -18,11 +18,13 @@ void savethread::run()
    if(save_SP==1)
    {
        saveSP(spdata,sp_FP,SAVETime);
+       saveSP_afterP(spdata_after,sp_FP,SAVETime);
 
    }
 }
 void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
                             QList <QString>COCN_data,QList <QString>sp_data,
+                            QList <QString>sp_data_AfterP,
                             QString spFilePath,QString COCNFilePath,QString savetime)
 {
       save_SP=saveSp;
@@ -33,6 +35,7 @@ void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
       COCNDATA=COCN_data;
       spdata=sp_data;
       SAVETime=savetime;
+      spdata_after=sp_data_AfterP;
       Delay_MSec(50);
       this->start();
 }
@@ -40,7 +43,7 @@ void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH)
 {
     QDateTime time =QDateTime::currentDateTime();
     QString filename =time.toString("yyyy-MM-dd")+"_COCN_DATA.txt";
-    PATH+="COCN_DATA/";
+    PATH+="/";
     filename=PATH+filename;
     QFile datafile(filename);
     QTextStream stream(&datafile);
@@ -65,8 +68,8 @@ void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH)
 void savethread::saveSP(QList<QString> SP_data,QString PATH,QString saveTime)
 {
 
-    QString filename =saveTime+"_SP_DATA.txt";
-    PATH+="origin_DATA/";
+    QString filename =saveTime+"_origin_DATA.txt";
+    PATH+="/";
     filename=PATH+filename;
 
     QFile cloudfile(filename);
@@ -96,6 +99,40 @@ void savethread::saveSP(QList<QString> SP_data,QString PATH,QString saveTime)
     }
     cloudfile.close();
 }
+void savethread::saveSP_afterP(QList<QString> SP_data_after_p,QString PATH,QString saveTime)
+{
+    QString filename =saveTime+"_afterProcess_DATA.txt";
+    PATH+="/";
+    filename=PATH+filename;
+
+    QFile cloudfile(filename);
+    QTextStream stream(&cloudfile);
+    if(!cloudfile.exists())
+
+            {
+                 QDir *folder = new QDir;
+                 folder->mkdir(PATH);
+                 cloudfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                 for( int i=0;i<SP_data_after_p.length(); i++)
+                 {
+                      stream<< SP_data_after_p[i]<<"\n";
+
+                 }
+
+             }
+    else
+    {
+        cloudfile.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append);
+        for( int i=0;i<SP_data_after_p.length(); i++)
+        {
+             stream<< SP_data_after_p[i]<<"\n";
+
+        }
+
+    }
+    cloudfile.close();
+
+};
 void savethread::Delay_MSec(unsigned int msec)
 {
 

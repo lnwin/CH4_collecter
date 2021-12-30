@@ -105,9 +105,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>100</y>
+     <y>90</y>
      <width>51</width>
-     <height>31</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -118,9 +118,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>60</y>
+     <y>61</y>
      <width>54</width>
-     <height>31</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
@@ -134,9 +134,9 @@
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>100</y>
+     <y>90</y>
      <width>61</width>
-     <height>31</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -148,7 +148,7 @@
     <rect>
      <x>10</x>
      <y>140</y>
-     <width>111</width>
+     <width>101</width>
      <height>18</height>
     </rect>
    </property>
@@ -208,7 +208,7 @@
      <x>60</x>
      <y>59</y>
      <width>61</width>
-     <height>31</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
@@ -294,6 +294,19 @@
    </property>
    <property name="text">
     <string>输出路径</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="ifsmooth">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>120</y>
+     <width>71</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>是否平滑</string>
    </property>
   </widget>
  </widget>

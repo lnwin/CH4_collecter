@@ -3,11 +3,13 @@
 std::mutex MUTEX;
 bool needread=false;
 bool cNeedData;
+double use_smooth;
 double acc=0,a_n=0.0015,b_n=4,win_n=3,COCN;
 QString spectrumfilepath,COCNfilepath;
 double saveSpectrum,saveCOCN,COCN_interval;
 QList <QString> COCN_data;
 QList <QString> sp_data;
+QList <QString> sp_data_AP;
 QString saveTime;
 QByteArray FBuffer;
 
@@ -30,6 +32,8 @@ bool CH4_serial::openPort(QString portName,Ui::MainWindow ui)
         mainport->setStopBits(QSerialPort::OneStop);//停止位
         ui.comboBox->setEnabled(false);
         ui.pushButton->setText("停止读取");
+        ui.pushButton_fileselect->setEnabled(false);
+        ui.saveCOCN->setEnabled(false);
         connect(mainport,SIGNAL(readyRead()),this,SLOT(readData()));
         //anlyseData();
         emit sendSSig2Conf(true);
@@ -43,8 +47,11 @@ bool CH4_serial::openPort(QString portName,Ui::MainWindow ui)
 
         mainport->close();
         ui.comboBox->setEnabled(true);
+        ui.pushButton_fileselect->setEnabled(true);
+        ui.saveCOCN->setEnabled(true);
         ui.pushButton->setText("开始读取");
         emit sendSSig2Conf(false);
+        FBuffer.clear();
         return false;
 
     }
@@ -55,17 +62,20 @@ bool CH4_serial::openPort(QString portName,Ui::MainWindow ui)
 void CH4_serial::readData()
 {
 
-      MUTEX.lock();
+
 
     QByteArray serialBuffer;
     serialBuffer=mainport->readAll();
     // if(!serialBuffer.isEmpty()&&(QString(serialBuffer.at(0))=="0xaa")&&(serialBuffer.length()==1012))
      if(!serialBuffer.isEmpty())
      {
+         //qDebug()<<"get number";
            FBuffer.append(serialBuffer);
-           if((FBuffer.length()==1012)&&(quint8(FBuffer.at(0))==170))
+           if((FBuffer.length()==1012))
         {
-
+              qDebug()<<"number=========1012";
+             if(quint8(FBuffer.at(0))==170)
+        {
             double *originBuffer=new double[500];
             FBuffer.remove(0,9);
 
@@ -101,18 +111,22 @@ void CH4_serial::readData()
 
 
             FBuffer.clear();
+          }
+               else
+               {
+                   FBuffer.clear();
+                   qDebug()<<"---qingkongg---";
+
+               }
        }
-           else
-           {
-              // FBuffer.clear();
-           }
+
      }
      else
      {
         // FBuffer
      }
 
- MUTEX.unlock();
+
 
 
 };
@@ -121,7 +135,8 @@ void CH4_serial::anlyseData()
 
 
         COCN=0;
-
+        sp_data.clear();
+        sp_data_AP.clear();
         int elementCntA=500;//元素个数
        // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
         double  *after_s=new double[elementCntA];
@@ -133,20 +148,34 @@ void CH4_serial::anlyseData()
         mwArray varargin(1);//输入参数的个数
         mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
         matrixA.SetData(accBuffer,elementCntA); //将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
-        smoothdata(1,outPut,WINSZ,matrixA,varargin);//
-
-        for (int j=0; j<elementCntA;j++)
+        if(use_smooth==1)
         {
+            smoothdata(1,outPut,WINSZ,matrixA,varargin);//
+            for (int j=0; j<elementCntA;j++)
+            {
 
-            after_s[j]=outPut.Get(0,j+1);
+                after_s[j]=outPut.Get(0,j+1);
 
+            }
         }
+
+
+
 
         mwArray d(win_n);//串窗口平滑参数
         mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray method("peak");
-        envelope(2,up_01,lo_01,outPut,d,method);//通过测试
+        if(use_smooth==1)
+        {
+            envelope(2,up_01,lo_01,outPut,d,method);//通过测试
+        }
+        else
+        {
+            envelope(2,up_01,lo_01,matrixA,d,method);//通过测试
+        }
+
+
         double *mid_01=new double[elementCntA];
         double a,b;
 
@@ -157,8 +186,9 @@ void CH4_serial::anlyseData()
             b = lo_01.Get(0,j+1);
             mid_01[j]=(a+b)/2;
 
-
         }
+
+
         double *B=new double[200];
         double *B1=new double[200];
         double *B2=new double[200];
@@ -184,7 +214,7 @@ void CH4_serial::anlyseData()
         MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
         double X = MN_B.Max-MN_B.Min;        
         COCN = (a_n*X)+b_n;
-
+        qDebug()<<COCN;
         //==============================================
         if(cNeedData)
         {
@@ -208,6 +238,7 @@ void CH4_serial::anlyseData()
             for(int i=0;i<500;i++)
             {
                  sp_data.append(QString::number(accBuffer[i]));
+                 sp_data_AP.append(QString::number(mid_01[i]));
             }
             Delay_MSec(50);
             saveData_0();
@@ -215,7 +246,7 @@ void CH4_serial::anlyseData()
         }
         for(int i=0;i<500;i++)
         {
-            accBuffer[i]=0;
+            accBuffer[i]=0;            
 
         }
 
@@ -225,9 +256,9 @@ void CH4_serial::anlyseData()
 }
 void CH4_serial::run()
 {
-    MUTEX.lock();
+   // MUTEX.lock();
     anlyseData();
-    MUTEX.unlock();
+   // MUTEX.unlock();
 
 
 }
@@ -236,7 +267,7 @@ void CH4_serial::saveData_0()
     QDateTime datatime =QDateTime::currentDateTime();
     QString saveTime =datatime.toString("yyyy-MM-dd-HH-mm-ss");
 
-    CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,sp_data,spectrumfilepath,COCNfilepath,saveTime);
+    CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,sp_data,sp_data_AP,spectrumfilepath,COCNfilepath,saveTime);
 
 };
 Max_Min CH4_serial::coutMaxMin(double *dataIn,double n)
@@ -272,7 +303,9 @@ void CH4_serial::receiveCof(Parameter PM)
     saveSpectrum=PM.saveSpectrum;
     saveCOCN =PM.saveCOCN;
     COCNfilepath=PM.COCNfilepath;
-    COCN_interval =PM.COCN_intercal;    
+    COCN_interval =PM.COCN_intercal;
+    use_smooth=PM.USE_SMOOTH;
+    //qDebug()<<use_smooth;
 }
 void CH4_serial::receiveNeedSIG(bool need)
 {

@@ -34,6 +34,10 @@ void CH4_chart::Chart_Minit(Ui::MainWindow ui)
     ui.customPlot->legend->setSelectableParts(QCPLegend::spItems);
     ui.customPlot->addGraph();   
     ui.customPlot->graph()->setName("气体浓度");
+    QPen graphPen;
+    graphPen.setColor(QColor(16,177,171));
+    graphPen.setWidthF(2);
+    ui.customPlot->graph()->setPen(graphPen);
    // Chart_Mupdata(ui);
     ui.customPlot->rescaleAxes();
 };
@@ -56,18 +60,10 @@ void CH4_chart::Chart_Mupdata(Ui::MainWindow ui,double time,double data)
        COCNt.append(time);
        COCNd.append(data);
    }
+   ui.label_5->setText(QString::number(COCNd.length()));
    ui.customPlot->graph()->setData(COCNt,COCNd);
-   ui.customPlot->graph()->setLineStyle((QCPGraph::lsLine));
-   ui.customPlot->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
-   QPen graphPen;
-//   int r,g,b;
-//   r=std::rand()%245+10;
-//   g=std::rand()%245+10;
-//   b=std::rand()%245+10;
-   graphPen.setColor(QColor(16,177,171));
-//   qDebug()<<r<<"---"<<g<<"---"<<b;
-   graphPen.setWidthF(2);
-   ui.customPlot->graph()->setPen(graphPen);
+//   ui.customPlot->graph()->setLineStyle((QCPGraph::lsLine));
+//   ui.customPlot->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
    ui.customPlot->rescaleAxes();
    ui.customPlot->replot();
 
@@ -166,6 +162,12 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
 }
 void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s,double *after_s_e)
 {
+//    origin_y.clear();
+//    origin_x.clear();
+//    after_p_y.clear();
+//    after_p_x.clear();
+//    after_p_s_e_y.clear();
+//    after_p_s_e_x.clear();
     Max_Min MN_B;
     MN_B=coutMaxMin(origin,500);
     ui.chart_widget->yAxis->setRange(MN_B.Min-500, MN_B.Max+500);
@@ -178,6 +180,7 @@ void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s
       after_p_x[i] =i;
       after_p_s_e_y[i]=after_s_e[i];
       after_p_s_e_x[i]=i;
+
     }
 //    ui.chart_widget->addGraph();
 //    ui.chart_widget->graph()->setName("origin data");
@@ -193,6 +196,7 @@ void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s
     //==========================
 //    ui.chart_widget->addGraph();
 //    ui.chart_widget->graph()->setName("after smooth");
+    ui.chart_widget->graph(1)->setVisible(true);
     ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
 //    ui.chart_widget->graph()->setLineStyle((QCPGraph::lsLine));
 //    ui.chart_widget->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
@@ -215,6 +219,28 @@ void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s
     ui.chart_widget->replot();
    // ui.chart_widget->rescaleAxes();
 
+}
+void CH4_chart::Chart_Pupdata_1(Ui::configuration ui,double * origin,double *after_e)
+{
+    Max_Min MN_B;
+    MN_B=coutMaxMin(origin,500);
+    ui.chart_widget->yAxis->setRange(MN_B.Min-500, MN_B.Max+500);
+   // ui.chart_widget->clearGraphs();
+    for (int i=0; i<500; i++)
+    {
+      origin_y[i] = origin[i];
+      origin_x[i] =i;
+      after_p_s_e_y[i]=after_e[i];
+      after_p_s_e_x[i]=i;
+
+    }
+     ui.chart_widget->graph(1)->setVisible(false);
+//   ui.chart_widget->addGraph();
+//   ui.chart_widget->graph()->setName("origin data");
+     ui.chart_widget->graph(2)->setName("after envelop");
+     ui.chart_widget->graph(0)->setData(origin_x,origin_y);
+     ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
+     ui.chart_widget->replot();
 }
 Max_Min CH4_chart::coutMaxMin(double *dataIn,double n)
 {
