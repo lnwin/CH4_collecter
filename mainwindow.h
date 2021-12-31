@@ -27,10 +27,11 @@ public:
     void CH4Chart();
     void searchPort();
     void readConf();
-
+    void Delay_MSec(unsigned int msec);
 signals:
     void sendFilePath(QString);
     void sendCof2serial(Parameter);
+    void ToSerialThread();
 
 private slots:
     void on_pushButton_clicked();
@@ -49,6 +50,7 @@ private:
     CH4_serial *CH4_sp;
     savethread *CH4_sv;
     configuration *COF;
+    QThread *seriai_thread;
 
 
 };

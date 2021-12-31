@@ -16,29 +16,40 @@ QString Serial_Port_Number;
 double *accBuffer=new double[500];
 double localAcc=0;
 bool obiect_exist=false;
-CH4_serial::CH4_serial(QString serialname)
+CH4_serial::CH4_serial()
 {
-   Serial_Port_Number=serialname;
+  // Serial_Port_Number=serialname;
+   qDebug()<<"主界面"<<QThread::currentThread();
+    InitObject();
+
 }
 void CH4_serial::InitObject()
 {
-    mainport =new QSerialPort;
+
     CH4_SDT  =new savethread;
-    qDebug()<<"创建对象";
+
 }
 bool CH4_serial::openPort()
 {
+
+    if(!obiect_exist)
+    {
+        mainport =new QSerialPort;
+        obiect_exist=true;
+    }
+
 
      if(!mainport->isOpen())
     {
 
         mainport->setPortName(Serial_Port_Number);//设置串口名
+
         mainport->open(QIODevice::ReadWrite);//以读写方式打开串口
         mainport->setBaudRate(QSerialPort::Baud115200);//波特率
         mainport->setDataBits(QSerialPort::Data8);//数据位
         mainport->setParity(QSerialPort::NoParity);//校验位
         mainport->setStopBits(QSerialPort::OneStop);//停止位
-        mainport->write("d");
+         mainport->write("ds");
 //        ui.comboBox->setEnabled(false);
 //        ui.pushButton->setText("停止读取");
 //        ui.pushButton_fileselect->setEnabled(false);
@@ -47,7 +58,7 @@ bool CH4_serial::openPort()
         //anlyseData();
         emit sendSSig2Conf(true);
         emit sendSSig2Main(true);
-        qDebug()<<"串口已打开";
+        qDebug()<<"串口已打开"<<QThread::currentThread();
         qDebug()<<mainport->isOpen();
         return true;
 
@@ -78,7 +89,7 @@ void CH4_serial::readData()
 {
 
 
-qDebug()<<"number=========1012";
+
     QByteArray serialBuffer;
     serialBuffer=mainport->readAll();
     // if(!serialBuffer.isEmpty()&&(QString(serialBuffer.at(0))=="0xaa")&&(serialBuffer.length()==1012))
@@ -121,7 +132,7 @@ qDebug()<<"number=========1012";
              }
 
             // this->start();
-            // anlyseData();
+             anlyseData();
              localAcc=0;
          }
 
@@ -272,15 +283,60 @@ void CH4_serial::anlyseData()
 }
 void CH4_serial::run()
 {
-    if(!obiect_exist)
-    {
-        InitObject();
-        obiect_exist=true;
-    }
+
    // MUTEX.lock();
    // anlyseData();
    // MUTEX.unlock();
-    openPort();
+//    if(!obiect_exist)
+//    {
+      //   mainport =new QSerialPort;
+        // obiect_exist=true;
+//    }
+
+   //
+    qDebug()<<"创建对象"<<QThread::currentThread();
+    if(!mainport->isOpen())
+   {
+
+       mainport->setPortName(Serial_Port_Number);//设置串口名
+       mainport->open(QIODevice::ReadWrite);//以读写方式打开串口
+       mainport->setBaudRate(QSerialPort::Baud115200);//波特率
+       mainport->setDataBits(QSerialPort::Data8);//数据位
+       mainport->setParity(QSerialPort::NoParity);//校验位
+       mainport->setStopBits(QSerialPort::OneStop);//停止位
+       mainport->write("d");
+//        ui.comboBox->setEnabled(false);
+//        ui.pushButton->setText("停止读取");
+//        ui.pushButton_fileselect->setEnabled(false);
+//        ui.saveCOCN->setEnabled(false);
+       connect(mainport,SIGNAL(readyRead()),this,SLOT(readData()));
+       //anlyseData();
+       emit sendSSig2Conf(true);
+       emit sendSSig2Main(true);
+       qDebug()<<"串口已打开"<<QThread::currentThread();
+       qDebug()<<mainport->isOpen();
+      // return true;
+
+
+
+   }
+    else
+   {
+
+       mainport->close();
+//      ui.comboBox->setEnabled(true);
+//      ui.pushButton_fileselect->setEnabled(true);
+//      ui.saveCOCN->setEnabled(true);
+//      ui.pushButton->setText("开始读取");
+       emit sendSSig2Conf(false);
+       emit sendSSig2Main(false);
+       FBuffer.clear();
+       qDebug()<<"串口已关闭";
+       qDebug()<<mainport->isOpen();
+      // return false;
+
+
+   }
 
 }
 void CH4_serial::saveData_0()
@@ -327,7 +383,7 @@ void CH4_serial::receiveCof(Parameter PM)
     COCN_interval =PM.COCN_intercal;
     use_smooth=PM.USE_SMOOTH;
     Serial_Port_Number=PM.portname;
-    //qDebug()<<use_smooth;
+    qDebug()<<Serial_Port_Number;
 }
 void CH4_serial::receiveNeedSIG(bool need)
 {

@@ -22,13 +22,21 @@ MainWindow::MainWindow(QWidget *parent)
     searchPort();
     CH4 =new CH4_chart;
     CH4->Chart_Minit(*ui);
-    CH4_sp =new CH4_serial(ui->comboBox->currentText());
+
     CH4_sv =new savethread;
 
-    connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));    
+    seriai_thread =new QThread();
+    CH4_sp =new CH4_serial();
+   // CH4_sp =new CH4_serial("COM2");
+    connect(this,SIGNAL(ToSerialThread()),CH4_sp,SLOT (openPort()));
     connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
     connect(CH4_sp,SIGNAL(sendData2M(double,double)),this,SLOT(receiveDataFromS(double,double)));
-     connect(CH4_sp,SIGNAL(sendSSig2Main(bool)),this,SLOT(receiveSSigFromS(bool)));
+    connect(CH4_sp,SIGNAL(sendSSig2Main(bool)),this,SLOT(receiveSSigFromS(bool)));
+    CH4_sp->moveToThread(seriai_thread);
+    seriai_thread->start();
+
+    connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));    
+
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
     QMessageBox msgBox ;
@@ -86,23 +94,13 @@ void MainWindow::on_pushButton_clicked()
      M_parameter.portname =ui->comboBox->currentText();
      emit sendCof2serial(M_parameter);
 
-     CH4_sp->start();
+
+   //  Delay_MSec(50);
 
 
-//     if(CH4_sp->openPort(ui->comboBox->currentText(),*ui))
-//     {
-//              serialisopen=true;
-//              ui->pushButton_fileselect->setEnabled(false);
-//              ui->saveCOCN->setEnabled(false);
 
+     emit ToSerialThread();
 
-//     }
-//     else
-//     {
-//              serialisopen=false;
-//              ui->pushButton_fileselect->setEnabled(true);
-//              ui->saveCOCN->setEnabled(true);
-//     }
 
 
 
@@ -266,7 +264,7 @@ void MainWindow::readConf()
 };
 void MainWindow::receiveSerialSIGFromConf()
 {
-     CH4_sp->start();
+    on_pushButton_clicked();
 }
 void MainWindow::receiveDataFromS(double time, double data)
 {
@@ -294,3 +292,13 @@ void MainWindow::receiveSSigFromS(bool isopen)
                serialisopen=false;
    }
 }
+void MainWindow::Delay_MSec(unsigned int msec)
+{
+
+        QTime _Timer = QTime::currentTime().addMSecs(msec);
+
+        while( QTime::currentTime() < _Timer )
+
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
+
+};

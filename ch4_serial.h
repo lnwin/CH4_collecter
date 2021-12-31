@@ -22,6 +22,7 @@ struct Max_Min
 
 };
 Q_DECLARE_METATYPE(Max_Min);
+
 struct Parameter
 {
    double acc;
@@ -43,10 +44,10 @@ class CH4_serial :public QThread
 {
     Q_OBJECT
 public:
-    CH4_serial(QString);
+    CH4_serial();
     QSerialPort *mainport;
     savethread  *CH4_SDT;
-    bool openPort();
+
     void run();
     void anlyseData();
     void saveData_0();
@@ -54,6 +55,7 @@ public:
     float Hex2Dec_yrp(QByteArray hex);
     void Delay_MSec(unsigned int msec);
     void InitObject();
+
 signals:
     void sendData2CChart(mwArray origin,mwArray afterP);
     void sendSSig2Conf(bool);
@@ -64,6 +66,7 @@ public slots:
     void readData();
     void receiveCof(Parameter);
     void receiveNeedSIG(bool);
+     bool openPort();
 
 
 
