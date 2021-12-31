@@ -33,6 +33,7 @@ struct Parameter
    double COCN_intercal;
    QString spectrumfilepath;
    QString COCNfilepath;
+   QString portname;
    double USE_SMOOTH;
 };
 
@@ -42,25 +43,28 @@ class CH4_serial :public QThread
 {
     Q_OBJECT
 public:
-    CH4_serial();
+    CH4_serial(QString);
     QSerialPort *mainport;
     savethread  *CH4_SDT;
-    bool openPort(QString, Ui::MainWindow);
+    bool openPort();
     void run();
     void anlyseData();
     void saveData_0();
     Max_Min coutMaxMin(double*,double);
     float Hex2Dec_yrp(QByteArray hex);
     void Delay_MSec(unsigned int msec);
+    void InitObject();
 signals:
     void sendData2CChart(mwArray origin,mwArray afterP);
     void sendSSig2Conf(bool);
+    void sendSSig2Main(bool);
     void sendData2M(double,double);
     void sendData2C( double *originData,double  *after_s,double  *after_s_e);
 public slots:
     void readData();
     void receiveCof(Parameter);
     void receiveNeedSIG(bool);
+
 
 
 };

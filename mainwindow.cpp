@@ -22,12 +22,13 @@ MainWindow::MainWindow(QWidget *parent)
     searchPort();
     CH4 =new CH4_chart;
     CH4->Chart_Minit(*ui);
-    CH4_sp =new CH4_serial;
+    CH4_sp =new CH4_serial(ui->comboBox->currentText());
     CH4_sv =new savethread;
 
     connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));    
-    connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));   
+    connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
     connect(CH4_sp,SIGNAL(sendData2M(double,double)),this,SLOT(receiveDataFromS(double,double)));
+     connect(CH4_sp,SIGNAL(sendSSig2Main(bool)),this,SLOT(receiveSSigFromS(bool)));
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
     QMessageBox msgBox ;
@@ -70,6 +71,7 @@ void MainWindow::searchPort()
 };
 void MainWindow::on_pushButton_clicked()
 {
+
      M_parameter.COCNfilepath =ui->COCN_filepath->text();
     if(ui->saveCOCN->isChecked())
    {
@@ -81,21 +83,28 @@ void MainWindow::on_pushButton_clicked()
    }
 
      M_parameter.COCN_intercal=ui->COCN_interval->currentIndex();
+     M_parameter.portname =ui->comboBox->currentText();
      emit sendCof2serial(M_parameter);
-     if(CH4_sp->openPort(ui->comboBox->currentText(),*ui))
-     {
-              serialisopen=true;
-              ui->pushButton_fileselect->setEnabled(false);
-              ui->saveCOCN->setEnabled(false);
+
+     CH4_sp->start();
 
 
-     }
-     else
-     {
-              serialisopen=false;
-              ui->pushButton_fileselect->setEnabled(true);
-              ui->saveCOCN->setEnabled(true);
-     }
+//     if(CH4_sp->openPort(ui->comboBox->currentText(),*ui))
+//     {
+//              serialisopen=true;
+//              ui->pushButton_fileselect->setEnabled(false);
+//              ui->saveCOCN->setEnabled(false);
+
+
+//     }
+//     else
+//     {
+//              serialisopen=false;
+//              ui->pushButton_fileselect->setEnabled(true);
+//              ui->saveCOCN->setEnabled(true);
+//     }
+
+
 
 };
 void MainWindow::contextMenuRequest(QPoint pos)
@@ -257,7 +266,7 @@ void MainWindow::readConf()
 };
 void MainWindow::receiveSerialSIGFromConf()
 {
-     CH4_sp->openPort(ui->comboBox->currentText(),*ui);
+     CH4_sp->start();
 }
 void MainWindow::receiveDataFromS(double time, double data)
 {
@@ -265,4 +274,23 @@ void MainWindow::receiveDataFromS(double time, double data)
    CH4->Chart_Mupdata(*ui,time,data);   
    ui->lcdNumber_2->display(QString::number(data,'f',1));
 
+}
+void MainWindow::receiveSSigFromS(bool isopen)
+{
+   if(isopen)
+   {
+               ui->comboBox->setEnabled(false);
+               ui->pushButton->setText("停止读取");
+               ui->pushButton_fileselect->setEnabled(false);
+               ui->saveCOCN->setEnabled(false);
+               serialisopen=true;
+   }
+   else
+   {
+               ui->comboBox->setEnabled(true);
+               ui->pushButton_fileselect->setEnabled(true);
+               ui->saveCOCN->setEnabled(true);
+               ui->pushButton->setText("开始读取");
+               serialisopen=false;
+   }
 }

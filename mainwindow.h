@@ -31,6 +31,7 @@ public:
 signals:
     void sendFilePath(QString);
     void sendCof2serial(Parameter);
+
 private slots:
     void on_pushButton_clicked();
     void contextMenuRequest(QPoint pos);
@@ -40,6 +41,7 @@ private slots:
     void on_pushButton_fileselect_clicked();
     void receiveSerialSIGFromConf();
     void receiveDataFromS(double time,double data);
+    void receiveSSigFromS(bool);
 
 private:
     Ui::MainWindow *ui;

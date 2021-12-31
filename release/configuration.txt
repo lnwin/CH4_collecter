@@ -14,7 +14,7 @@ COCNfilepath
 D:/COCN_DATA
 use_smooth
 0
-aveCOCN
+saveCOCN
 1
 COCN_intercal
 3
