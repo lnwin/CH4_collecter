@@ -6,7 +6,8 @@ bool cNeedData;
 double use_smooth;
 double acc=0,a_n=0.0015,b_n=4,win_n=3,COCN;
 QString spectrumfilepath,COCNfilepath;
-double saveSpectrum,saveCOCN,COCN_interval;
+double saveSpectrum,saveCOCN,COCN_interval,cocn_win,cocn_win_count=0;
+QList <double> COCN_data_befor_win;
 QList <QString> COCN_data;
 QList <QString> sp_data;
 QList <QString> sp_data_AP;
@@ -251,8 +252,31 @@ void CH4_serial::anlyseData()
         }
 
         //==============================================
-        double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;             
-            emit sendData2M(nowTime,COCN);        
+       if(cocn_win_count<cocn_win)
+       {
+
+            COCN_data_befor_win.append(COCN);
+            cocn_win_count+=1;
+       }
+
+        if(cocn_win_count==cocn_win)
+       {
+           double out_data=0;
+           cocn_win_count=0;
+           for(int i=0;i<COCN_data_befor_win.length();i++)
+           {
+               out_data+=COCN_data_befor_win[i];
+           }
+
+           COCN_data_befor_win.removeFirst();
+           out_data=out_data/cocn_win;
+           double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
+           emit sendData2M(nowTime,out_data);
+       }
+
+
+
+
         //==============================================
         COCN_data.clear();
         QDateTime datatime =QDateTime::currentDateTime();
@@ -383,6 +407,7 @@ void CH4_serial::receiveCof(Parameter PM)
     COCN_interval =PM.COCN_intercal;
     use_smooth=PM.USE_SMOOTH;
     Serial_Port_Number=PM.portname;
+    cocn_win=PM.COCN_WIN+1;
     qDebug()<<Serial_Port_Number;
 }
 void CH4_serial::receiveNeedSIG(bool need)

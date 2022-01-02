@@ -36,6 +36,7 @@ struct Parameter
    QString COCNfilepath;
    QString portname;
    double USE_SMOOTH;
+   double COCN_WIN;
 };
 
 Q_DECLARE_METATYPE(Parameter);
