@@ -3,7 +3,7 @@ accumulation
 filter
 10
 a
-0.1
+1
 b
 4
 saveSpectrum
@@ -13,10 +13,8 @@ D:/origin_DATA
 COCNfilepath
 D:/COCN_DATA
 use_smooth
-0
-COCN_WIN
-0
-saveCOCN
 1
+COCN_WIN
+4
 COCN_intercal
 3

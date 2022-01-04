@@ -40,7 +40,7 @@ private slots:
     void open_Configuration();   
     void onTimeOut();
     void on_pushButton_fileselect_clicked();
-    void receiveSerialSIGFromConf();
+    void receiveSerialSIGFromConf(Parameter);
     void receiveDataFromS(double time,double data);
     void receiveSSigFromS(bool);
 

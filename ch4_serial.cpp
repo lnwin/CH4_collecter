@@ -9,6 +9,7 @@ QString spectrumfilepath,COCNfilepath;
 double saveSpectrum,saveCOCN,COCN_interval,cocn_win,cocn_win_count=0;
 QList <double> COCN_data_befor_win;
 QList <QString> COCN_data;
+QList <QString> COCN_data_after;
 QList <QString> sp_data;
 QList <QString> sp_data_AP;
 QString saveTime;
@@ -17,6 +18,7 @@ QString Serial_Port_Number;
 double *accBuffer=new double[500];
 double localAcc=0;
 bool obiect_exist=false;
+bool first_count=true;
 CH4_serial::CH4_serial()
 {
   // Serial_Port_Number=serialname;
@@ -57,10 +59,11 @@ bool CH4_serial::openPort()
 //        ui.saveCOCN->setEnabled(false);
         connect(mainport,SIGNAL(readyRead()),this,SLOT(readData()));
         //anlyseData();
+
         emit sendSSig2Conf(true);
         emit sendSSig2Main(true);
-        qDebug()<<"串口已打开"<<QThread::currentThread();
-        qDebug()<<mainport->isOpen();
+       // qDebug()<<"串口已打开"<<QThread::currentThread();
+       // qDebug()<<mainport->isOpen();
         return true;
 
 
@@ -77,6 +80,9 @@ bool CH4_serial::openPort()
         emit sendSSig2Conf(false);
         emit sendSSig2Main(false);
         FBuffer.clear();
+        COCN_data_befor_win.clear();
+        first_count=true;
+        cocn_win_count=0;
         qDebug()<<"串口已关闭";
         qDebug()<<mainport->isOpen();
         return false;
@@ -165,6 +171,7 @@ void CH4_serial::anlyseData()
         COCN=0;
         sp_data.clear();
         sp_data_AP.clear();
+        double out_data=0;
         int elementCntA=500;//元素个数
        // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
         double  *after_s=new double[elementCntA];
@@ -185,10 +192,8 @@ void CH4_serial::anlyseData()
                 after_s[j]=outPut.Get(0,j+1);
 
             }
+             // qDebug()<<after_s[0];
         }
-
-
-
 
         mwArray d(win_n);//串窗口平滑参数
         mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
@@ -242,7 +247,7 @@ void CH4_serial::anlyseData()
         MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
         double X = MN_B.Max-MN_B.Min;        
         COCN = (a_n*X)+b_n;
-        qDebug()<<COCN;
+
         //==============================================
         if(cNeedData)
         {
@@ -252,26 +257,73 @@ void CH4_serial::anlyseData()
         }
 
         //==============================================
-       if(cocn_win_count<cocn_win)
-       {
 
-            COCN_data_befor_win.append(COCN);
-            cocn_win_count+=1;
-       }
-
-        if(cocn_win_count==cocn_win)
+       if(first_count)
        {
-           double out_data=0;
-           cocn_win_count=0;
+           if(cocn_win==0)
+           {
+
+               out_data=COCN;
+               double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
+               emit sendData2M(nowTime,out_data);
+               first_count=false;
+           }
+
+           if(cocn_win_count==cocn_win)
+        {
+
+
+           out_data=0;
            for(int i=0;i<COCN_data_befor_win.length();i++)
            {
                out_data+=COCN_data_befor_win[i];
            }
 
-           COCN_data_befor_win.removeFirst();
+
            out_data=out_data/cocn_win;
            double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
            emit sendData2M(nowTime,out_data);
+           first_count=false;
+
+         }
+            if(cocn_win_count<cocn_win)
+            {
+
+              COCN_data_befor_win.append(COCN);
+              cocn_win_count+=1;
+
+            }
+
+
+
+
+       }
+
+        else//(cocn_win_count==cocn_win)
+       {
+
+           if(cocn_win==0)
+           {
+
+               double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
+               emit sendData2M(nowTime,COCN);
+           }
+           else
+           {
+           COCN_data_befor_win.append(COCN);
+           COCN_data_befor_win.removeFirst();
+
+           //cocn_win_count=0;
+           for(int i=0;i<COCN_data_befor_win.length();i++)
+           {
+               out_data+=COCN_data_befor_win[i];
+               qDebug()<<COCN_data_befor_win[i];
+           }
+
+           out_data=out_data/cocn_win;
+           double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
+           emit sendData2M(nowTime,out_data);
+           }
        }
 
 
@@ -279,8 +331,11 @@ void CH4_serial::anlyseData()
 
         //==============================================
         COCN_data.clear();
+        COCN_data_after.clear();
         QDateTime datatime =QDateTime::currentDateTime();
         QString timeString =datatime.toString("HH:mm:ss");
+        COCN_data_after.append(timeString);
+        COCN_data_after.append(QString::number(out_data));
         COCN_data.append(timeString);
         COCN_data.append(QString::number(COCN));
 
@@ -368,7 +423,7 @@ void CH4_serial::saveData_0()
     QDateTime datatime =QDateTime::currentDateTime();
     QString saveTime =datatime.toString("yyyy-MM-dd-HH-mm-ss");
 
-    CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,sp_data,sp_data_AP,spectrumfilepath,COCNfilepath,saveTime);
+    CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,COCN_data_after,sp_data,sp_data_AP,spectrumfilepath,COCNfilepath,saveTime);
 
 };
 Max_Min CH4_serial::coutMaxMin(double *dataIn,double n)
@@ -407,8 +462,10 @@ void CH4_serial::receiveCof(Parameter PM)
     COCN_interval =PM.COCN_intercal;
     use_smooth=PM.USE_SMOOTH;
     Serial_Port_Number=PM.portname;
-    cocn_win=PM.COCN_WIN+1;
-    qDebug()<<Serial_Port_Number;
+    cocn_win=PM.COCN_WIN;
+   // qDebug()<<"an"<<a_n;
+  //  qDebug()<<"b_n"<<b_n;
+    qDebug()<<"cocn_win"<<cocn_win;
 }
 void CH4_serial::receiveNeedSIG(bool need)
 {

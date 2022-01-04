@@ -7,6 +7,7 @@ QStandardItemModel *OriginModel =new QStandardItemModel;
 bool showChart;
 bool CneedData;
 Parameter C_parameter;
+
 configuration::configuration(QWidget *parent) :
     QDialog(parent),
     ui_cof(new Ui::configuration)
@@ -158,6 +159,7 @@ void configuration::on_pushButton_3_clicked()
         C_parameter.a =ui_cof->a_n->text().toDouble();
         C_parameter.b =ui_cof->b_n->text().toDouble();
         C_parameter.spectrumfilepath =ui_cof->Spectrumline->text();
+        C_parameter.COCN_WIN=ui_cof->COCN_WIN->text().toDouble();
         emit sendCof2serial(C_parameter);
 
    }
@@ -188,7 +190,9 @@ void configuration::on_pushButton_2_clicked()
 }
 void configuration::on_read_Button_clicked()
 {
-    emit sendSerialSIG2Main();
+
+    emit sendSerialSIG2Main(C_parameter);
+
 }
 void configuration::receiveSSig(bool isopen)
 {
@@ -356,8 +360,17 @@ void configuration::receiveDataFromS(double *originData,double *after_s,double  
     }
     else
     {
-    ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e);
+       ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e);
     }
-    ui_cof->chart_widget->replot();
+      ui_cof->chart_widget->replot();
 
 };
+
+void configuration::on_pushButton_clicked()
+{
+    QProcess PRO;
+    QString path =QApplication::applicationDirPath()+"/PCI-FPGA/PCI-FPGA.application";
+    QDesktopServices::openUrl(path);
+
+
+}

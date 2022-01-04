@@ -34,6 +34,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(CH4_sp,SIGNAL(sendSSig2Main(bool)),this,SLOT(receiveSSigFromS(bool)));
     CH4_sp->moveToThread(seriai_thread);
     seriai_thread->start();
+    //=====================================================
+
+    COF = new configuration();
+    connect(COF,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
+    connect(COF,SIGNAL(sendSerialSIG2Main(Parameter)),this,SLOT(receiveSerialSIGFromConf(Parameter)));
+    connect(CH4_sp,SIGNAL(sendSSig2Conf(bool)),COF,SLOT(receiveSSig(bool)));
+    connect(COF,SIGNAL(needData(bool)),CH4_sp,SLOT(receiveNeedSIG(bool)));
+    connect(CH4_sp,SIGNAL(sendData2C(double*,double*,double*)),COF,SLOT(receiveDataFromS(double*,double*,double*)));
+
+    //=====================================================
 
     connect(ui->system_Set,SIGNAL(triggered()),this,SLOT(open_Configuration()));    
 
@@ -80,6 +90,8 @@ void MainWindow::searchPort()
 void MainWindow::on_pushButton_clicked()
 {
 
+  // // readConf();
+
      M_parameter.COCNfilepath =ui->COCN_filepath->text();
     if(ui->saveCOCN->isChecked())
    {
@@ -93,17 +105,8 @@ void MainWindow::on_pushButton_clicked()
      M_parameter.COCN_intercal=ui->COCN_interval->currentIndex();
      M_parameter.portname =ui->comboBox->currentText();
      emit sendCof2serial(M_parameter);
-
-
    //  Delay_MSec(50);
-
-
-
      emit ToSerialThread();
-
-
-
-
 };
 void MainWindow::contextMenuRequest(QPoint pos)
 {
@@ -151,12 +154,7 @@ void MainWindow::open_Configuration()
          {
              if(text=="1023")
              {
-                  COF = new configuration();
-                  connect(COF,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
-                  connect(COF,SIGNAL(sendSerialSIG2Main()),this,SLOT(receiveSerialSIGFromConf()));
-                  connect(CH4_sp,SIGNAL(sendSSig2Conf(bool)),COF,SLOT(receiveSSig(bool)));
-                  connect(COF,SIGNAL(needData(bool)),CH4_sp,SLOT(receiveNeedSIG(bool)));
-                  connect(CH4_sp,SIGNAL(sendData2C(double*,double*,double*)),COF,SLOT(receiveDataFromS(double*,double*,double*)));
+
                   COF->show();
 
              }
@@ -262,15 +260,16 @@ void MainWindow::readConf()
        msgBox.exec();
     }
 };
-void MainWindow::receiveSerialSIGFromConf()
+void MainWindow::receiveSerialSIGFromConf(Parameter sk)
 {
+    M_parameter=sk;
     on_pushButton_clicked();
 }
 void MainWindow::receiveDataFromS(double time, double data)
 {
 
    CH4->Chart_Mupdata(*ui,time,data);   
-   ui->lcdNumber_2->display(QString::number(data,'f',1));
+   ui->lcdNumber_2->display(QString::number(data,'f',2));
 
 }
 void MainWindow::receiveSSigFromS(bool isopen)
@@ -282,6 +281,7 @@ void MainWindow::receiveSSigFromS(bool isopen)
                ui->pushButton_fileselect->setEnabled(false);
                ui->saveCOCN->setEnabled(false);
                serialisopen=true;
+               ui->label_5->clear();
    }
    else
    {
