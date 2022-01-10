@@ -1,8 +1,13 @@
 ﻿#include "savethread.h"
 QString sp_FP;
 QString COCN_FP,SAVETime;
-double save_SP,save_COCN,COCNInter;
+double save_SP,save_COCN;int COCNInter=0,SUB=0;
 QList <QString>COCNDATA, COCNDATA_after,  spdata,spdata_after;
+//==========================
+bool firstCount=true;
+uint startTime=0;
+uint endTime=0;
+//==========================
 
 savethread::savethread()
 {
@@ -12,13 +17,53 @@ void savethread::run()
 {
    if(save_COCN==1)
    {
-       saveCOCN(COCNDATA,sp_FP);
+
+
+        //========================
+        if(firstCount)
+        {
+            firstCount=false;
+            QDateTime sk=QDateTime::currentDateTime();
+            startTime = sk.toTime_t();
+
+        }
+
+            QDateTime sk=QDateTime::currentDateTime();
+            endTime = sk.toTime_t();
+            int ss=endTime-startTime;
+
+          switch (COCNInter)
+            {
+              case 0: SUB=1*60   ;
+              break;
+              case 1: SUB=10*60  ;
+              break;
+              case 2: SUB=20*60  ;
+              break;
+              case 3: SUB=30*60  ;
+              break;
+              case 4: SUB=40*60  ;
+              break;
+              case 5: SUB=50*60  ;
+              break;
+            }
+
+          if(ss>=SUB)
+          {
+
+              saveCOCN_after(COCNDATA_after,COCN_FP);
+              firstCount=true;
+
+          }
+
+
+        //========================
 
    }
    if(save_SP==1)
    {
        saveSP(spdata,sp_FP,SAVETime);
-       saveCOCN_after(COCNDATA_after,COCN_FP);
+       saveCOCN(COCNDATA,sp_FP);
        saveSP_afterP(spdata_after,sp_FP,SAVETime);
    }
 }
@@ -43,7 +88,7 @@ void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
 void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH)
 {
     QDateTime time =QDateTime::currentDateTime();
-    QString filename =time.toString("yyyy-MM-dd")+"_COCN_DATA.txt";
+    QString filename =time.toString("yyyy-MM-dd")+"_origin_COCN_DATA.txt";
     PATH+="/";
     filename=PATH+filename;
     QFile datafile(filename);
@@ -69,7 +114,7 @@ void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH)
 void savethread::saveCOCN_after(QList<QString>COCN_DATA_after, QString PATH)
 {
     QDateTime time =QDateTime::currentDateTime();
-    QString filename =time.toString("yyyy-MM-dd")+"_COCN_DATA_after.txt";
+    QString filename =time.toString("yyyy-MM-dd")+"_COCN_DATAr.txt";
     PATH+="/";
     filename=PATH+filename;
     QFile datafile(filename);

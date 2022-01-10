@@ -22,7 +22,7 @@ bool first_count=true;
 CH4_serial::CH4_serial()
 {
   // Serial_Port_Number=serialname;
-   qDebug()<<"主界面"<<QThread::currentThread();
+  // qDebug()<<"主界面"<<QThread::currentThread();
     InitObject();
 
 }
@@ -83,8 +83,8 @@ bool CH4_serial::openPort()
         COCN_data_befor_win.clear();
         first_count=true;
         cocn_win_count=0;
-        qDebug()<<"串口已关闭";
-        qDebug()<<mainport->isOpen();
+       //qDebug()<<"串口已关闭";
+       //qDebug()<<mainport->isOpen();
         return false;
 
 
@@ -106,7 +106,7 @@ void CH4_serial::readData()
            FBuffer.append(serialBuffer);
            if((FBuffer.length()==1012))
         {
-              qDebug()<<"number=========1012";
+             // qDebug()<<"number=========1012";
              if(quint8(FBuffer.at(0))==170)
         {
             double *originBuffer=new double[500];
@@ -317,7 +317,7 @@ void CH4_serial::anlyseData()
            for(int i=0;i<COCN_data_befor_win.length();i++)
            {
                out_data+=COCN_data_befor_win[i];
-               qDebug()<<COCN_data_befor_win[i];
+             //  qDebug()<<COCN_data_befor_win[i];
            }
 
            out_data=out_data/cocn_win;
@@ -373,7 +373,7 @@ void CH4_serial::run()
 //    }
 
    //
-    qDebug()<<"创建对象"<<QThread::currentThread();
+   // qDebug()<<"创建对象"<<QThread::currentThread();
     if(!mainport->isOpen())
    {
 
@@ -392,8 +392,8 @@ void CH4_serial::run()
        //anlyseData();
        emit sendSSig2Conf(true);
        emit sendSSig2Main(true);
-       qDebug()<<"串口已打开"<<QThread::currentThread();
-       qDebug()<<mainport->isOpen();
+      // qDebug()<<"串口已打开"<<QThread::currentThread();
+      // qDebug()<<mainport->isOpen();
       // return true;
 
 
@@ -410,8 +410,8 @@ void CH4_serial::run()
        emit sendSSig2Conf(false);
        emit sendSSig2Main(false);
        FBuffer.clear();
-       qDebug()<<"串口已关闭";
-       qDebug()<<mainport->isOpen();
+      // qDebug()<<"串口已关闭";
+     //  qDebug()<<mainport->isOpen();
       // return false;
 
 
@@ -465,7 +465,7 @@ void CH4_serial::receiveCof(Parameter PM)
     cocn_win=PM.COCN_WIN;
    // qDebug()<<"an"<<a_n;
   //  qDebug()<<"b_n"<<b_n;
-    qDebug()<<"cocn_win"<<cocn_win;
+   // qDebug()<<"cocn_win"<<cocn_win;
 }
 void CH4_serial::receiveNeedSIG(bool need)
 {

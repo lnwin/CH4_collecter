@@ -4,6 +4,7 @@
 QString  srcDirPath;
 Parameter M_parameter;
 bool serialisopen;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -107,6 +108,9 @@ void MainWindow::on_pushButton_clicked()
      emit sendCof2serial(M_parameter);
    //  Delay_MSec(50);
      emit ToSerialThread();
+
+
+
 };
 void MainWindow::contextMenuRequest(QPoint pos)
 {
@@ -280,6 +284,7 @@ void MainWindow::receiveSSigFromS(bool isopen)
                ui->pushButton->setText("停止读取");
                ui->pushButton_fileselect->setEnabled(false);
                ui->saveCOCN->setEnabled(false);
+               ui->COCN_interval->setEnabled(false);
                serialisopen=true;
                ui->label_5->clear();
    }
@@ -289,6 +294,7 @@ void MainWindow::receiveSSigFromS(bool isopen)
                ui->pushButton_fileselect->setEnabled(true);
                ui->saveCOCN->setEnabled(true);
                ui->pushButton->setText("开始读取");
+               ui->COCN_interval->setEnabled(true);
                serialisopen=false;
    }
 }

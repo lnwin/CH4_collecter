@@ -56,7 +56,7 @@ void configuration::readConf()
        C_parameter.COCNfilepath =sk.at(13);
        C_parameter.USE_SMOOTH=sk.at(15).toDouble();
        C_parameter.COCN_WIN=sk.at(17).toDouble();
-       qDebug()<<C_parameter.USE_SMOOTH;
+       C_parameter.COCN_intercal =sk.at(19).toDouble();
        ui_cof->add_lin->setText(sk.at(1));
        ui_cof->win_n->setText(sk.at(3));
        ui_cof->a_n->setText(sk.at(5));
@@ -160,6 +160,7 @@ void configuration::on_pushButton_3_clicked()
         C_parameter.b =ui_cof->b_n->text().toDouble();
         C_parameter.spectrumfilepath =ui_cof->Spectrumline->text();
         C_parameter.COCN_WIN=ui_cof->COCN_WIN->text().toDouble();
+       // C_parameter.COCN_intercal=ui_cof->COCN_WIN->text().toDouble();
         emit sendCof2serial(C_parameter);
 
    }
