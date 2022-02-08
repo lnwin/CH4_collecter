@@ -13,6 +13,7 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QInputDialog>
+#include <ad7606.h>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -51,6 +52,12 @@ private:
     savethread *CH4_sv;
     configuration *COF;
     QThread *seriai_thread;
+    //==========新采集卡
+    BYTE byDevIndex;
+    DWORD dwReadCycle;
+    ADC_CONFIG myADCCfg;
+    bool bHexDisplay;
+    float MaxVol;
 
 
 };

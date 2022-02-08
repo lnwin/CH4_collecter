@@ -1,6 +1,7 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <qdebug.h>
+
 QString  srcDirPath;
 Parameter M_parameter;
 bool serialisopen;

@@ -1,5 +1,6 @@
 ﻿#include "ch4_serial.h"
 #include <mutex>
+
 std::mutex MUTEX;
 bool needread=false;
 bool cNeedData;
