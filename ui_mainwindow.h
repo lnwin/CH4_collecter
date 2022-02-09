@@ -23,6 +23,7 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
 #include <qcustomplot.h>
 
@@ -51,10 +52,27 @@ public:
     QHBoxLayout *horizontalLayout_3;
     QLineEdit *COCN_filepath;
     QPushButton *pushButton_fileselect;
-    QLabel *label;
-    QComboBox *comboBox;
     QPushButton *pushButton;
     QLabel *label_5;
+    QPushButton *pushButton_2;
+    QTextEdit *textEdit;
+    QPushButton *pushButton_3;
+    QComboBox *comboBox;
+    QComboBox *comboBox_2;
+    QComboBox *comboBox_3;
+    QComboBox *comboBox_4;
+    QComboBox *comboBox_5;
+    QLabel *label;
+    QLabel *label_6;
+    QLabel *label_7;
+    QLabel *label_8;
+    QLabel *label_9;
+    QLabel *label_10;
+    QLabel *label_11;
+    QLabel *label_12;
+    QLineEdit *lineEdit;
+    QLineEdit *lineEdit_2;
+    QLineEdit *lineEdit_3;
     QMenuBar *menubar;
     QMenu *menu;
 
@@ -62,7 +80,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1060, 521);
+        MainWindow->resize(1157, 528);
         QFont font;
         font.setBold(false);
         font.setWeight(50);
@@ -86,10 +104,10 @@ public:
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         customPlot = new QCustomPlot(centralwidget);
         customPlot->setObjectName(QString::fromUtf8("customPlot"));
-        customPlot->setGeometry(QRect(10, 60, 1041, 431));
+        customPlot->setGeometry(QRect(100, 60, 1041, 431));
         label_2 = new QLabel(centralwidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
-        label_2->setGeometry(QRect(790, 0, 61, 61));
+        label_2->setGeometry(QRect(880, 0, 61, 61));
         QFont font1;
         font1.setPointSize(12);
         font1.setBold(false);
@@ -97,7 +115,7 @@ public:
         label_2->setFont(font1);
         lcdNumber = new QLCDNumber(centralwidget);
         lcdNumber->setObjectName(QString::fromUtf8("lcdNumber"));
-        lcdNumber->setGeometry(QRect(500, 0, 281, 55));
+        lcdNumber->setGeometry(QRect(590, 0, 281, 55));
         lcdNumber->setMinimumSize(QSize(0, 0));
         QFont font2;
         font2.setPointSize(20);
@@ -106,14 +124,14 @@ public:
         lcdNumber->setFrameShadow(QFrame::Raised);
         label_3 = new QLabel(centralwidget);
         label_3->setObjectName(QString::fromUtf8("label_3"));
-        label_3->setGeometry(QRect(430, 0, 71, 61));
+        label_3->setGeometry(QRect(520, 0, 71, 61));
         label_3->setFont(font1);
         lcdNumber_2 = new QLCDNumber(centralwidget);
         lcdNumber_2->setObjectName(QString::fromUtf8("lcdNumber_2"));
-        lcdNumber_2->setGeometry(QRect(860, 0, 101, 55));
+        lcdNumber_2->setGeometry(QRect(950, 0, 101, 55));
         layoutWidget = new QWidget(centralwidget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(210, 0, 211, 31));
+        layoutWidget->setGeometry(QRect(300, 0, 211, 31));
         horizontalLayout_2 = new QHBoxLayout(layoutWidget);
         horizontalLayout_2->setObjectName(QString::fromUtf8("horizontalLayout_2"));
         horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
@@ -135,7 +153,7 @@ public:
 
         layoutWidget1 = new QWidget(centralwidget);
         layoutWidget1->setObjectName(QString::fromUtf8("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(210, 30, 211, 25));
+        layoutWidget1->setGeometry(QRect(300, 30, 211, 25));
         horizontalLayout_3 = new QHBoxLayout(layoutWidget1);
         horizontalLayout_3->setObjectName(QString::fromUtf8("horizontalLayout_3"));
         horizontalLayout_3->setContentsMargins(0, 0, 0, 0);
@@ -153,25 +171,75 @@ public:
 
         horizontalLayout_3->addWidget(pushButton_fileselect);
 
-        label = new QLabel(centralwidget);
-        label->setObjectName(QString::fromUtf8("label"));
-        label->setGeometry(QRect(10, 10, 36, 41));
-        label->setAlignment(Qt::AlignCenter);
-        comboBox = new QComboBox(centralwidget);
-        comboBox->setObjectName(QString::fromUtf8("comboBox"));
-        comboBox->setGeometry(QRect(49, 5, 72, 51));
-        comboBox->setMinimumSize(QSize(0, 40));
         pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
-        pushButton->setGeometry(QRect(123, 5, 80, 51));
+        pushButton->setGeometry(QRect(10, 0, 80, 51));
         pushButton->setMinimumSize(QSize(0, 40));
         label_5 = new QLabel(centralwidget);
         label_5->setObjectName(QString::fromUtf8("label_5"));
-        label_5->setGeometry(QRect(980, 40, 54, 12));
+        label_5->setGeometry(QRect(1070, 40, 54, 12));
+        pushButton_2 = new QPushButton(centralwidget);
+        pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
+        pushButton_2->setGeometry(QRect(190, 0, 80, 51));
+        textEdit = new QTextEdit(centralwidget);
+        textEdit->setObjectName(QString::fromUtf8("textEdit"));
+        textEdit->setGeometry(QRect(5, 360, 91, 131));
+        pushButton_3 = new QPushButton(centralwidget);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+        pushButton_3->setEnabled(false);
+        pushButton_3->setGeometry(QRect(100, 0, 80, 51));
+        comboBox = new QComboBox(centralwidget);
+        comboBox->setObjectName(QString::fromUtf8("comboBox"));
+        comboBox->setGeometry(QRect(41, 211, 51, 22));
+        comboBox_2 = new QComboBox(centralwidget);
+        comboBox_2->setObjectName(QString::fromUtf8("comboBox_2"));
+        comboBox_2->setGeometry(QRect(41, 239, 51, 22));
+        comboBox_3 = new QComboBox(centralwidget);
+        comboBox_3->setObjectName(QString::fromUtf8("comboBox_3"));
+        comboBox_3->setGeometry(QRect(41, 267, 51, 22));
+        comboBox_4 = new QComboBox(centralwidget);
+        comboBox_4->setObjectName(QString::fromUtf8("comboBox_4"));
+        comboBox_4->setGeometry(QRect(41, 295, 51, 22));
+        comboBox_5 = new QComboBox(centralwidget);
+        comboBox_5->setObjectName(QString::fromUtf8("comboBox_5"));
+        comboBox_5->setGeometry(QRect(41, 323, 51, 22));
+        label = new QLabel(centralwidget);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(11, 211, 24, 16));
+        label_6 = new QLabel(centralwidget);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+        label_6->setGeometry(QRect(11, 239, 24, 16));
+        label_7 = new QLabel(centralwidget);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+        label_7->setGeometry(QRect(11, 267, 24, 16));
+        label_8 = new QLabel(centralwidget);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+        label_8->setGeometry(QRect(11, 295, 24, 16));
+        label_9 = new QLabel(centralwidget);
+        label_9->setObjectName(QString::fromUtf8("label_9"));
+        label_9->setGeometry(QRect(11, 323, 18, 16));
+        label_10 = new QLabel(centralwidget);
+        label_10->setObjectName(QString::fromUtf8("label_10"));
+        label_10->setGeometry(QRect(11, 121, 48, 16));
+        label_11 = new QLabel(centralwidget);
+        label_11->setObjectName(QString::fromUtf8("label_11"));
+        label_11->setGeometry(QRect(11, 149, 48, 16));
+        label_12 = new QLabel(centralwidget);
+        label_12->setObjectName(QString::fromUtf8("label_12"));
+        label_12->setGeometry(QRect(11, 177, 48, 16));
+        lineEdit = new QLineEdit(centralwidget);
+        lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
+        lineEdit->setGeometry(QRect(65, 121, 21, 22));
+        lineEdit_2 = new QLineEdit(centralwidget);
+        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
+        lineEdit_2->setGeometry(QRect(65, 149, 21, 22));
+        lineEdit_3 = new QLineEdit(centralwidget);
+        lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
+        lineEdit_3->setGeometry(QRect(65, 177, 21, 22));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1060, 23));
+        menubar->setGeometry(QRect(0, 0, 1157, 22));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
         MainWindow->setMenuBar(menubar);
@@ -197,9 +265,18 @@ public:
         saveCOCN->setText(QCoreApplication::translate("MainWindow", "\344\277\235\345\255\230\346\225\260\346\215\256", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\345\255\230\345\202\250\351\227\264\351\232\224", nullptr));
         pushButton_fileselect->setText(QCoreApplication::translate("MainWindow", "\351\200\211\346\213\251\345\255\230\345\202\250\350\267\257\345\276\204", nullptr));
-        label->setText(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243\345\217\267", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\350\257\273\345\217\226", nullptr));
+        pushButton->setText(QCoreApplication::translate("MainWindow", "\350\277\236\346\216\245\350\256\276\345\244\207", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
+        pushButton_2->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\351\207\207\351\233\206", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("MainWindow", "\351\205\215\347\275\256", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "\345\215\225\344\275\215", nullptr));
+        label_6->setText(QCoreApplication::translate("MainWindow", "\346\250\241\345\274\217", nullptr));
+        label_7->setText(QCoreApplication::translate("MainWindow", "\350\247\246\345\217\221", nullptr));
+        label_8->setText(QCoreApplication::translate("MainWindow", "\347\224\265\345\216\213", nullptr));
+        label_9->setText(QCoreApplication::translate("MainWindow", "OSI", nullptr));
+        label_10->setText(QCoreApplication::translate("MainWindow", "\350\247\246\345\217\221\345\244\247\345\260\217", nullptr));
+        label_11->setText(QCoreApplication::translate("MainWindow", "\351\207\207\346\240\267\346\254\241\346\225\260", nullptr));
+        label_12->setText(QCoreApplication::translate("MainWindow", "\351\207\207\346\240\267\345\221\250\346\234\237", nullptr));
         menu->setTitle(QCoreApplication::translate("MainWindow", "\347\263\273\347\273\237\345\220\216\345\217\260", nullptr));
     } // retranslateUi
 

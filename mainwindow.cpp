@@ -31,11 +31,12 @@ MainWindow::MainWindow(QWidget *parent)
     CH4_sp =new CH4_serial();
    // CH4_sp =new CH4_serial("COM2");
     connect(this,SIGNAL(ToSerialThread()),CH4_sp,SLOT (openPort()));
+    connect(this,SIGNAL(m_senADconf(ADC_CONFIG)),CH4_sp,SLOT (setADconf(ADC_CONFIG)));
     connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
     connect(CH4_sp,SIGNAL(sendData2M(double,double)),this,SLOT(receiveDataFromS(double,double)));
     connect(CH4_sp,SIGNAL(sendSSig2Main(bool)),this,SLOT(receiveSSigFromS(bool)));
-    CH4_sp->moveToThread(seriai_thread);
-    seriai_thread->start();
+   // CH4_sp->moveToThread(seriai_thread);
+   // seriai_thread->start();
     //=====================================================
 
     COF = new configuration();
@@ -68,31 +69,65 @@ MainWindow::MainWindow(QWidget *parent)
     connect(clock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
     clock->start();
     readConf();
+    comboxinit();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+void MainWindow::comboxinit()
+{
+    QStringList list;
+    list.append("us");
+    list.append("ms");
+    ui->comboBox->addItems(list);
+    list.clear();
+    list.append("IO触发");
+    list.append("周期");
+    list.append("触发+周期");
+    ui->comboBox_2->addItems(list);
+    list.clear();
+    list.append("上升沿");
+    list.append("下降沿");
+    list.append("均包括");
+    ui->comboBox_3->addItems(list);
+    list.clear();
+    list.append("正负5V");
+    list.append("正负10V");
+    ui->comboBox_4->addItems(list);
+    list.clear();
+    list.append("NO");
+    list.append("2");
+    list.append("4");
+    list.append("8");
+    list.append("16");
+    list.append("32");
+    list.append("64");
+    list.append("invalid");
+    ui->comboBox_5->addItems(list);
+
+
+
+}
 void MainWindow::searchPort()
 {
-    ui->comboBox->clear();
-    foreach (const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
-    {
-        QSerialPort serial;
-        serial.setPort(info);
-        if(serial.open(QIODevice::ReadWrite))
-        {
-            ui->comboBox->addItem(serial.portName());
-            serial.close();
+//    ui->comboBox->clear();
+//    foreach (const QSerialPortInfo &info,QSerialPortInfo::availablePorts())
+//    {
+//        QSerialPort serial;
+//        serial.setPort(info);
+//        if(serial.open(QIODevice::ReadWrite))
+//        {
+//            ui->comboBox->addItem(serial.portName());
+//            serial.close();
 
-        }
-    }
+//        }
+//    }
 };
 void MainWindow::on_pushButton_clicked()
 {
 
-  // // readConf();
 
      M_parameter.COCNfilepath =ui->COCN_filepath->text();
     if(ui->saveCOCN->isChecked())
@@ -105,14 +140,48 @@ void MainWindow::on_pushButton_clicked()
    }
 
      M_parameter.COCN_intercal=ui->COCN_interval->currentIndex();
-     M_parameter.portname =ui->comboBox->currentText();
-     emit sendCof2serial(M_parameter);
-   //  Delay_MSec(50);
+    // M_parameter.portname =ui->comboBox->currentText();
+//     emit sendCof2serial(M_parameter);
+//   //  Delay_MSec(50);
      emit ToSerialThread();
 
 
 
+
+
 };
+void MainWindow::on_pushButton_2_clicked()//采集数据
+{
+
+}
+void MainWindow::on_pushButton_3_clicked()//配置参数
+{
+        ADC_CONFIG tmpcfg;
+
+        BYTE index;
+
+
+        tmpcfg.wTrigSize = ui->lineEdit->text().toInt() ;
+
+        tmpcfg.dwMaxCycles = ui->lineEdit_2->text().toInt();
+
+        tmpcfg.wPeriod =ui->lineEdit_3->text().toInt();
+        tmpcfg.byADCOptions &= 0xC8;
+        index = ui->comboBox->currentIndex() << 5;
+        tmpcfg.byADCOptions += index;
+        index = ui->comboBox_2->currentIndex();
+        index = index << 4;
+        tmpcfg.byADCOptions += index;
+        index = ui->comboBox_3->currentIndex();
+        tmpcfg.byADCOptions += index;
+        index = 0;
+        index = ui->comboBox_4->currentIndex();
+        index += ui->comboBox_5->currentIndex() << 2;
+        tmpcfg.byTrigOptions = index;
+        emit m_senADconf(tmpcfg);
+
+
+}
 void MainWindow::contextMenuRequest(QPoint pos)
 {
 
@@ -281,20 +350,22 @@ void MainWindow::receiveSSigFromS(bool isopen)
 {
    if(isopen)
    {
-               ui->comboBox->setEnabled(false);
-               ui->pushButton->setText("停止读取");
+               //ui->comboBox->setEnabled(false);
+               ui->pushButton->setText("设备已连接");
                ui->pushButton_fileselect->setEnabled(false);
                ui->saveCOCN->setEnabled(false);
                ui->COCN_interval->setEnabled(false);
+                ui->pushButton_3->setEnabled(true);
                serialisopen=true;
                ui->label_5->clear();
    }
    else
    {
-               ui->comboBox->setEnabled(true);
+               //ui->comboBox->setEnabled(true);
                ui->pushButton_fileselect->setEnabled(true);
                ui->saveCOCN->setEnabled(true);
-               ui->pushButton->setText("开始读取");
+               ui->pushButton->setText("连接设备");
+               ui->pushButton_3->setEnabled(false);
                ui->COCN_interval->setEnabled(true);
                serialisopen=false;
    }

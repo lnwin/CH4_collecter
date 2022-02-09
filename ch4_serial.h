@@ -14,6 +14,7 @@
 #include <QFileDialog>
 #include <iostream>
 #include <fstream>
+#include <ad7606.h>
 struct Max_Min
 {
 
@@ -57,6 +58,13 @@ public:
     void Delay_MSec(unsigned int msec);
     void InitObject();
 
+    //==========新采集卡
+    BYTE byDevIndex =0xFF;
+    DWORD dwReadCycle;
+    ADC_CONFIG myADCCfg;
+    bool bHexDisplay;
+    float MaxVol;
+
 signals:
     void sendData2CChart(mwArray origin,mwArray afterP);
     void sendSSig2Conf(bool);
@@ -68,6 +76,7 @@ public slots:
     void receiveCof(Parameter);
     void receiveNeedSIG(bool);
      bool openPort();
+     void setADconf(ADC_CONFIG);
 
 
 

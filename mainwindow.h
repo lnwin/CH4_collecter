@@ -33,9 +33,12 @@ signals:
     void sendFilePath(QString);
     void sendCof2serial(Parameter);
     void ToSerialThread();
+    void m_senADconf(ADC_CONFIG);
 
 private slots:
     void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_pushButton_3_clicked();
     void contextMenuRequest(QPoint pos);
     void rescaleGraph();
     void open_Configuration();   
@@ -52,12 +55,7 @@ private:
     savethread *CH4_sv;
     configuration *COF;
     QThread *seriai_thread;
-    //==========新采集卡
-    BYTE byDevIndex;
-    DWORD dwReadCycle;
-    ADC_CONFIG myADCCfg;
-    bool bHexDisplay;
-    float MaxVol;
+    void comboxinit();
 
 
 };

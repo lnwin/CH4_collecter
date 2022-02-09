@@ -36,135 +36,219 @@ void CH4_serial::InitObject()
 bool CH4_serial::openPort()
 {
 
-    if(!obiect_exist)
-    {
-        mainport =new QSerialPort;
-        obiect_exist=true;
-    }
+       char serial[15] = { 0 };
+        BYTE byVerified;
+        if (byDevIndex != 0xFF)
+        {
+            if (myADCCfg.byTrigOptions & 0x80)   //trig mode
+            {
+                myADCCfg.byTrigOptions &= 0x7F;
+
+            }
+            if (M3F20xm_CloseDevice(byDevIndex) == false)
+            {
+                QMessageBox msgBox ;
+               // msgBox.setIcon(QMessageBox::Icon::Warning);
+                msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
+                msgBox.setText("关闭设备失败!");
+                msgBox.exec();
 
 
-     if(!mainport->isOpen())
-    {
+            }
+            byDevIndex = 0xFF;
+        }
+        else
+        {
+            byDevIndex = M3F20xm_OpenDevice();
+            if (byDevIndex == 0xFF)
+            {
+                QMessageBox msgBox ;
+               // msgBox.setIcon(QMessageBox::Icon::Warning);
+                msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
+                msgBox.setText("打开设备失败!");
+                msgBox.exec();
 
-        mainport->setPortName(Serial_Port_Number);//设置串口名
+                emit sendSSig2Conf(false);
+                emit sendSSig2Main(false);
 
-        mainport->open(QIODevice::ReadWrite);//以读写方式打开串口
-        mainport->setBaudRate(QSerialPort::Baud115200);//波特率
-        mainport->setDataBits(QSerialPort::Data8);//数据位
-        mainport->setParity(QSerialPort::NoParity);//校验位
-        mainport->setStopBits(QSerialPort::OneStop);//停止位
-         mainport->write("ds");
-//        ui.comboBox->setEnabled(false);
-//        ui.pushButton->setText("停止读取");
-//        ui.pushButton_fileselect->setEnabled(false);
-//        ui.saveCOCN->setEnabled(false);
-        connect(mainport,SIGNAL(readyRead()),this,SLOT(readData()));
-        //anlyseData();
-
-        emit sendSSig2Conf(true);
-        emit sendSSig2Main(true);
-       // qDebug()<<"串口已打开"<<QThread::currentThread();
-       // qDebug()<<mainport->isOpen();
-        return true;
+                return false;
 
 
+            }
+            else
+            {
 
-    }
-     else
-    {
+                if (!M3F20xm_Verify(byDevIndex, &byVerified))
+                {
+                    QMessageBox msgBox ;
+                   // msgBox.setIcon(QMessageBox::Icon::Warning);
+                    msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
+                    msgBox.setText("设备认证失败!");
+                    msgBox.exec();
+                    M3F20xm_CloseDevice(byDevIndex);
+                    byDevIndex = 0xFF;
 
-        mainport->close();
-//      ui.comboBox->setEnabled(true);
-//      ui.pushButton_fileselect->setEnabled(true);
-//      ui.saveCOCN->setEnabled(true);
-//      ui.pushButton->setText("开始读取");
-        emit sendSSig2Conf(false);
-        emit sendSSig2Main(false);
-        FBuffer.clear();
-        COCN_data_befor_win.clear();
-        first_count=true;
-        cocn_win_count=0;
-       //qDebug()<<"串口已关闭";
-       //qDebug()<<mainport->isOpen();
-        return false;
+                }
+
+                if (byVerified)
+                {
+                    M3F20xm_ADCGetConfig(byDevIndex, &myADCCfg);
+                    if (myADCCfg.byADCOptions & 0x10)
+                        MaxVol = 10;
+                    else
+                        MaxVol = 5;
+                    emit sendSSig2Conf(true);
+                    emit sendSSig2Main(true);
+                   // qDebug()<<"串口已打开"<<QThread::currentThread();
+                   // qDebug()<<mainport->isOpen();
+                     M3F20xm_GetSerialNo(byDevIndex, serial);
+                    return true;
+
+                }
+
+              //  SetWindowText(CString(serial));
+
+            }
+        }
 
 
-    }
 
 
 };
+void CH4_serial::setADconf(ADC_CONFIG cfg)
+{
+
+        if (M3F20xm_ADCSetConfig(byDevIndex, &cfg))
+        {
+            QMessageBox msgBox ;
+           // msgBox.setIcon(QMessageBox::Icon::Warning);
+            msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
+            msgBox.setText("设置成功!");
+            msgBox.exec();
+            memcpy(&myADCCfg, &cfg, sizeof(ADC_CONFIG));
+            if (myADCCfg.byADCOptions & 0x10)
+                MaxVol = 10;
+            else
+                MaxVol = 5;
+        }
+        else
+        {
+            QMessageBox msgBox ;
+           // msgBox.setIcon(QMessageBox::Icon::Warning);
+            msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
+            msgBox.setText("设置失败!");
+            msgBox.exec();
+        }
+}
 void CH4_serial::readData()
 {
 
-
-
-    QByteArray serialBuffer;
-    serialBuffer=mainport->readAll();
-    // if(!serialBuffer.isEmpty()&&(QString(serialBuffer.at(0))=="0xaa")&&(serialBuffer.length()==1012))
-     if(!serialBuffer.isEmpty())
-     {
-         //qDebug()<<"get number";
-           FBuffer.append(serialBuffer);
-           if((FBuffer.length()==1012))
+     char Temp[50];
+      float realVol;
+        WORD wReadData[8];
+        if(byDevIndex == 0xFF)
         {
-             // qDebug()<<"number=========1012";
-             if(quint8(FBuffer.at(0))==170)
+           qDebug()<< "设备未连接!";
+        return;
+        }
+        if (M3F20xm_ADCRead(byDevIndex, wReadData))
         {
-            double *originBuffer=new double[500];
-            FBuffer.remove(0,9);
 
-         for(int i=0;i<1000;i++)
-         {
 
-            originBuffer[i/2] = quint8(FBuffer[i])*256+quint8(FBuffer[i+1]);
-            i=i+1;
+                for (int i = 0; i < 8; i++)
+                {
+                    if ((wReadData[i] & 0x8000) == 0x8000)
+                    {
+                        wReadData[i] = ~wReadData[i];
+                        //realVol = -1 * MaxVol * (code + 1) / 32768;
+                        realVol = -1 * MaxVol * (wReadData[i] + 1) / 32768;
+                        //str.Format("%3.6f   ",realVol);
+                        //str = String.Format("{0:0.000000}", realVol);
+
+                    }
+                    else
+                    {
+                        //realVol = MaxVol * (Sample[i] + 1) / 32768;
+                        realVol = MaxVol * (wReadData[i] + 1) / 32768;
+                        //str = String.Format("{0:0.000000}", realVol);
+
+                    }
+                    sprintf_s(Temp, "% 2.6f    ", realVol);
+                    qDebug()<< Temp;
+                }
+
          }
-
-         if((localAcc<acc)&&(acc!=0))
-         {
-            for(int i=0;i<500;i++)
+        else
             {
-
-                accBuffer[i]+=originBuffer[i];
-
+               qDebug()<<"采样读数据失败!";
             }
-            localAcc++;
-         }
-         if(localAcc==acc)
-         {
-             for(int i=0;i<500;i++)
-             {
+//    QByteArray serialBuffer;
+//    serialBuffer=mainport->readAll();
+//    // if(!serialBuffer.isEmpty()&&(QString(serialBuffer.at(0))=="0xaa")&&(serialBuffer.length()==1012))
+//     if(!serialBuffer.isEmpty())
+//     {
+//         //qDebug()<<"get number";
+//           FBuffer.append(serialBuffer);
+//           if((FBuffer.length()==1012))
+//        {
+//             // qDebug()<<"number=========1012";
+//             if(quint8(FBuffer.at(0))==170)
+//        {
+//            double *originBuffer=new double[500];
+//            FBuffer.remove(0,9);
 
-                 accBuffer[i]=accBuffer[i]/localAcc;
+//         for(int i=0;i<1000;i++)
+//         {
 
-             }
+//            originBuffer[i/2] = quint8(FBuffer[i])*256+quint8(FBuffer[i+1]);
+//            i=i+1;
+//         }
 
-            // this->start();
-             anlyseData();
-             localAcc=0;
-         }
+//         if((localAcc<acc)&&(acc!=0))
+//         {
+//            for(int i=0;i<500;i++)
+//            {
+
+//                accBuffer[i]+=originBuffer[i];
+
+//            }
+//            localAcc++;
+//         }
+//         if(localAcc==acc)
+//         {
+//             for(int i=0;i<500;i++)
+//             {
+
+//                 accBuffer[i]=accBuffer[i]/localAcc;
+
+//             }
+
+//            // this->start();
+//             anlyseData();
+//             localAcc=0;
+//         }
 
 
-            FBuffer.clear();
-          }
-               else
-               {
-                   FBuffer.clear();
-                  // qDebug()<<"---qingkongg---";
+//            FBuffer.clear();
+//          }
+//               else
+//               {
+//                   FBuffer.clear();
+//                  // qDebug()<<"---qingkongg---";
 
-               }
-       }
+//               }
+//       }
 
-     }
-     else
-     {
-        // FBuffer
-     }
-
-
+//     }
+//     else
+//     {
+//        // FBuffer
+//     }
 
 
-};
+
+
+}
 void CH4_serial::anlyseData()
 {
 
