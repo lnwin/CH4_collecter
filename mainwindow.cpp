@@ -32,9 +32,11 @@ MainWindow::MainWindow(QWidget *parent)
    // CH4_sp =new CH4_serial("COM2");
     connect(this,SIGNAL(ToSerialThread()),CH4_sp,SLOT (openPort()));
     connect(this,SIGNAL(m_senADconf(ADC_CONFIG)),CH4_sp,SLOT (setADconf(ADC_CONFIG)));
-    connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
+    connect(this,SIGNAL(readADdata()),CH4_sp,SLOT(readData()));
+     connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
     connect(CH4_sp,SIGNAL(sendData2M(double,double)),this,SLOT(receiveDataFromS(double,double)));
     connect(CH4_sp,SIGNAL(sendSSig2Main(bool)),this,SLOT(receiveSSigFromS(bool)));
+
    // CH4_sp->moveToThread(seriai_thread);
    // seriai_thread->start();
     //=====================================================
@@ -152,7 +154,7 @@ void MainWindow::on_pushButton_clicked()
 };
 void MainWindow::on_pushButton_2_clicked()//采集数据
 {
-
+    emit readADdata();
 }
 void MainWindow::on_pushButton_3_clicked()//配置参数
 {
@@ -351,7 +353,7 @@ void MainWindow::receiveSSigFromS(bool isopen)
    if(isopen)
    {
                //ui->comboBox->setEnabled(false);
-               ui->pushButton->setText("设备已连接");
+               ui->pushButton->setText("关闭设备");
                ui->pushButton_fileselect->setEnabled(false);
                ui->saveCOCN->setEnabled(false);
                ui->COCN_interval->setEnabled(false);

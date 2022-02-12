@@ -34,7 +34,7 @@ signals:
     void sendCof2serial(Parameter);
     void ToSerialThread();
     void m_senADconf(ADC_CONFIG);
-
+    void readADdata();
 private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();

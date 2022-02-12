@@ -55,6 +55,12 @@ bool CH4_serial::openPort()
 
 
             }
+            else
+            {
+
+                emit sendSSig2Conf(false);
+                emit sendSSig2Main(false);
+            }
             byDevIndex = 0xFF;
         }
         else
