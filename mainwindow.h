@@ -32,13 +32,11 @@ public:
 signals:
     void sendFilePath(QString);
     void sendCof2serial(Parameter);
-    void ToSerialThread();
-    void m_senADconf(ADC_CONFIG);
+    void ToSerialThread();    
     void readADdata();
 private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
-    void on_pushButton_3_clicked();
     void contextMenuRequest(QPoint pos);
     void rescaleGraph();
     void open_Configuration();   
@@ -47,7 +45,7 @@ private slots:
     void receiveSerialSIGFromConf(Parameter);
     void receiveDataFromS(double time,double data);
     void receiveSSigFromS(bool);
-
+    void receiveSADSigFromS(bool);
 private:
     Ui::MainWindow *ui;
     CH4_chart *CH4;

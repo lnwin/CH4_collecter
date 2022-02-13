@@ -53,6 +53,7 @@ public:
     void run();
     void anlyseData();
     void saveData_0();
+    void startADC();
     Max_Min coutMaxMin(double*,double);
     float Hex2Dec_yrp(QByteArray hex);
     void Delay_MSec(unsigned int msec);
@@ -64,11 +65,14 @@ public:
     ADC_CONFIG myADCCfg;
     bool bHexDisplay;
     float MaxVol;
+    QTimer *getADclock =new QTimer(this);
+
 
 signals:
     void sendData2CChart(mwArray origin,mwArray afterP);
     void sendSSig2Conf(bool);
     void sendSSig2Main(bool);
+    void sendSADSig2Main(bool);
     void sendData2M(double,double);
     void sendData2C( double *originData,double  *after_s,double  *after_s_e);
 public slots:
@@ -76,9 +80,11 @@ public slots:
     void receiveCof(Parameter);
     void receiveNeedSIG(bool);
      bool openPort();
-     void setADconf(ADC_CONFIG);
 
+     void onTimeOut();
+private:
 
+    void setADconf();
 
 };
 

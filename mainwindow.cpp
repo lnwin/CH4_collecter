@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *clock =new QTimer(this);
     clock->setInterval(1000);
 
+
     searchPort();
     CH4 =new CH4_chart;
     CH4->Chart_Minit(*ui);
@@ -31,11 +32,11 @@ MainWindow::MainWindow(QWidget *parent)
     CH4_sp =new CH4_serial();
    // CH4_sp =new CH4_serial("COM2");
     connect(this,SIGNAL(ToSerialThread()),CH4_sp,SLOT (openPort()));
-    connect(this,SIGNAL(m_senADconf(ADC_CONFIG)),CH4_sp,SLOT (setADconf(ADC_CONFIG)));
     connect(this,SIGNAL(readADdata()),CH4_sp,SLOT(readData()));
-     connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
+    connect(this,SIGNAL(sendCof2serial(Parameter)),CH4_sp,SLOT(receiveCof(Parameter)));
     connect(CH4_sp,SIGNAL(sendData2M(double,double)),this,SLOT(receiveDataFromS(double,double)));
     connect(CH4_sp,SIGNAL(sendSSig2Main(bool)),this,SLOT(receiveSSigFromS(bool)));
+    connect(CH4_sp,SIGNAL(sendSADSig2Main(bool)),this,SLOT(receiveSADSigFromS(bool)));
 
    // CH4_sp->moveToThread(seriai_thread);
    // seriai_thread->start();
@@ -69,6 +70,7 @@ MainWindow::MainWindow(QWidget *parent)
         msgBox.exec();
     }
     connect(clock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
+
     clock->start();
     readConf();
     comboxinit();
@@ -80,36 +82,6 @@ MainWindow::~MainWindow()
 }
 void MainWindow::comboxinit()
 {
-    QStringList list;
-    list.append("us");
-    list.append("ms");
-    ui->comboBox->addItems(list);
-    list.clear();
-    list.append("IO触发");
-    list.append("周期");
-    list.append("触发+周期");
-    ui->comboBox_2->addItems(list);
-    list.clear();
-    list.append("上升沿");
-    list.append("下降沿");
-    list.append("均包括");
-    ui->comboBox_3->addItems(list);
-    list.clear();
-    list.append("正负5V");
-    list.append("正负10V");
-    ui->comboBox_4->addItems(list);
-    list.clear();
-    list.append("NO");
-    list.append("2");
-    list.append("4");
-    list.append("8");
-    list.append("16");
-    list.append("32");
-    list.append("64");
-    list.append("invalid");
-    ui->comboBox_5->addItems(list);
-
-
 
 }
 void MainWindow::searchPort()
@@ -156,34 +128,7 @@ void MainWindow::on_pushButton_2_clicked()//采集数据
 {
     emit readADdata();
 }
-void MainWindow::on_pushButton_3_clicked()//配置参数
-{
-        ADC_CONFIG tmpcfg;
 
-        BYTE index;
-
-
-        tmpcfg.wTrigSize = ui->lineEdit->text().toInt() ;
-
-        tmpcfg.dwMaxCycles = ui->lineEdit_2->text().toInt();
-
-        tmpcfg.wPeriod =ui->lineEdit_3->text().toInt();
-        tmpcfg.byADCOptions &= 0xC8;
-        index = ui->comboBox->currentIndex() << 5;
-        tmpcfg.byADCOptions += index;
-        index = ui->comboBox_2->currentIndex();
-        index = index << 4;
-        tmpcfg.byADCOptions += index;
-        index = ui->comboBox_3->currentIndex();
-        tmpcfg.byADCOptions += index;
-        index = 0;
-        index = ui->comboBox_4->currentIndex();
-        index += ui->comboBox_5->currentIndex() << 2;
-        tmpcfg.byTrigOptions = index;
-        emit m_senADconf(tmpcfg);
-
-
-}
 void MainWindow::contextMenuRequest(QPoint pos)
 {
 
@@ -356,8 +301,7 @@ void MainWindow::receiveSSigFromS(bool isopen)
                ui->pushButton->setText("关闭设备");
                ui->pushButton_fileselect->setEnabled(false);
                ui->saveCOCN->setEnabled(false);
-               ui->COCN_interval->setEnabled(false);
-                ui->pushButton_3->setEnabled(true);
+               ui->COCN_interval->setEnabled(false);              
                serialisopen=true;
                ui->label_5->clear();
    }
@@ -366,12 +310,23 @@ void MainWindow::receiveSSigFromS(bool isopen)
                //ui->comboBox->setEnabled(true);
                ui->pushButton_fileselect->setEnabled(true);
                ui->saveCOCN->setEnabled(true);
-               ui->pushButton->setText("连接设备");
-               ui->pushButton_3->setEnabled(false);
+               ui->pushButton->setText("连接设备");              
                ui->COCN_interval->setEnabled(true);
                serialisopen=false;
    }
 }
+void MainWindow::receiveSADSigFromS(bool ISstart)
+{
+    if(ISstart)
+    {
+        ui->pushButton_2->setText("停止采集");
+    }
+    else
+    {
+        ui->pushButton_2->setText("开始采集");
+    }
+}
+
 void MainWindow::Delay_MSec(unsigned int msec)
 {
 

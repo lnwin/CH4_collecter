@@ -20,11 +20,14 @@ double *accBuffer=new double[500];
 double localAcc=0;
 bool obiect_exist=false;
 bool first_count=true;
+bool ADclock=false;
 CH4_serial::CH4_serial()
 {
   // Serial_Port_Number=serialname;
   // qDebug()<<"主界面"<<QThread::currentThread();
     InitObject();
+    getADclock->setInterval(1000);
+    connect(getADclock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
 
 }
 void CH4_serial::InitObject()
@@ -108,6 +111,8 @@ bool CH4_serial::openPort()
                    // qDebug()<<"串口已打开"<<QThread::currentThread();
                    // qDebug()<<mainport->isOpen();
                      M3F20xm_GetSerialNo(byDevIndex, serial);
+                     setADconf();
+
                     return true;
 
                 }
@@ -121,17 +126,49 @@ bool CH4_serial::openPort()
 
 
 };
-void CH4_serial::setADconf(ADC_CONFIG cfg)
+void CH4_serial::startADC()
+{
+    if (M3F20xm_ADCStart(byDevIndex))
+        {
+            myADCCfg.dwCycleCnt = 0;
+            myADCCfg.byTrigOptions |= 0x80;
+
+        }
+}
+void CH4_serial::setADconf()
 {
 
-        if (M3F20xm_ADCSetConfig(byDevIndex, &cfg))
+
+    ADC_CONFIG tmpcfg;
+    BYTE index;
+    memcpy(&tmpcfg, &myADCCfg, sizeof(ADC_CONFIG));
+
+
+        tmpcfg.wTrigSize = 3072;
+
+        tmpcfg.dwMaxCycles = 500;
+
+        tmpcfg.wPeriod = 100;
+        tmpcfg.byADCOptions &= 0xC8;
+        index = 0<< 5;
+        tmpcfg.byADCOptions += index;
+        index = 1;
+        index = index << 4;
+        tmpcfg.byADCOptions += index;
+        index = 0;
+        tmpcfg.byADCOptions += index;
+        index = 0;
+        index = 1;
+        index += 0<< 2;
+        tmpcfg.byTrigOptions = index;
+        if (M3F20xm_ADCSetConfig(byDevIndex, &tmpcfg))
         {
             QMessageBox msgBox ;
            // msgBox.setIcon(QMessageBox::Icon::Warning);
             msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
             msgBox.setText("设置成功!");
             msgBox.exec();
-            memcpy(&myADCCfg, &cfg, sizeof(ADC_CONFIG));
+            memcpy(&myADCCfg, &tmpcfg, sizeof(ADC_CONFIG));
             if (myADCCfg.byADCOptions & 0x10)
                 MaxVol = 10;
             else
@@ -148,112 +185,19 @@ void CH4_serial::setADconf(ADC_CONFIG cfg)
 }
 void CH4_serial::readData()
 {
+    if(!ADclock)
+    {
+        getADclock->start();
+        emit sendSADSig2Main(true);
+        ADclock=true;
 
-     char Temp[50];
-      float realVol;
-        WORD wReadData[8];
-        if(byDevIndex == 0xFF)
-        {
-           qDebug()<< "设备未连接!";
-        return;
-        }
-        if (M3F20xm_ADCRead(byDevIndex, wReadData))
-        {
-
-
-                for (int i = 0; i < 8; i++)
-                {
-                    if ((wReadData[i] & 0x8000) == 0x8000)
-                    {
-                        wReadData[i] = ~wReadData[i];
-                        //realVol = -1 * MaxVol * (code + 1) / 32768;
-                        realVol = -1 * MaxVol * (wReadData[i] + 1) / 32768;
-                        //str.Format("%3.6f   ",realVol);
-                        //str = String.Format("{0:0.000000}", realVol);
-
-                    }
-                    else
-                    {
-                        //realVol = MaxVol * (Sample[i] + 1) / 32768;
-                        realVol = MaxVol * (wReadData[i] + 1) / 32768;
-                        //str = String.Format("{0:0.000000}", realVol);
-
-                    }
-                    sprintf_s(Temp, "% 2.6f    ", realVol);
-                    qDebug()<< Temp;
-                }
-
-         }
-        else
-            {
-               qDebug()<<"采样读数据失败!";
-            }
-//    QByteArray serialBuffer;
-//    serialBuffer=mainport->readAll();
-//    // if(!serialBuffer.isEmpty()&&(QString(serialBuffer.at(0))=="0xaa")&&(serialBuffer.length()==1012))
-//     if(!serialBuffer.isEmpty())
-//     {
-//         //qDebug()<<"get number";
-//           FBuffer.append(serialBuffer);
-//           if((FBuffer.length()==1012))
-//        {
-//             // qDebug()<<"number=========1012";
-//             if(quint8(FBuffer.at(0))==170)
-//        {
-//            double *originBuffer=new double[500];
-//            FBuffer.remove(0,9);
-
-//         for(int i=0;i<1000;i++)
-//         {
-
-//            originBuffer[i/2] = quint8(FBuffer[i])*256+quint8(FBuffer[i+1]);
-//            i=i+1;
-//         }
-
-//         if((localAcc<acc)&&(acc!=0))
-//         {
-//            for(int i=0;i<500;i++)
-//            {
-
-//                accBuffer[i]+=originBuffer[i];
-
-//            }
-//            localAcc++;
-//         }
-//         if(localAcc==acc)
-//         {
-//             for(int i=0;i<500;i++)
-//             {
-
-//                 accBuffer[i]=accBuffer[i]/localAcc;
-
-//             }
-
-//            // this->start();
-//             anlyseData();
-//             localAcc=0;
-//         }
-
-
-//            FBuffer.clear();
-//          }
-//               else
-//               {
-//                   FBuffer.clear();
-//                  // qDebug()<<"---qingkongg---";
-
-//               }
-//       }
-
-//     }
-//     else
-//     {
-//        // FBuffer
-//     }
-
-
-
-
+    }
+    else
+    {
+        getADclock->stop();
+        emit sendSADSig2Main(false);
+        ADclock=false;
+    }
 }
 void CH4_serial::anlyseData()
 {
@@ -612,4 +556,96 @@ void CH4_serial::Delay_MSec(unsigned int msec)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
 
 };
+void CH4_serial::onTimeOut()
+{
 
+
+    startADC();
+    Delay_MSec(50);
+
+   if(byDevIndex == 0xFF)
+   {
+      qDebug()<< "设备未连接!";
+   return;
+   }
+      DWORD pdwRealSize = 0;//实际读取的数据长度
+       byte lpBuffer[320000];//用来保存读取内容的缓存区
+      // char Temp[200];
+       WORD cycles;
+       float realVol;
+       int i =0;
+      QList <double> originBuffer;
+       if (M3F20xm_ReadFIFO(byDevIndex, lpBuffer, 320000, &pdwRealSize))
+       {
+           if (pdwRealSize > 0)
+           {
+               cycles = pdwRealSize / 16;
+               for(int j = 0; j < cycles;j++)
+               {
+
+                   WORD byDataArray[8];
+                  // CString s;
+                  // s.Empty();
+                   memcpy(byDataArray, &lpBuffer[j * 16], 16);
+
+                       if ((byDataArray[i] & 0x8000) == 0x8000)
+                       {
+                           lpBuffer[i] = ~byDataArray[i];
+                           //realVol = -1 * MaxVol * (code + 1) / 32768;
+                           realVol = -1 * MaxVol * (byDataArray[i] + 1) / 32768;
+                           //str.Format("%3.6f   ",realVol);
+                           //str = String.Format("{0:0.000000}", realVol);
+
+                       }
+                       else
+                       {
+                           //realVol = MaxVol * (Sample[i] + 1) / 32768;
+                           realVol = MaxVol * (byDataArray[i] + 1) / 32768;
+                           //str = String.Format("{0:0.000000}", realVol);
+
+                       }
+                        originBuffer.append(realVol);
+                        //qDebug()<<realVol;
+
+               }
+
+
+
+               if((localAcc<acc)&&(acc!=0))
+                       {
+                          for(int i=0;i<500;i++)
+                          {
+
+                              accBuffer[i]+=originBuffer[i];
+
+                          }
+                          localAcc++;
+                       }
+                       if(localAcc==acc)
+                       {
+                           for(int i=0;i<500;i++)
+                           {
+
+                               accBuffer[i]=accBuffer[i]/localAcc;
+
+                           }
+
+                          // this->start();
+                           anlyseData();
+                           localAcc=0;
+                       }
+
+           }
+       }
+               else
+                   {
+                      qDebug()<<"采样读数据失败!";
+                   }
+
+       if (myADCCfg.dwCycleCnt == myADCCfg.dwMaxCycles)
+                   {
+                       myADCCfg.byTrigOptions &= 0x7F;
+
+                   }
+
+}
