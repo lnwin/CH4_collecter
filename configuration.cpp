@@ -35,60 +35,70 @@ configuration::~configuration()
 }
 void configuration::readConf()
 {
-   QFile confFile (QApplication::applicationDirPath()+"/configuration.txt");
+    QFile confFile (QApplication::applicationDirPath()+"/configuration.txt");
 
-   if(confFile.open(QIODevice::ReadOnly|QIODevice::Text))
-   {
-       QList<QString> sk;
-       while(!confFile.atEnd())
-       {
-           QByteArray line = confFile.readLine();
-           QString str(line);
-           sk.append(str.split("\n").first());
-       }
+      if(confFile.open(QIODevice::ReadOnly|QIODevice::Text))
+      {
+          QList<QString> sk;
+          while(!confFile.atEnd())
+          {
+              QByteArray line = confFile.readLine();
+              QString str(line);
+              sk.append(str.split("\n").first());
+          }
 
-       C_parameter.acc =sk.at(1).toDouble();
-       C_parameter.win_d=sk.at(3).toDouble();
-       C_parameter.a =sk.at(5).toDouble();
-       C_parameter.b =sk.at(7).toDouble();
-       C_parameter.saveSpectrum =sk.at(9).toDouble();
-       C_parameter.spectrumfilepath =sk.at(11);
-       C_parameter.COCNfilepath =sk.at(13);
-       C_parameter.USE_SMOOTH=sk.at(15).toDouble();
-       C_parameter.COCN_WIN=sk.at(17).toDouble();
-       C_parameter.COCN_intercal =sk.at(19).toDouble();
-       ui_cof->add_lin->setText(sk.at(1));
-       ui_cof->win_n->setText(sk.at(3));
-       ui_cof->a_n->setText(sk.at(5));
-       ui_cof->b_n->setText(sk.at(7));
-       ui_cof->COCN_WIN->setText(sk.at(17));
-       if(C_parameter.saveSpectrum!=1)
-       {
-           ui_cof->ifSave->setChecked(false);
-       }
-       else
-       {
-           ui_cof->ifSave->setChecked(true);
-       }
-       if(C_parameter.USE_SMOOTH !=1)
-       {
-           ui_cof->ifsmooth->setChecked(false);
-       }
-       else
-       {
-           ui_cof->ifsmooth->setChecked(true);
-       }
-       ui_cof->Spectrumline->setText(sk.at(11));
-       confFile.close();
+          C_parameter.acc =sk.at(1).toDouble();
+          C_parameter.win_d=sk.at(3).toDouble();
+          C_parameter.a =sk.at(5).toDouble();
+          C_parameter.b =sk.at(7).toDouble();
+          C_parameter.saveSpectrum =sk.at(9).toDouble();
+          C_parameter.spectrumfilepath =sk.at(11);
+          C_parameter.COCNfilepath =sk.at(13);
+          C_parameter.USE_SMOOTH=sk.at(15).toDouble();
+          C_parameter.saveCOCN =sk.at(17).toDouble();
+          C_parameter.COCN_WIN=sk.at(19).toDouble();
+          C_parameter.COCN_intercal =sk.at(21).toDouble();
+          C_parameter.USE_envelope =sk.at(23).toDouble();
+          qDebug()<<C_parameter.USE_envelope;
+          if(C_parameter.USE_envelope==1)
+          {
+             ui_cof->ifenvelope->setChecked(true);
+          }
+          else
+          {
+              ui_cof->ifenvelope->setChecked(false);
+          }
+          ui_cof->add_lin->setText(sk.at(1));
+          ui_cof->win_n->setText(sk.at(3));
+          ui_cof->a_n->setText(sk.at(5));
+          ui_cof->b_n->setText(sk.at(7));
+          ui_cof->COCN_WIN->setText(sk.at(19));
+          if(C_parameter.saveSpectrum!=1)
+          {
+              ui_cof->ifSave->setChecked(false);
+          }
+          else
+          {
+              ui_cof->ifSave->setChecked(true);
+          }
+          if(C_parameter.USE_SMOOTH !=1)
+          {
+              ui_cof->ifsmooth->setChecked(false);
+          }
+          else
+          {
+              ui_cof->ifsmooth->setChecked(true);
+          }
+          ui_cof->Spectrumline->setText(sk.at(11));
+          confFile.close();
 
-  }
-   else
-   {
-      QMessageBox msgBox ;
-      msgBox.setText("配置文件缺失！");
-      msgBox.exec();
-   }
-
+     }
+      else
+      {
+         QMessageBox msgBox ;
+         msgBox.setText("配置文件缺失！");
+         msgBox.exec();
+      }
 
 
 };
@@ -96,83 +106,127 @@ void configuration::on_pushButton_3_clicked()
 {
     QFile confFile (QApplication::applicationDirPath()+"/configuration.txt");
 
-    if(confFile.open(QIODevice::ReadWrite|QIODevice::Text))
-    {
-
-        confFile.write("accumulation");
-        confFile.write("\n");
-        confFile.write(ui_cof->add_lin->text().toLatin1().data());
-        confFile.write("\n");
-        confFile.write("filter");
-        confFile.write("\n");
-        confFile.write(ui_cof->win_n->text().toLatin1().data());
-        confFile.write("\n");
-        confFile.write("a");
-        confFile.write("\n");
-        confFile.write(ui_cof->a_n->text().toLatin1().data());
-        confFile.write("\n");
-        confFile.write("b");
-        confFile.write("\n");
-        confFile.write(ui_cof->b_n->text().toLatin1().data());
-        confFile.write("\n");
-        confFile.write("saveSpectrum");
-        confFile.write("\n");
-        if(ui_cof->ifSave->isChecked())
+        if(confFile.open(QIODevice::ReadWrite|QIODevice::Text))
         {
-            confFile.write("1");
-            C_parameter.saveSpectrum=1;
-        }
+
+            confFile.write("accumulation");
+            confFile.write("\n");
+            confFile.write(ui_cof->add_lin->text().toLatin1().data());
+            confFile.write("\n");
+            confFile.write("filter");
+            confFile.write("\n");
+            confFile.write(ui_cof->win_n->text().toLatin1().data());
+            confFile.write("\n");
+            confFile.write("a");
+            confFile.write("\n");
+            confFile.write(ui_cof->a_n->text().toLatin1().data());
+            confFile.write("\n");
+            confFile.write("b");
+            confFile.write("\n");
+            confFile.write(ui_cof->b_n->text().toLatin1().data());
+            confFile.write("\n");
+            confFile.write("saveSpectrum");
+            confFile.write("\n");
+            if(ui_cof->ifSave->isChecked())
+            {
+                confFile.write("1");
+                C_parameter.saveSpectrum=1;
+            }
+            else
+            {
+                confFile.write("0");
+                 C_parameter.saveSpectrum=0;
+            }
+
+            confFile.write("\n");
+            confFile.write("spectrumfilepath");
+            confFile.write("\n");
+            confFile.write(ui_cof->Spectrumline->text().toLatin1().data());
+            confFile.write("\n");
+            confFile.write("COCNfilepath");
+            confFile.write("\n");
+            confFile.write(C_parameter.COCNfilepath.toStdString().data());
+            confFile.write("\n");
+            confFile.write("use_smooth");
+            confFile.write("\n");
+            if(ui_cof->ifsmooth->isChecked())
+            {
+                confFile.write("1");
+                C_parameter.USE_SMOOTH=1;
+            }
+            else
+            {
+                confFile.write("0");
+                 C_parameter.USE_SMOOTH=0;
+            }
+            confFile.write("\n");
+            confFile.write("saveCOCN");
+            confFile.write("\n");
+            if(C_parameter.saveCOCN ==1)
+            {
+                confFile.write("1");
+            }
+            else
+            {
+                confFile.write("0");
+            }
+
+            confFile.write("\n");
+            confFile.write("COCN_WIN");
+            confFile.write("\n");
+            confFile.write(ui_cof->COCN_WIN->text().toLatin1().data());
+            confFile.write("\n");
+            confFile.write("COCN_intercal");
+            confFile.write("\n");
+
+            switch (C_parameter.COCN_intercal)
+              {
+                case 0:  confFile.write("0");
+                break;
+                case 1:  confFile.write("1");
+                break;
+                case 2:  confFile.write("2");
+                break;
+                case 3:  confFile.write("3");
+                break;
+                case 4:  confFile.write("4");
+                break;
+                case 5:  confFile.write("5");
+                break;
+              }
+            confFile.write("\n");
+            confFile.write("use_envelope");
+            confFile.write("\n");
+            if(ui_cof->ifenvelope->isChecked())
+            {
+                confFile.write("1");
+                C_parameter.USE_envelope=1;
+            }
+            else
+            {
+                confFile.write("0");
+                C_parameter.USE_envelope=0;
+            }
+            confFile.write("\n");
+
+            C_parameter.acc =ui_cof->add_lin->text().toDouble();
+            C_parameter.win_d=ui_cof->win_n->text().toDouble();
+            C_parameter.a =ui_cof->a_n->text().toDouble();
+            C_parameter.b =ui_cof->b_n->text().toDouble();
+            C_parameter.spectrumfilepath =ui_cof->Spectrumline->text();
+            C_parameter.COCN_WIN=ui_cof->COCN_WIN->text().toDouble();
+           // C_parameter.COCN_intercal=ui_cof->COCN_WIN->text().toDouble();
+            emit sendCof2serial(C_parameter);
+
+       }
         else
         {
-            confFile.write("0");
-             C_parameter.saveSpectrum=0;
+
+           QMessageBox msgBox ;
+           msgBox.setText("打开配置文件失败！");
+           msgBox.exec();
+           confFile.close();
         }
-
-        confFile.write("\n");
-        confFile.write("spectrumfilepath");
-        confFile.write("\n");
-        confFile.write(ui_cof->Spectrumline->text().toLatin1().data());
-        confFile.write("\n");
-        confFile.write("COCNfilepath");
-        confFile.write("\n");
-        confFile.write(C_parameter.COCNfilepath.toStdString().data());
-        confFile.write("\n");
-        confFile.write("use_smooth");
-        confFile.write("\n");
-        if(ui_cof->ifsmooth->isChecked())
-        {
-            confFile.write("1");
-            C_parameter.USE_SMOOTH=1;
-        }
-        else
-        {
-            confFile.write("0");
-             C_parameter.USE_SMOOTH=0;
-        }
-        confFile.write("\n");        
-        confFile.write("COCN_WIN");
-        confFile.write("\n");
-        confFile.write(ui_cof->COCN_WIN->text().toLatin1().data());
-        confFile.write("\n");
-        C_parameter.acc =ui_cof->add_lin->text().toDouble();
-        C_parameter.win_d=ui_cof->win_n->text().toDouble();
-        C_parameter.a =ui_cof->a_n->text().toDouble();
-        C_parameter.b =ui_cof->b_n->text().toDouble();
-        C_parameter.spectrumfilepath =ui_cof->Spectrumline->text();
-        C_parameter.COCN_WIN=ui_cof->COCN_WIN->text().toDouble();
-       // C_parameter.COCN_intercal=ui_cof->COCN_WIN->text().toDouble();
-        emit sendCof2serial(C_parameter);
-
-   }
-    else
-    {
-
-       QMessageBox msgBox ;
-       msgBox.setText("打开配置文件失败！");
-       msgBox.exec();
-       confFile.close();
-    }
-
 
 
 }

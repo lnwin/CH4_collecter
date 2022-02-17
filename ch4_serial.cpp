@@ -4,6 +4,7 @@ std::mutex MUTEX;
 bool needread=false;
 bool cNeedData;
 double use_smooth;
+double use_envelope;
 double acc=0,a_n=0.0015,b_n=4,win_n=3,COCN;
 QString spectrumfilepath,COCNfilepath;
 double saveSpectrum,saveCOCN,COCN_interval,cocn_win,cocn_win_count=0;
@@ -167,195 +168,326 @@ void CH4_serial::readData()
 void CH4_serial::anlyseData()
 {
 
+    COCN=0;
+           sp_data.clear();
+           sp_data_AP.clear();
+           double out_data=0;
+           int elementCntA=500;//元素个数
+          // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
+           double  *after_s=new double[elementCntA];
+           double *mid_01=new double[elementCntA];
+           double  *AK=new double[elementCntA];
+          // saveData_0(QString path,QString filename);
+          // ***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
+          // sgolay
+           mwArray WINSZ(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//需要和output纬度一样
+           mwArray outPut(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
+           mwArray varargin(1);//输入参数的个数
+           mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
+           mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
+           mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
+           mwArray d(win_n);//串窗口平滑参数
+           mwArray method("peak");
+           matrixA.SetData(accBuffer,elementCntA);//将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
+           if((use_smooth==1)&&(use_envelope==1))
+           {
+               smoothdata(1,outPut,WINSZ,matrixA,varargin);//
+               for (int j=0; j<elementCntA;j++)
+               {
 
-        COCN=0;
-        sp_data.clear();
-        sp_data_AP.clear();
-        double out_data=0;
-        int elementCntA=500;//元素个数
-       // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
-        double  *after_s=new double[elementCntA];
-       // saveData_0(QString path,QString filename);
-       // ***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
-       // sgolay
-        mwArray WINSZ(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//需要和output纬度一样
-        mwArray outPut(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
-        mwArray varargin(1);//输入参数的个数
-        mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
-        matrixA.SetData(accBuffer,elementCntA); //将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
-        if(use_smooth==1)
-        {
-            smoothdata(1,outPut,WINSZ,matrixA,varargin);//
-            for (int j=0; j<elementCntA;j++)
-            {
+                   after_s[j]=outPut.Get(0,j+1);
 
-                after_s[j]=outPut.Get(0,j+1);
+               }
+               envelope(2,up_01,lo_01,outPut,d,method);//通过测试
+
+               double a,b;
+
+               for (int j=0; j<elementCntA;j++)
+               {
+
+                   a = up_01.Get(0,j+1);
+                   b = lo_01.Get(0,j+1);
+                   mid_01[j]=(a+b)/2;
+
+               }
+
+
+               double *B=new double[200];
+               double *B1=new double[200];
+               double *B2=new double[200];
+               for(int j=150; j<350;j++)
+               {
+                     B[j-150]=mid_01[j];
+               }
+               for(int j=0; j<100;j++)
+               {
+                     B1[j]=B[j];
+
+               }
+               for(int j=0; j<100;j++)
+               {
+                     B2[j]=B[j+100];
+               }
+               Max_Min MN_B;
+               Max_Min MN_B1;
+               Max_Min MN_B2;
+               MN_B=coutMaxMin(B,200);
+               MN_B1=coutMaxMin(B1,100);
+               MN_B2=coutMaxMin(B2,100);
+               MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
+               double X = MN_B.Max-MN_B.Min;
+               COCN = (a_n*X)+b_n;
+               if(cNeedData)
+               {
+                   emit sendData2C(accBuffer,after_s,mid_01);
+
+               }
+
+           }
+           else if((use_smooth!=1)&&(use_envelope!=1))
+           {
+               double *B=new double[200];
+               double *B1=new double[200];
+               double *B2=new double[200];
+               for(int j=150; j<350;j++)
+               {
+                     B[j-150]=accBuffer[j];
+               }
+               for(int j=0; j<100;j++)
+               {
+                     B1[j]=B[j];
+
+               }
+               for(int j=0; j<100;j++)
+               {
+                     B2[j]=B[j+100];
+               }
+               Max_Min MN_B;
+               Max_Min MN_B1;
+               Max_Min MN_B2;
+               MN_B=coutMaxMin(B,200);
+               MN_B1=coutMaxMin(B1,100);
+               MN_B2=coutMaxMin(B2,100);
+               MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
+               double X = MN_B.Max-MN_B.Min;
+               COCN = (a_n*X)+b_n;
+               if(cNeedData)
+               {
+                   emit sendData2C(accBuffer,after_s,accBuffer);
+
+               }
+           }
+           else if((use_smooth==1)&&(use_envelope!=1))
+           {
+                 smoothdata(1,outPut,WINSZ,matrixA,varargin);
+
+                 for (int j=0; j<elementCntA;j++)
+                 {
+                      AK[j]= outPut.Get(0,j+1);
+                 }
+
+                 double *B=new double[200];
+                 double *B1=new double[200];
+                 double *B2=new double[200];
+                 for(int j=150; j<350;j++)
+                 {
+                       B[j-150]=AK[j];
+                 }
+                 for(int j=0; j<100;j++)
+                 {
+                       B1[j]=B[j];
+
+                 }
+                 for(int j=0; j<100;j++)
+                 {
+                       B2[j]=B[j+100];
+                 }
+                 Max_Min MN_B;
+                 Max_Min MN_B1;
+                 Max_Min MN_B2;
+                 MN_B=coutMaxMin(B,200);
+                 MN_B1=coutMaxMin(B1,100);
+                 MN_B2=coutMaxMin(B2,100);
+                 MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
+                 double X = MN_B.Max-MN_B.Min;
+                 COCN = (a_n*X)+b_n;
+                 if(cNeedData)
+                 {
+                     emit sendData2C(accBuffer,after_s,AK);
+
+                 }
+           }
+           else if((use_smooth!=1)&&(use_envelope==1))
+           {
+               envelope(2,up_01,lo_01,matrixA,d,method);//通过测试
+               double a,b;
+
+               for (int j=0; j<elementCntA;j++)
+               {
+
+                   a = up_01.Get(0,j+1);
+                   b = lo_01.Get(0,j+1);
+                   mid_01[j]=(a+b)/2;
+
+               }
+
+
+               double *B=new double[200];
+               double *B1=new double[200];
+               double *B2=new double[200];
+               for(int j=150; j<350;j++)
+               {
+                     B[j-150]=mid_01[j];
+               }
+               for(int j=0; j<100;j++)
+               {
+                     B1[j]=B[j];
+
+               }
+               for(int j=0; j<100;j++)
+               {
+                     B2[j]=B[j+100];
+               }
+               Max_Min MN_B;
+               Max_Min MN_B1;
+               Max_Min MN_B2;
+               MN_B=coutMaxMin(B,200);
+               MN_B1=coutMaxMin(B1,100);
+               MN_B2=coutMaxMin(B2,100);
+               MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
+               double X = MN_B.Max-MN_B.Min;
+               COCN = (a_n*X)+b_n;
+               if(cNeedData)
+               {
+                   emit sendData2C(accBuffer,after_s,mid_01);
+
+               }
+           }
+
+
+
+           //==============================================
+
+           Delay_MSec(50);
+
+           //==============================================
+
+          if(first_count)
+          {
+              if(cocn_win==0)
+              {
+
+                  out_data=COCN;
+                  double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
+                  emit sendData2M(nowTime,out_data);
+                  first_count=false;
+              }
+
+              if(cocn_win_count==cocn_win)
+           {
+
+
+              out_data=0;
+              for(int i=0;i<COCN_data_befor_win.length();i++)
+              {
+                  out_data+=COCN_data_befor_win[i];
+              }
+
+
+              out_data=out_data/cocn_win;
+              double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
+              emit sendData2M(nowTime,out_data);
+              first_count=false;
 
             }
-             // qDebug()<<after_s[0];
-        }
+               if(cocn_win_count<cocn_win)
+               {
 
-        mwArray d(win_n);//串窗口平滑参数
-        mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
-        mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
-        mwArray method("peak");
-        if(use_smooth==1)
-        {
-            envelope(2,up_01,lo_01,outPut,d,method);//通过测试
-        }
-        else
-        {
-            envelope(2,up_01,lo_01,matrixA,d,method);//通过测试
-        }
+                 COCN_data_befor_win.append(COCN);
+                 cocn_win_count+=1;
+
+               }
 
 
-        double *mid_01=new double[elementCntA];
-        double a,b;
-
-        for (int j=0; j<elementCntA;j++)
-        {
-
-            a = up_01.Get(0,j+1);
-            b = lo_01.Get(0,j+1);
-            mid_01[j]=(a+b)/2;
-
-        }
 
 
-        double *B=new double[200];
-        double *B1=new double[200];
-        double *B2=new double[200];
-        for(int j=150; j<350;j++)
-        {
-              B[j-150]=mid_01[j];
-        }
-        for(int j=0; j<100;j++)
-        {
-              B1[j]=B[j];
+          }
 
-        }
-        for(int j=0; j<100;j++)
-        {
-              B2[j]=B[j+100];
-        }
-        Max_Min MN_B;
-        Max_Min MN_B1;
-        Max_Min MN_B2;
-        MN_B=coutMaxMin(B,200);
-        MN_B1=coutMaxMin(B1,100);
-        MN_B2=coutMaxMin(B2,100);
-        MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
-        double X = MN_B.Max-MN_B.Min;        
-        COCN = (a_n*X)+b_n;
+           else//(cocn_win_count==cocn_win)
+          {
 
-        //==============================================
-        if(cNeedData)
-        {
-            emit sendData2C(accBuffer,after_s,mid_01);
-            Delay_MSec(50);
+              if(cocn_win==0)
+              {
 
-        }
-
-        //==============================================
-
-       if(first_count)
-       {
-           if(cocn_win==0)
-           {
-
-               out_data=COCN;
-               double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
-               emit sendData2M(nowTime,out_data);
-               first_count=false;
-           }
-
-           if(cocn_win_count==cocn_win)
-        {
-
-
-           out_data=0;
-           for(int i=0;i<COCN_data_befor_win.length();i++)
-           {
-               out_data+=COCN_data_befor_win[i];
-           }
-
-
-           out_data=out_data/cocn_win;
-           double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
-           emit sendData2M(nowTime,out_data);
-           first_count=false;
-
-         }
-            if(cocn_win_count<cocn_win)
-            {
-
+                  double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
+                  emit sendData2M(nowTime,COCN);
+              }
+              else
+              {
               COCN_data_befor_win.append(COCN);
-              cocn_win_count+=1;
+              COCN_data_befor_win.removeFirst();
 
-            }
+              //cocn_win_count=0;
+              for(int i=0;i<COCN_data_befor_win.length();i++)
+              {
+                  out_data+=COCN_data_befor_win[i];
+                //qDebug()<<COCN_data_befor_win[i];
+              }
+
+              out_data=out_data/cocn_win;
+              double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
+              emit sendData2M(nowTime,out_data);
+
+              }
+          }
 
 
 
 
-       }
+           //==============================================
+          COCN_data.clear();
+          COCN_data_after.clear();
+          Delay_MSec(20);
+          QDateTime datatime =QDateTime::currentDateTime();
+          QString timeString =datatime.toString("HH:mm:ss");
+          COCN_data_after.append(timeString);
+          COCN_data_after.append(QString::number(out_data));
+          COCN_data.append(timeString);
+          COCN_data.append(QString::number(COCN));
 
-        else//(cocn_win_count==cocn_win)
-       {
-
-           if(cocn_win==0)
+           if((saveSpectrum!=0)||(saveCOCN!=0))
            {
+               for(int i=0;i<500;i++)
+               {
+                    sp_data.append(QString::number(accBuffer[i]));
+                    if((use_smooth==1)&&(use_envelope==1))
+                    {
+                        sp_data_AP.append(QString::number(mid_01[i]));
+                    }
+                    else if((use_smooth!=1)&&(use_envelope!=1))
+                    {
+                        sp_data_AP.append(QString::number(accBuffer[i]));
+                    }
+                    else if((use_smooth==1)&&(use_envelope!=1))
+                    {
+                        sp_data_AP.append(QString::number(AK[i]));
+                    }
+                    else if((use_smooth!=1)&&(use_envelope==1))
+                    {
+                        sp_data_AP.append(QString::number(mid_01[i]));
+                    }
 
-               double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
-               emit sendData2M(nowTime,COCN);
+
+               }
+               Delay_MSec(50);
+               saveData_0();
+
            }
-           else
+           for(int i=0;i<500;i++)
            {
-           COCN_data_befor_win.append(COCN);
-           COCN_data_befor_win.removeFirst();
+               accBuffer[i]=0;
 
-           //cocn_win_count=0;
-           for(int i=0;i<COCN_data_befor_win.length();i++)
-           {
-               out_data+=COCN_data_befor_win[i];
-             //  qDebug()<<COCN_data_befor_win[i];
            }
-
-           out_data=out_data/cocn_win;
-           double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
-           emit sendData2M(nowTime,out_data);
-           }
-       }
-
-
-
-
-        //==============================================
-        COCN_data.clear();
-        COCN_data_after.clear();
-        QDateTime datatime =QDateTime::currentDateTime();
-        QString timeString =datatime.toString("HH:mm:ss");
-        COCN_data_after.append(timeString);
-        COCN_data_after.append(QString::number(out_data));
-        COCN_data.append(timeString);
-        COCN_data.append(QString::number(COCN));
-
-        if((saveSpectrum!=0)||(saveCOCN!=0))
-        {
-            for(int i=0;i<500;i++)
-            {
-                 sp_data.append(QString::number(accBuffer[i]));
-                 sp_data_AP.append(QString::number(mid_01[i]));
-            }
-            Delay_MSec(50);
-            saveData_0();
-
-        }
-        for(int i=0;i<500;i++)
-        {
-            accBuffer[i]=0;            
-
-        }
-
 
 
 

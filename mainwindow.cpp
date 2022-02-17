@@ -50,23 +50,17 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
-    QMessageBox msgBox ;
-   // msgBox.setIcon(QMessageBox::Icon::Warning);
-    msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
-    msgBox.setText("开始加载配置，点击OK继续");
-    msgBox.exec();
+
     if(smoothdataInitialize()&&envelopeInitialize())//必须加载
     {
 
-        QMessageBox msgBox ;
-       // msgBox.setIcon(QMessageBox::Icon::Warning);
-        msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
-        msgBox.setText("配置加载完毕");
-        msgBox.exec();
+
     }
     connect(clock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
     clock->start();
     readConf();
+    Delay_MSec(20);
+    on_pushButton_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -213,56 +207,58 @@ void MainWindow::readConf()
 {
     QFile confFile (QApplication::applicationDirPath()+"/configuration.txt");
 
-    if(confFile.open(QIODevice::ReadOnly|QIODevice::Text))
-    {
-        QList<QString> sk;
-        while(!confFile.atEnd())
+        if(confFile.open(QIODevice::ReadOnly|QIODevice::Text))
         {
-            QByteArray line = confFile.readLine();
-            QString str(line);
-            sk.append(str.split("\n").first());
-        }
+            QList<QString> sk;
+            while(!confFile.atEnd())
+            {
+                QByteArray line = confFile.readLine();
+                QString str(line);
+                sk.append(str.split("\n").first());
+            }
 
-        M_parameter.acc =sk.at(1).toDouble();
-        M_parameter.win_d=sk.at(3).toDouble();
-        M_parameter.a =sk.at(5).toDouble();
-        M_parameter.b =sk.at(7).toDouble();
-        M_parameter.saveSpectrum =sk.at(9).toDouble();
-        M_parameter.spectrumfilepath =sk.at(11);
-        M_parameter.COCNfilepath =sk.at(13);
-        ui->COCN_filepath->setText(sk.at(13));
-        M_parameter.USE_SMOOTH=sk.at(15).toDouble();
-        if(sk.at(15)=="0")
-        {
-            M_parameter.USE_SMOOTH=0;
-        }
+            M_parameter.acc =sk.at(1).toDouble();
+            M_parameter.win_d=sk.at(3).toDouble();
+            M_parameter.a =sk.at(5).toDouble();
+            M_parameter.b =sk.at(7).toDouble();
+            M_parameter.saveSpectrum =sk.at(9).toDouble();
+            M_parameter.spectrumfilepath =sk.at(11);
+            M_parameter.COCNfilepath =sk.at(13);
+            ui->COCN_filepath->setText(sk.at(13));
+            M_parameter.USE_SMOOTH=sk.at(15).toDouble();
+            if(sk.at(15)=="0")
+            {
+                M_parameter.USE_SMOOTH=0;
+            }
+            else
+            {
+                M_parameter.USE_SMOOTH=1;
+            }
+            M_parameter.saveCOCN =sk.at(17).toDouble();
+            if(sk.at(17)=="0")
+            {
+                ui->saveCOCN->setChecked(false);
+            }
+            else
+            {
+                ui->saveCOCN->setChecked(true);
+            }
+            M_parameter.COCN_WIN =sk.at(19).toDouble();
+            M_parameter.COCN_intercal=sk.at(21).toDouble();
+            ui->COCN_interval->setCurrentIndex(sk.at(21).toDouble());
+            M_parameter.USE_envelope=sk.at(23).toDouble();
+            emit sendCof2serial(M_parameter);
+            confFile.close();
+
+       }
         else
         {
-            M_parameter.USE_SMOOTH=1;
+           QMessageBox msgBox ;
+           msgBox.setIcon(QMessageBox::Icon::Warning);
+           msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
+           msgBox.setText("配置文件缺失！");
+           msgBox.exec();
         }
-        M_parameter.saveCOCN =sk.at(17).toDouble();
-        if(sk.at(17)=="0")
-        {
-            ui->saveCOCN->setChecked(false);
-        }
-        else
-        {
-            ui->saveCOCN->setChecked(true);
-        }
-        M_parameter.COCN_intercal=sk.at(19).toDouble();
-        ui->COCN_interval->setCurrentIndex(sk.at(19).toDouble());
-        emit sendCof2serial(M_parameter);
-        confFile.close();
-
-   }
-    else
-    {
-       QMessageBox msgBox ;
-       msgBox.setIcon(QMessageBox::Icon::Warning);
-       msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
-       msgBox.setText("配置文件缺失！");
-       msgBox.exec();
-    }
 };
 void MainWindow::receiveSerialSIGFromConf(Parameter sk)
 {

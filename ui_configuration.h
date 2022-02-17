@@ -52,6 +52,7 @@ public:
     QCheckBox *ifsmooth;
     QLineEdit *COCN_WIN;
     QLabel *label_2;
+    QCheckBox *ifenvelope;
 
     void setupUi(QDialog *configuration)
     {
@@ -93,13 +94,13 @@ public:
         win_n->setGeometry(QRect(60, 130, 61, 21));
         ifSave = new QCheckBox(configuration);
         ifSave->setObjectName(QString::fromUtf8("ifSave"));
-        ifSave->setGeometry(QRect(10, 180, 101, 18));
+        ifSave->setGeometry(QRect(10, 200, 101, 18));
         Spectrumline = new QLineEdit(configuration);
         Spectrumline->setObjectName(QString::fromUtf8("Spectrumline"));
-        Spectrumline->setGeometry(QRect(10, 200, 71, 20));
+        Spectrumline->setGeometry(QRect(10, 220, 71, 20));
         pushButton_2 = new QPushButton(configuration);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(80, 200, 41, 20));
+        pushButton_2->setGeometry(QRect(80, 220, 41, 20));
         chart_widget = new QCustomPlot(configuration);
         chart_widget->setObjectName(QString::fromUtf8("chart_widget"));
         chart_widget->setGeometry(QRect(130, 10, 841, 411));
@@ -111,7 +112,7 @@ public:
         add_lin->setGeometry(QRect(60, 99, 61, 21));
         read_Button = new QPushButton(configuration);
         read_Button->setObjectName(QString::fromUtf8("read_Button"));
-        read_Button->setGeometry(QRect(10, 230, 111, 51));
+        read_Button->setGeometry(QRect(10, 250, 111, 31));
         start_process = new QPushButton(configuration);
         start_process->setObjectName(QString::fromUtf8("start_process"));
         start_process->setGeometry(QRect(980, 430, 171, 50));
@@ -138,6 +139,9 @@ public:
         label_2 = new QLabel(configuration);
         label_2->setObjectName(QString::fromUtf8("label_2"));
         label_2->setGeometry(QRect(10, 65, 54, 21));
+        ifenvelope = new QCheckBox(configuration);
+        ifenvelope->setObjectName(QString::fromUtf8("ifenvelope"));
+        ifenvelope->setGeometry(QRect(10, 180, 91, 18));
 
         retranslateUi(configuration);
 
@@ -165,6 +169,7 @@ public:
         pushButton_4->setText(QCoreApplication::translate("configuration", "\350\276\223\345\207\272\350\267\257\345\276\204", nullptr));
         ifsmooth->setText(QCoreApplication::translate("configuration", "\346\230\257\345\220\246\345\271\263\346\273\221", nullptr));
         label_2->setText(QCoreApplication::translate("configuration", "\346\265\223\345\272\246\345\271\263\346\273\221", nullptr));
+        ifenvelope->setText(QCoreApplication::translate("configuration", "\346\230\257\345\220\246\346\261\202\345\214\205\347\273\234", nullptr));
     } // retranslateUi
 
 };
