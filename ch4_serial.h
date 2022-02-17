@@ -32,12 +32,13 @@ struct Parameter
    double win_d;
    double saveSpectrum;
    double saveCOCN;
-   double COCN_intercal;
+   int COCN_intercal;
    QString spectrumfilepath;
    QString COCNfilepath;
    QString portname;
    double USE_SMOOTH;
    double COCN_WIN;
+   double USE_envelope;
 };
 
 Q_DECLARE_METATYPE(Parameter);

@@ -5,6 +5,7 @@ std::mutex MUTEX;
 bool needread=false;
 bool cNeedData;
 double use_smooth;
+double use_envelope;
 double acc=0,a_n=0.0015,b_n=4,win_n=3,COCN;
 QString spectrumfilepath,COCNfilepath;
 double saveSpectrum,saveCOCN,COCN_interval,cocn_win,cocn_win_count=0;
@@ -206,6 +207,8 @@ void CH4_serial::anlyseData()
         int elementCntA=500;//元素个数
        // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
         double  *after_s=new double[elementCntA];
+        double *mid_01=new double[elementCntA];
+        double  *AK=new double[elementCntA];
        // saveData_0(QString path,QString filename);
        // ***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
        // sgolay
@@ -213,8 +216,12 @@ void CH4_serial::anlyseData()
         mwArray outPut(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray varargin(1);//输入参数的个数
         mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
-        matrixA.SetData(accBuffer,elementCntA); //将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
-        if(use_smooth==1)
+        mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
+        mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
+        mwArray d(win_n);//串窗口平滑参数
+        mwArray method("peak");
+        matrixA.SetData(accBuffer,elementCntA);//将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
+        if((use_smooth==1)&&(use_envelope==1))
         {
             smoothdata(1,outPut,WINSZ,matrixA,varargin);//
             for (int j=0; j<elementCntA;j++)
@@ -223,69 +230,177 @@ void CH4_serial::anlyseData()
                 after_s[j]=outPut.Get(0,j+1);
 
             }
-             // qDebug()<<after_s[0];
-        }
-
-        mwArray d(win_n);//串窗口平滑参数
-        mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
-        mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
-        mwArray method("peak");
-        if(use_smooth==1)
-        {
             envelope(2,up_01,lo_01,outPut,d,method);//通过测试
+
+            double a,b;
+
+            for (int j=0; j<elementCntA;j++)
+            {
+
+                a = up_01.Get(0,j+1);
+                b = lo_01.Get(0,j+1);
+                mid_01[j]=(a+b)/2;
+
+            }
+
+
+            double *B=new double[200];
+            double *B1=new double[200];
+            double *B2=new double[200];
+            for(int j=150; j<350;j++)
+            {
+                  B[j-150]=mid_01[j];
+            }
+            for(int j=0; j<100;j++)
+            {
+                  B1[j]=B[j];
+
+            }
+            for(int j=0; j<100;j++)
+            {
+                  B2[j]=B[j+100];
+            }
+            Max_Min MN_B;
+            Max_Min MN_B1;
+            Max_Min MN_B2;
+            MN_B=coutMaxMin(B,200);
+            MN_B1=coutMaxMin(B1,100);
+            MN_B2=coutMaxMin(B2,100);
+            MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
+            double X = MN_B.Max-MN_B.Min;
+            COCN = (a_n*X)+b_n;
+            if(cNeedData)
+            {
+                emit sendData2C(accBuffer,after_s,mid_01);
+
+            }
+
         }
-        else
+        else if((use_smooth!=1)&&(use_envelope!=1))
+        {
+            double *B=new double[200];
+            double *B1=new double[200];
+            double *B2=new double[200];
+            for(int j=150; j<350;j++)
+            {
+                  B[j-150]=accBuffer[j];
+            }
+            for(int j=0; j<100;j++)
+            {
+                  B1[j]=B[j];
+
+            }
+            for(int j=0; j<100;j++)
+            {
+                  B2[j]=B[j+100];
+            }
+            Max_Min MN_B;
+            Max_Min MN_B1;
+            Max_Min MN_B2;
+            MN_B=coutMaxMin(B,200);
+            MN_B1=coutMaxMin(B1,100);
+            MN_B2=coutMaxMin(B2,100);
+            MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
+            double X = MN_B.Max-MN_B.Min;
+            COCN = (a_n*X)+b_n;
+            if(cNeedData)
+            {
+                emit sendData2C(accBuffer,after_s,accBuffer);
+
+            }
+        }
+        else if((use_smooth==1)&&(use_envelope!=1))
+        {
+              smoothdata(1,outPut,WINSZ,matrixA,varargin);
+
+              for (int j=0; j<elementCntA;j++)
+              {
+                   AK[j]= outPut.Get(0,j+1);
+              }
+
+              double *B=new double[200];
+              double *B1=new double[200];
+              double *B2=new double[200];
+              for(int j=150; j<350;j++)
+              {
+                    B[j-150]=AK[j];
+              }
+              for(int j=0; j<100;j++)
+              {
+                    B1[j]=B[j];
+
+              }
+              for(int j=0; j<100;j++)
+              {
+                    B2[j]=B[j+100];
+              }
+              Max_Min MN_B;
+              Max_Min MN_B1;
+              Max_Min MN_B2;
+              MN_B=coutMaxMin(B,200);
+              MN_B1=coutMaxMin(B1,100);
+              MN_B2=coutMaxMin(B2,100);
+              MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
+              double X = MN_B.Max-MN_B.Min;
+              COCN = (a_n*X)+b_n;
+              if(cNeedData)
+              {
+                  emit sendData2C(accBuffer,after_s,AK);
+
+              }
+        }
+        else if((use_smooth!=1)&&(use_envelope==1))
         {
             envelope(2,up_01,lo_01,matrixA,d,method);//通过测试
+            double a,b;
+
+            for (int j=0; j<elementCntA;j++)
+            {
+
+                a = up_01.Get(0,j+1);
+                b = lo_01.Get(0,j+1);
+                mid_01[j]=(a+b)/2;
+
+            }
+
+
+            double *B=new double[200];
+            double *B1=new double[200];
+            double *B2=new double[200];
+            for(int j=150; j<350;j++)
+            {
+                  B[j-150]=mid_01[j];
+            }
+            for(int j=0; j<100;j++)
+            {
+                  B1[j]=B[j];
+
+            }
+            for(int j=0; j<100;j++)
+            {
+                  B2[j]=B[j+100];
+            }
+            Max_Min MN_B;
+            Max_Min MN_B1;
+            Max_Min MN_B2;
+            MN_B=coutMaxMin(B,200);
+            MN_B1=coutMaxMin(B1,100);
+            MN_B2=coutMaxMin(B2,100);
+            MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
+            double X = MN_B.Max-MN_B.Min;
+            COCN = (a_n*X)+b_n;
+            if(cNeedData)
+            {
+                emit sendData2C(accBuffer,after_s,mid_01);
+
+            }
         }
 
 
-        double *mid_01=new double[elementCntA];
-        double a,b;
-
-        for (int j=0; j<elementCntA;j++)
-        {
-
-            a = up_01.Get(0,j+1);
-            b = lo_01.Get(0,j+1);
-            mid_01[j]=(a+b)/2;
-
-        }
-
-
-        double *B=new double[200];
-        double *B1=new double[200];
-        double *B2=new double[200];
-        for(int j=150; j<350;j++)
-        {
-              B[j-150]=mid_01[j];
-        }
-        for(int j=0; j<100;j++)
-        {
-              B1[j]=B[j];
-
-        }
-        for(int j=0; j<100;j++)
-        {
-              B2[j]=B[j+100];
-        }
-        Max_Min MN_B;
-        Max_Min MN_B1;
-        Max_Min MN_B2;
-        MN_B=coutMaxMin(B,200);
-        MN_B1=coutMaxMin(B1,100);
-        MN_B2=coutMaxMin(B2,100);
-        MN_B.Max=(MN_B1.Max+MN_B2.Max)/2;
-        double X = MN_B.Max-MN_B.Min;        
-        COCN = (a_n*X)+b_n;
 
         //==============================================
-        if(cNeedData)
-        {
-            emit sendData2C(accBuffer,after_s,mid_01);
-            Delay_MSec(50);
 
-        }
+        Delay_MSec(50);
 
         //==============================================
 
@@ -348,7 +463,7 @@ void CH4_serial::anlyseData()
            for(int i=0;i<COCN_data_befor_win.length();i++)
            {
                out_data+=COCN_data_befor_win[i];
-             //  qDebug()<<COCN_data_befor_win[i];
+             //qDebug()<<COCN_data_befor_win[i];
            }
 
            out_data=out_data/cocn_win;
@@ -377,7 +492,24 @@ void CH4_serial::anlyseData()
             for(int i=0;i<500;i++)
             {
                  sp_data.append(QString::number(accBuffer[i]));
-                 sp_data_AP.append(QString::number(mid_01[i]));
+                 if((use_smooth==1)&&(use_envelope==1))
+                 {
+                     sp_data_AP.append(QString::number(mid_01[i]));
+                 }
+                 else if((use_smooth!=1)&&(use_envelope!=1))
+                 {
+                     sp_data_AP.append(QString::number(accBuffer[i]));
+                 }
+                 else if((use_smooth==1)&&(use_envelope!=1))
+                 {
+                     sp_data_AP.append(QString::number(AK[i]));
+                 }
+                 else if((use_smooth!=1)&&(use_envelope==1))
+                 {
+                     sp_data_AP.append(QString::number(mid_01[i]));
+                 }
+
+
             }
             Delay_MSec(50);
             saveData_0();
@@ -496,9 +628,10 @@ void CH4_serial::receiveCof(Parameter PM)
     use_smooth=PM.USE_SMOOTH;
     Serial_Port_Number=PM.portname;
     cocn_win=PM.COCN_WIN;
+    use_envelope=PM.USE_envelope;
    // qDebug()<<"an"<<a_n;
-  //  qDebug()<<"b_n"<<b_n;
-    qDebug()<<"cocn_win"<<cocn_win;
+   // qDebug()<<"b_n"<<b_n;
+
 }
 void CH4_serial::receiveNeedSIG(bool need)
 {

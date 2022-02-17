@@ -74,6 +74,11 @@ MainWindow::MainWindow(QWidget *parent)
     clock->start();
     readConf();
     comboxinit();
+    Delay_MSec(20);
+    on_pushButton_clicked();
+    Delay_MSec(20);
+    on_pushButton_2_clicked();
+
 }
 
 MainWindow::~MainWindow()
@@ -268,6 +273,7 @@ void MainWindow::readConf()
         M_parameter.COCN_WIN =sk.at(19).toDouble();
         M_parameter.COCN_intercal=sk.at(21).toDouble();
         ui->COCN_interval->setCurrentIndex(sk.at(21).toDouble());
+        M_parameter.USE_envelope=sk.at(23).toDouble();
         emit sendCof2serial(M_parameter);
         confFile.close();
 
@@ -326,7 +332,6 @@ void MainWindow::receiveSADSigFromS(bool ISstart)
         ui->pushButton_2->setText("开始采集");
     }
 }
-
 void MainWindow::Delay_MSec(unsigned int msec)
 {
 

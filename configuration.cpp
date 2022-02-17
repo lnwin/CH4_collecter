@@ -58,6 +58,15 @@ void configuration::readConf()
        C_parameter.saveCOCN =sk.at(17).toDouble();
        C_parameter.COCN_WIN=sk.at(19).toDouble();
        C_parameter.COCN_intercal =sk.at(21).toDouble();
+       C_parameter.USE_envelope =sk.at(23).toDouble();
+       if(C_parameter.USE_envelope==1)
+       {
+          ui_cof->ifenvelope->setChecked(true);
+       }
+       else
+       {
+           ui_cof->ifenvelope->setChecked(false);
+       }
        ui_cof->add_lin->setText(sk.at(1));
        ui_cof->win_n->setText(sk.at(3));
        ui_cof->a_n->setText(sk.at(5));
@@ -167,6 +176,39 @@ void configuration::on_pushButton_3_clicked()
         confFile.write("\n");
         confFile.write(ui_cof->COCN_WIN->text().toLatin1().data());
         confFile.write("\n");
+        confFile.write("COCN_intercal");
+        confFile.write("\n");
+
+        switch (C_parameter.COCN_intercal)
+          {
+            case 0:  confFile.write("0");
+            break;
+            case 1:  confFile.write("1");
+            break;
+            case 2:  confFile.write("2");
+            break;
+            case 3:  confFile.write("3");
+            break;
+            case 4:  confFile.write("4");
+            break;
+            case 5:  confFile.write("5");
+            break;
+          }
+        confFile.write("\n");
+        confFile.write("use_envelope");
+        confFile.write("\n");
+        if(ui_cof->ifenvelope->isChecked())
+        {
+            confFile.write("1");
+            C_parameter.USE_envelope=1;
+        }
+        else
+        {
+            confFile.write("0");
+            C_parameter.USE_envelope=0;
+        }
+        confFile.write("\n");
+
         C_parameter.acc =ui_cof->add_lin->text().toDouble();
         C_parameter.win_d=ui_cof->win_n->text().toDouble();
         C_parameter.a =ui_cof->a_n->text().toDouble();
