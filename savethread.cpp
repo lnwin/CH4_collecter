@@ -8,13 +8,13 @@ bool firstCount=true;
 uint startTime=0;
 uint endTime=0;
 //==========================
-
 savethread::savethread()
 {
 
 }
 void savethread::run()
 {
+   // qDebug()<<"save_COCN"<<save_COCN;
    if(save_COCN==1)
    {
 
@@ -66,6 +66,7 @@ void savethread::run()
        saveCOCN(COCNDATA,sp_FP);
        saveSP_afterP(spdata_after,sp_FP,SAVETime);
    }
+
 }
 void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
                             QList <QString>COCN_data,QList <QString>COCN_data_after,QList <QString>sp_data,
@@ -84,6 +85,7 @@ void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
       COCNDATA_after=COCN_data_after;
       Delay_MSec(50);
       this->start();
+
 }
 void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH)
 {
@@ -113,10 +115,11 @@ void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH)
 }
 void savethread::saveCOCN_after(QList<QString>COCN_DATA_after, QString PATH)
 {
+
     QDateTime time =QDateTime::currentDateTime();
-    QString filename =time.toString("yyyy-MM-dd")+"_COCN_DATAr.txt";
-    PATH+="/";
-    filename=PATH+filename;
+    QString filename =time.toString("yyyy-MM-dd")+"_COCN_DATA.txt";
+   // PATH+="/";
+    filename=PATH+"/"+filename;
     QFile datafile(filename);
     QTextStream stream(&datafile);
     if(!datafile.exists())

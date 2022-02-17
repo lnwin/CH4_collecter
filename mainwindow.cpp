@@ -55,19 +55,19 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->customPlot->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->customPlot, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(contextMenuRequest(QPoint)));
-    QMessageBox msgBox ;
-   // msgBox.setIcon(QMessageBox::Icon::Warning);
-    msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
-    msgBox.setText("开始加载配置，点击OK继续");
-    msgBox.exec();
+//    QMessageBox msgBox ;
+//   // msgBox.setIcon(QMessageBox::Icon::Warning);
+//    msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
+//    msgBox.setText("开始加载配置，点击OK继续");
+//    msgBox.exec();
     if(smoothdataInitialize()&&envelopeInitialize())//必须加载
     {
 
-        QMessageBox msgBox ;
-       // msgBox.setIcon(QMessageBox::Icon::Warning);
-        msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
-        msgBox.setText("配置加载完毕");
-        msgBox.exec();
+//        QMessageBox msgBox ;
+//       // msgBox.setIcon(QMessageBox::Icon::Warning);
+//        msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
+//        msgBox.setText("配置加载完毕");
+//        msgBox.exec();
     }
     connect(clock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
 
@@ -103,7 +103,7 @@ void MainWindow::on_pushButton_clicked()
 {
 
 
-     M_parameter.COCNfilepath =ui->COCN_filepath->text();
+    M_parameter.COCNfilepath =ui->COCN_filepath->text();
     if(ui->saveCOCN->isChecked())
    {
        M_parameter.saveCOCN =1;
@@ -115,7 +115,7 @@ void MainWindow::on_pushButton_clicked()
 
      M_parameter.COCN_intercal=ui->COCN_interval->currentIndex();
     // M_parameter.portname =ui->comboBox->currentText();
-//     emit sendCof2serial(M_parameter);
+     emit sendCof2serial(M_parameter);
 //   //  Delay_MSec(50);
      emit ToSerialThread();
 
@@ -128,7 +128,6 @@ void MainWindow::on_pushButton_2_clicked()//采集数据
 {
     emit readADdata();
 }
-
 void MainWindow::contextMenuRequest(QPoint pos)
 {
 
@@ -266,8 +265,9 @@ void MainWindow::readConf()
         {
             ui->saveCOCN->setChecked(true);
         }
-        M_parameter.COCN_intercal=sk.at(19).toDouble();
-        ui->COCN_interval->setCurrentIndex(sk.at(19).toDouble());
+        M_parameter.COCN_WIN =sk.at(19).toDouble();
+        M_parameter.COCN_intercal=sk.at(21).toDouble();
+        ui->COCN_interval->setCurrentIndex(sk.at(21).toDouble());
         emit sendCof2serial(M_parameter);
         confFile.close();
 

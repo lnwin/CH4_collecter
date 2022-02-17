@@ -55,13 +55,14 @@ void configuration::readConf()
        C_parameter.spectrumfilepath =sk.at(11);
        C_parameter.COCNfilepath =sk.at(13);
        C_parameter.USE_SMOOTH=sk.at(15).toDouble();
-       C_parameter.COCN_WIN=sk.at(17).toDouble();
-       C_parameter.COCN_intercal =sk.at(19).toDouble();
+       C_parameter.saveCOCN =sk.at(17).toDouble();
+       C_parameter.COCN_WIN=sk.at(19).toDouble();
+       C_parameter.COCN_intercal =sk.at(21).toDouble();
        ui_cof->add_lin->setText(sk.at(1));
        ui_cof->win_n->setText(sk.at(3));
        ui_cof->a_n->setText(sk.at(5));
        ui_cof->b_n->setText(sk.at(7));
-       ui_cof->COCN_WIN->setText(sk.at(17));
+       ui_cof->COCN_WIN->setText(sk.at(19));
        if(C_parameter.saveSpectrum!=1)
        {
            ui_cof->ifSave->setChecked(false);
@@ -149,7 +150,19 @@ void configuration::on_pushButton_3_clicked()
             confFile.write("0");
              C_parameter.USE_SMOOTH=0;
         }
-        confFile.write("\n");        
+        confFile.write("\n");
+        confFile.write("saveCOCN");
+        confFile.write("\n");
+        if(C_parameter.saveCOCN ==1)
+        {
+            confFile.write("1");
+        }
+        else
+        {
+            confFile.write("0");
+        }
+
+        confFile.write("\n");
         confFile.write("COCN_WIN");
         confFile.write("\n");
         confFile.write(ui_cof->COCN_WIN->text().toLatin1().data());

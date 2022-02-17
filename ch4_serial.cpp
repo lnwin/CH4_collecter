@@ -163,11 +163,7 @@ void CH4_serial::setADconf()
         tmpcfg.byTrigOptions = index;
         if (M3F20xm_ADCSetConfig(byDevIndex, &tmpcfg))
         {
-            QMessageBox msgBox ;
-           // msgBox.setIcon(QMessageBox::Icon::Warning);
-            msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
-            msgBox.setText("设置成功!");
-            msgBox.exec();
+
             memcpy(&myADCCfg, &tmpcfg, sizeof(ADC_CONFIG));
             if (myADCCfg.byADCOptions & 0x10)
                 MaxVol = 10;
@@ -358,6 +354,7 @@ void CH4_serial::anlyseData()
            out_data=out_data/cocn_win;
            double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
            emit sendData2M(nowTime,out_data);
+
            }
        }
 
@@ -365,14 +362,15 @@ void CH4_serial::anlyseData()
 
 
         //==============================================
-        COCN_data.clear();
-        COCN_data_after.clear();
-        QDateTime datatime =QDateTime::currentDateTime();
-        QString timeString =datatime.toString("HH:mm:ss");
-        COCN_data_after.append(timeString);
-        COCN_data_after.append(QString::number(out_data));
-        COCN_data.append(timeString);
-        COCN_data.append(QString::number(COCN));
+       COCN_data.clear();
+       COCN_data_after.clear();
+       Delay_MSec(20);
+       QDateTime datatime =QDateTime::currentDateTime();
+       QString timeString =datatime.toString("HH:mm:ss");
+       COCN_data_after.append(timeString);
+       COCN_data_after.append(QString::number(out_data));
+       COCN_data.append(timeString);
+       COCN_data.append(QString::number(COCN));
 
         if((saveSpectrum!=0)||(saveCOCN!=0))
         {
@@ -500,7 +498,7 @@ void CH4_serial::receiveCof(Parameter PM)
     cocn_win=PM.COCN_WIN;
    // qDebug()<<"an"<<a_n;
   //  qDebug()<<"b_n"<<b_n;
-   // qDebug()<<"cocn_win"<<cocn_win;
+    qDebug()<<"cocn_win"<<cocn_win;
 }
 void CH4_serial::receiveNeedSIG(bool need)
 {
