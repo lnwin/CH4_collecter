@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lcdNumber_2->setStyleSheet("border: 0px solid green;color: green; background: black;");
     QTimer *clock =new QTimer(this);
     clock->setInterval(1000);
-
+//1
 
     searchPort();
     CH4 =new CH4_chart;
