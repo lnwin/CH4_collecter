@@ -290,7 +290,18 @@ void MainWindow::readConf()
 void MainWindow::receiveSerialSIGFromConf(Parameter sk)
 {
     M_parameter=sk;
-    on_pushButton_clicked();
+    if(ui->pushButton->isEnabled())
+    {
+        on_pushButton_clicked();
+        on_pushButton_2_clicked();
+    }
+    else
+    {
+         on_pushButton_2_clicked();
+         on_pushButton_clicked();
+
+    }
+
 }
 void MainWindow::receiveDataFromS(double time, double data)
 {

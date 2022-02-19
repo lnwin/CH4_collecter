@@ -26,8 +26,8 @@ public:
     void Chart_Cinit(Ui::configuration);
     void Chart_Cupdata(Ui::configuration);
     void Chart_Pinit(Ui::configuration);
-    void Chart_Pupdata(Ui::configuration,double * origin,double*after_s,double *after_s_e);
-    void Chart_Pupdata_1(Ui::configuration,double * origin,double *after_e);
+    void Chart_Pupdata(Ui::configuration,double * origin,double*after_s,double *after_s_e,bool S,bool E);
+    void Chart_Pupdata_1(Ui::configuration,double * origin,double *after_e,bool S,bool E);
 
     void run();
     Max_Min coutMaxMin(double*,double);

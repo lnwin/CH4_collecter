@@ -389,7 +389,7 @@ void configuration::doProcess()
 
         }
     }
-    ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e);
+    //ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e);
     ui_cof->chart_widget->replot();
 }
 void configuration::on_start_process_clicked()
@@ -410,14 +410,23 @@ void configuration::closeEvent(QCloseEvent *event) //关闭窗体
 void configuration::receiveDataFromS(double *originData,double *after_s,double  *after_s_e)
 {
 
-    if(C_parameter.USE_SMOOTH !=1)
+    if((C_parameter.USE_SMOOTH ==1)&&(C_parameter.USE_envelope==1))
     {
-        ch4->Chart_Pupdata_1(*ui_cof,originData,after_s_e);
+        ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e,true,true);
     }
-    else
+    else if((C_parameter.USE_SMOOTH !=1)&&(C_parameter.USE_envelope!=1))
     {
-       ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e);
+       ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e,false,false);
     }
+    else if((C_parameter.USE_SMOOTH ==1)&&(C_parameter.USE_envelope!=1))
+    {
+       ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e,true,false);
+    }
+    else if((C_parameter.USE_SMOOTH !=1)&&(C_parameter.USE_envelope==1))
+    {
+       ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e,false,true);
+    }
+
       ui_cof->chart_widget->replot();
 
 };

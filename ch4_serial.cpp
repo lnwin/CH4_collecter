@@ -305,7 +305,7 @@ void CH4_serial::anlyseData()
             COCN = (a_n*X)+b_n;
             if(cNeedData)
             {
-                emit sendData2C(accBuffer,after_s,accBuffer);
+                emit sendData2C(accBuffer,accBuffer,accBuffer);
 
             }
         }
@@ -345,7 +345,7 @@ void CH4_serial::anlyseData()
               COCN = (a_n*X)+b_n;
               if(cNeedData)
               {
-                  emit sendData2C(accBuffer,after_s,AK);
+                  emit sendData2C(accBuffer,AK,AK);
 
               }
         }
@@ -391,7 +391,7 @@ void CH4_serial::anlyseData()
             COCN = (a_n*X)+b_n;
             if(cNeedData)
             {
-                emit sendData2C(accBuffer,after_s,mid_01);
+                emit sendData2C(accBuffer,accBuffer,mid_01);
 
             }
         }
