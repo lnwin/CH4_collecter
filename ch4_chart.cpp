@@ -105,6 +105,7 @@ void CH4_chart::Chart_Cupdata(Ui::configuration ui_cof)
 void CH4_chart::Chart_Pinit(Ui::configuration ui)
 {
 
+
     ui.chart_widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
                                                       QCP::iSelectLegend | QCP::iSelectPlottables);
 
@@ -157,10 +158,22 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
  //   qDebug()<<r<<"---"<<g<<"---"<<b;
     graphPen2.setWidthF(2);
     ui.chart_widget->graph(2)->setPen(graphPen2);
+
+
+    ui.chart_widget->addGraph();
+    ui.chart_widget->graph(3)->setName("after envelop");
+  //  ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
+    ui.chart_widget->graph(3)->setLineStyle((QCPGraph::lsLine));
+    ui.chart_widget->graph(3)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
+    QPen graphPen3;
+    graphPen2.setColor(QColor(102,2,22));
+ //   qDebug()<<r<<"---"<<g<<"---"<<b;
+    graphPen2.setWidthF(3);
+    ui.chart_widget->graph(3)->setPen(graphPen2);
     ui.chart_widget->rescaleAxes();
     qDebug()<<"chart_Int ok";
 }
-void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s,double *after_s_e)
+void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s,double *after_s_e,bool S,bool E)
 {
 //    origin_y.clear();
 //    origin_x.clear();
@@ -182,42 +195,41 @@ void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s
       after_p_s_e_x[i]=i;
 
     }
-//    ui.chart_widget->addGraph();
-//    ui.chart_widget->graph()->setName("origin data");
     ui.chart_widget->graph(0)->setData(origin_x,origin_y);
-//    ui.chart_widget->graph()->setLineStyle((QCPGraph::lsLine));
-//    ui.chart_widget->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
-//    QPen graphPen;
-//    graphPen.setColor(QColor(16,1,171));
-// //   qDebug()<<r<<"---"<<g<<"---"<<b;
-//    graphPen.setWidthF(2);
-//    ui.chart_widget->graph()->setPen(graphPen);
-//    ui.chart_widget->replot();
-    //==========================
-//    ui.chart_widget->addGraph();
-//    ui.chart_widget->graph()->setName("after smooth");
-    ui.chart_widget->graph(1)->setVisible(true);
-    ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
-//    ui.chart_widget->graph()->setLineStyle((QCPGraph::lsLine));
-//    ui.chart_widget->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
-//    QPen graphPen1;
-//    graphPen1.setColor(QColor(1,222,5));
-// //   qDebug()<<r<<"---"<<g<<"---"<<b;
-//    graphPen1.setWidthF(2);
-//    ui.chart_widget->graph()->setPen(graphPen1);
-//    ui.chart_widget->replot();
-//    ui.chart_widget->addGraph();
-//    ui.chart_widget->graph()->setName("after smooth&envelop");
-    ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
-//    ui.chart_widget->graph()->setLineStyle((QCPGraph::lsLine));
-//    ui.chart_widget->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
-//    QPen graphPen2;
-//    graphPen2.setColor(QColor(222,2,222));
-// //   qDebug()<<r<<"---"<<g<<"---"<<b;
-//    graphPen2.setWidthF(2);
-//    ui.chart_widget->graph()->setPen(graphPen2);
+    if((S==true)&&(E=true))
+    {
+        ui.chart_widget->graph(1)->setVisible(true);
+        ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
+        ui.chart_widget->graph(2)->setVisible(true);
+        ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
+         ui.chart_widget->graph(3)->setVisible(false);
+
+    }
+    else if((S==false)&&(E=false))
+    {
+       ui.chart_widget->graph(1)->setVisible(false);
+       ui.chart_widget->graph(2)->setVisible(false);
+       ui.chart_widget->graph(3)->setVisible(false);
+    }
+    else if((S==true)&&(E=false))
+    {
+        ui.chart_widget->graph(1)->setVisible(true);
+        ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
+        ui.chart_widget->graph(2)->setVisible(false);
+        ui.chart_widget->graph(3)->setVisible(false);
+
+    }
+    else if((S==false)&&(E=true))
+    {
+        ui.chart_widget->graph(1)->setVisible(false);
+        ui.chart_widget->graph(2)->setVisible(false);
+        ui.chart_widget->graph(3)->setVisible(true);
+        ui.chart_widget->graph(3)->setData(after_p_s_e_x,after_p_s_e_y);
+
+    }
+
     ui.chart_widget->replot();
-   // ui.chart_widget->rescaleAxes();
+
 
 }
 void CH4_chart::Chart_Pupdata_1(Ui::configuration ui,double * origin,double *after_e)
