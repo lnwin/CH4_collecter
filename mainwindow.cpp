@@ -54,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     if(smoothdataInitialize()&&envelopeInitialize())//必须加载
     {
 
-
+         sgolayfiltInitialize();
     }
     connect(clock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
     clock->start();

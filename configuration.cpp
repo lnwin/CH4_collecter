@@ -59,6 +59,10 @@ void configuration::readConf()
           C_parameter.COCN_WIN=sk.at(19).toDouble();
           C_parameter.COCN_intercal =sk.at(21).toDouble();
           C_parameter.USE_envelope =sk.at(23).toDouble();
+          C_parameter.order=sk.at(25).toDouble();
+          ui_cof->order->setText(sk.at(25));
+          C_parameter.framelen=sk.at(27).toDouble();
+          ui_cof->framelen->setText(sk.at(27));
           qDebug()<<C_parameter.USE_envelope;
           if(C_parameter.USE_envelope==1)
           {
@@ -388,7 +392,7 @@ void configuration::doProcess()
 
         }
     }
-    ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e);
+    //ch4->Chart_Pupdata(*ui_cof,originData,after_s,after_s_e);
     ui_cof->chart_widget->replot();
 }
 void configuration::on_start_process_clicked()
@@ -429,7 +433,6 @@ void configuration::receiveDataFromS(double *originData,double *after_s,double  
       ui_cof->chart_widget->replot();
 
 };
-
 void configuration::on_pushButton_clicked()
 {
     QProcess PRO;

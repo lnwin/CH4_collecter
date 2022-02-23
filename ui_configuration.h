@@ -53,6 +53,12 @@ public:
     QLineEdit *COCN_WIN;
     QLabel *label_2;
     QCheckBox *ifenvelope;
+    QLabel *label_6;
+    QLineEdit *win_n_2;
+    QLineEdit *order;
+    QLineEdit *framelen;
+    QLabel *label_7;
+    QLabel *label_8;
 
     void setupUi(QDialog *configuration)
     {
@@ -64,7 +70,7 @@ public:
         configuration->setWindowIcon(icon);
         groupBox = new QGroupBox(configuration);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(10, 290, 111, 71));
+        groupBox->setGeometry(QRect(10, 350, 111, 71));
         label_3 = new QLabel(groupBox);
         label_3->setObjectName(QString::fromUtf8("label_3"));
         label_3->setGeometry(QRect(12, 45, 30, 16));
@@ -94,25 +100,25 @@ public:
         win_n->setGeometry(QRect(60, 130, 61, 21));
         ifSave = new QCheckBox(configuration);
         ifSave->setObjectName(QString::fromUtf8("ifSave"));
-        ifSave->setGeometry(QRect(10, 200, 101, 18));
+        ifSave->setGeometry(QRect(10, 260, 101, 18));
         Spectrumline = new QLineEdit(configuration);
         Spectrumline->setObjectName(QString::fromUtf8("Spectrumline"));
-        Spectrumline->setGeometry(QRect(10, 220, 71, 20));
+        Spectrumline->setGeometry(QRect(10, 280, 71, 20));
         pushButton_2 = new QPushButton(configuration);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
-        pushButton_2->setGeometry(QRect(80, 220, 41, 20));
+        pushButton_2->setGeometry(QRect(80, 280, 41, 20));
         chart_widget = new QCustomPlot(configuration);
         chart_widget->setObjectName(QString::fromUtf8("chart_widget"));
         chart_widget->setGeometry(QRect(130, 10, 841, 411));
         pushButton_3 = new QPushButton(configuration);
         pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
-        pushButton_3->setGeometry(QRect(10, 370, 111, 51));
+        pushButton_3->setGeometry(QRect(10, 430, 111, 51));
         add_lin = new QLineEdit(configuration);
         add_lin->setObjectName(QString::fromUtf8("add_lin"));
         add_lin->setGeometry(QRect(60, 99, 61, 21));
         read_Button = new QPushButton(configuration);
         read_Button->setObjectName(QString::fromUtf8("read_Button"));
-        read_Button->setGeometry(QRect(10, 250, 111, 31));
+        read_Button->setGeometry(QRect(10, 310, 111, 31));
         start_process = new QPushButton(configuration);
         start_process->setObjectName(QString::fromUtf8("start_process"));
         start_process->setGeometry(QRect(980, 430, 171, 50));
@@ -123,7 +129,7 @@ public:
         select_files->setMinimumSize(QSize(0, 50));
         textEdit = new QTextEdit(configuration);
         textEdit->setObjectName(QString::fromUtf8("textEdit"));
-        textEdit->setGeometry(QRect(10, 430, 961, 51));
+        textEdit->setGeometry(QRect(130, 430, 841, 51));
         tableView = new QTableView(configuration);
         tableView->setObjectName(QString::fromUtf8("tableView"));
         tableView->setGeometry(QRect(980, 10, 171, 301));
@@ -132,7 +138,7 @@ public:
         pushButton_4->setGeometry(QRect(980, 380, 171, 41));
         ifsmooth = new QCheckBox(configuration);
         ifsmooth->setObjectName(QString::fromUtf8("ifsmooth"));
-        ifsmooth->setGeometry(QRect(10, 160, 71, 21));
+        ifsmooth->setGeometry(QRect(10, 220, 71, 21));
         COCN_WIN = new QLineEdit(configuration);
         COCN_WIN->setObjectName(QString::fromUtf8("COCN_WIN"));
         COCN_WIN->setGeometry(QRect(60, 65, 61, 20));
@@ -141,7 +147,26 @@ public:
         label_2->setGeometry(QRect(10, 65, 54, 21));
         ifenvelope = new QCheckBox(configuration);
         ifenvelope->setObjectName(QString::fromUtf8("ifenvelope"));
-        ifenvelope->setGeometry(QRect(10, 180, 91, 18));
+        ifenvelope->setGeometry(QRect(10, 240, 91, 18));
+        label_6 = new QLabel(configuration);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+        label_6->setGeometry(QRect(10, 130, 51, 21));
+        win_n_2 = new QLineEdit(configuration);
+        win_n_2->setObjectName(QString::fromUtf8("win_n_2"));
+        win_n_2->setEnabled(true);
+        win_n_2->setGeometry(QRect(60, 130, 61, 21));
+        order = new QLineEdit(configuration);
+        order->setObjectName(QString::fromUtf8("order"));
+        order->setGeometry(QRect(60, 160, 61, 20));
+        framelen = new QLineEdit(configuration);
+        framelen->setObjectName(QString::fromUtf8("framelen"));
+        framelen->setGeometry(QRect(60, 190, 61, 20));
+        label_7 = new QLabel(configuration);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+        label_7->setGeometry(QRect(10, 160, 51, 21));
+        label_8 = new QLabel(configuration);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+        label_8->setGeometry(QRect(10, 190, 51, 21));
 
         retranslateUi(configuration);
 
@@ -170,6 +195,10 @@ public:
         ifsmooth->setText(QCoreApplication::translate("configuration", "\346\230\257\345\220\246\345\271\263\346\273\221", nullptr));
         label_2->setText(QCoreApplication::translate("configuration", "\346\265\223\345\272\246\345\271\263\346\273\221", nullptr));
         ifenvelope->setText(QCoreApplication::translate("configuration", "\346\230\257\345\220\246\346\261\202\345\214\205\347\273\234", nullptr));
+        label_6->setText(QCoreApplication::translate("configuration", "\346\273\244\346\263\242\347\252\227\345\217\243", nullptr));
+        win_n_2->setText(QCoreApplication::translate("configuration", "3", nullptr));
+        label_7->setText(QCoreApplication::translate("configuration", "order", nullptr));
+        label_8->setText(QCoreApplication::translate("configuration", "framelen", nullptr));
     } // retranslateUi
 
 };

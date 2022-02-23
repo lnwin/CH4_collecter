@@ -170,6 +170,17 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
  //   qDebug()<<r<<"---"<<g<<"---"<<b;
     graphPen2.setWidthF(3);
     ui.chart_widget->graph(3)->setPen(graphPen2);
+
+    ui.chart_widget->addGraph();
+    ui.chart_widget->graph(4)->setName("after sgolayfilt");
+  //  ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
+    ui.chart_widget->graph(4)->setLineStyle((QCPGraph::lsLine));
+    ui.chart_widget->graph(4)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
+    QPen graphPen4;
+    graphPen2.setColor(QColor(102,2,102));
+ //   qDebug()<<r<<"---"<<g<<"---"<<b;
+    graphPen2.setWidthF(4);
+    ui.chart_widget->graph(4)->setPen(graphPen2);
     ui.chart_widget->rescaleAxes();
     qDebug()<<"chart_Int ok";
 }
@@ -196,37 +207,43 @@ void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s
 
     }
     ui.chart_widget->graph(0)->setData(origin_x,origin_y);
-    if((S==true)&&(E=true))
-    {
-        ui.chart_widget->graph(1)->setVisible(true);
-        ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
-        ui.chart_widget->graph(2)->setVisible(true);
-        ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
-         ui.chart_widget->graph(3)->setVisible(false);
+//    if((S==true)&&(E=true))
+//    {
+//        ui.chart_widget->graph(1)->setVisible(true);
+//        ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
+//        ui.chart_widget->graph(2)->setVisible(true);
+//        ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
+//         ui.chart_widget->graph(3)->setVisible(false);
 
-    }
-    else if((S==false)&&(E=false))
-    {
-       ui.chart_widget->graph(1)->setVisible(false);
-       ui.chart_widget->graph(2)->setVisible(false);
-       ui.chart_widget->graph(3)->setVisible(false);
-    }
-    else if((S==true)&&(E=false))
-    {
-        ui.chart_widget->graph(1)->setVisible(true);
-        ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
-        ui.chart_widget->graph(2)->setVisible(false);
-        ui.chart_widget->graph(3)->setVisible(false);
+//    }
+//    else if((S==false)&&(E=false))
+//    {
+//       ui.chart_widget->graph(1)->setVisible(false);
+//       ui.chart_widget->graph(2)->setVisible(false);
+//       ui.chart_widget->graph(3)->setVisible(false);
+//    }
+//    else if((S==true)&&(E=false))
+//    {
+//        ui.chart_widget->graph(1)->setVisible(true);
+//        ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
+//        ui.chart_widget->graph(2)->setVisible(false);
+//        ui.chart_widget->graph(3)->setVisible(false);
 
-    }
-    else if((S==false)&&(E=true))
-    {
-        ui.chart_widget->graph(1)->setVisible(false);
-        ui.chart_widget->graph(2)->setVisible(false);
-        ui.chart_widget->graph(3)->setVisible(true);
-        ui.chart_widget->graph(3)->setData(after_p_s_e_x,after_p_s_e_y);
+//    }
+//    else if((S==false)&&(E=true))
+//    {
+//        ui.chart_widget->graph(1)->setVisible(false);
+//        ui.chart_widget->graph(2)->setVisible(false);
+//        ui.chart_widget->graph(3)->setVisible(true);
+//        ui.chart_widget->graph(3)->setData(after_p_s_e_x,after_p_s_e_y);
 
-    }
+//    }
+    ui.chart_widget->graph(1)->setVisible(false);
+    ui.chart_widget->graph(2)->setVisible(false);
+    ui.chart_widget->graph(3)->setVisible(false);
+    ui.chart_widget->graph(4)->setVisible(true);
+    ui.chart_widget->graph(4)->setData(after_p_x,after_p_y);
+
 
     ui.chart_widget->replot();
 

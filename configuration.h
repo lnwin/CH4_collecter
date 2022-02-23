@@ -36,7 +36,7 @@ private slots:
      void on_select_files_clicked();
      void on_start_process_clicked();   
      void on_pushButton_4_clicked();
-     void receiveDataFromS(double *originData,double  *after_s_e,double  *after_s,);
+     void receiveDataFromS(double *originData,double  *after_s_e,double  *after_s);
 
      void on_pushButton_clicked();
 

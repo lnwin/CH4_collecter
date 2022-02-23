@@ -14,6 +14,7 @@
 #include <QFileDialog>
 #include <iostream>
 #include <fstream>
+#include <sgolayfilt.h>
 struct Max_Min
 {
 
@@ -38,6 +39,8 @@ struct Parameter
    double USE_SMOOTH;
    double COCN_WIN;
    double USE_envelope;
+   double order;
+   double framelen;
 };
 
 Q_DECLARE_METATYPE(Parameter);

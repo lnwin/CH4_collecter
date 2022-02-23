@@ -87,3 +87,8 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lsmoothdatad
 
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -lsgolayfilt
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lsgolayfiltd
+
+INCLUDEPATH += $$PWD/include
+DEPENDPATH += $$PWD/include

@@ -21,7 +21,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>290</y>
+     <y>350</y>
      <width>111</width>
      <height>71</height>
     </rect>
@@ -147,7 +147,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>200</y>
+     <y>260</y>
      <width>101</width>
      <height>18</height>
     </rect>
@@ -160,7 +160,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>220</y>
+     <y>280</y>
      <width>71</width>
      <height>20</height>
     </rect>
@@ -170,7 +170,7 @@
    <property name="geometry">
     <rect>
      <x>80</x>
-     <y>220</y>
+     <y>280</y>
      <width>41</width>
      <height>20</height>
     </rect>
@@ -193,7 +193,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>370</y>
+     <y>430</y>
      <width>111</width>
      <height>51</height>
     </rect>
@@ -216,7 +216,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>250</y>
+     <y>310</y>
      <width>111</width>
      <height>31</height>
     </rect>
@@ -266,9 +266,9 @@
   <widget class="QTextEdit" name="textEdit">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>130</x>
      <y>430</y>
-     <width>961</width>
+     <width>841</width>
      <height>51</height>
     </rect>
    </property>
@@ -300,7 +300,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
+     <y>220</y>
      <width>71</width>
      <height>21</height>
     </rect>
@@ -336,13 +336,88 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>180</y>
+     <y>240</y>
      <width>91</width>
      <height>18</height>
     </rect>
    </property>
    <property name="text">
     <string>是否求包络</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>130</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>滤波窗口</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="win_n_2">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>130</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>3</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="order">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>160</y>
+     <width>61</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="framelen">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>190</y>
+     <width>61</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>160</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>order</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>190</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>framelen</string>
    </property>
   </widget>
  </widget>
