@@ -59,6 +59,10 @@ void configuration::readConf()
        C_parameter.COCN_WIN=sk.at(19).toDouble();
        C_parameter.COCN_intercal =sk.at(21).toDouble();
        C_parameter.USE_envelope =sk.at(23).toDouble();
+       C_parameter.order=sk.at(25).toDouble();
+       C_parameter.framelen=sk.at(27).toDouble();
+       ui_cof->order->setText(sk.at(25));
+       ui_cof->frameleng->setText(sk.at(27));
        if(C_parameter.USE_envelope==1)
        {
           ui_cof->ifenvelope->setChecked(true);
@@ -208,6 +212,14 @@ void configuration::on_pushButton_3_clicked()
             C_parameter.USE_envelope=0;
         }
         confFile.write("\n");
+        confFile.write("order");
+        confFile.write("\n");
+        confFile.write(ui_cof->order->text().toLatin1().data());
+        confFile.write("\n");
+        confFile.write("framelen");
+        confFile.write("\n");
+        confFile.write(ui_cof->frameleng->text().toLatin1().data());
+        confFile.write("\n");
 
         C_parameter.acc =ui_cof->add_lin->text().toDouble();
         C_parameter.win_d=ui_cof->win_n->text().toDouble();
@@ -215,6 +227,11 @@ void configuration::on_pushButton_3_clicked()
         C_parameter.b =ui_cof->b_n->text().toDouble();
         C_parameter.spectrumfilepath =ui_cof->Spectrumline->text();
         C_parameter.COCN_WIN=ui_cof->COCN_WIN->text().toDouble();
+        C_parameter.order=ui_cof->order->text().toDouble();
+        C_parameter.framelen=ui_cof->frameleng->text().toDouble();
+
+
+
        // C_parameter.COCN_intercal=ui_cof->COCN_WIN->text().toDouble();
         emit sendCof2serial(C_parameter);
 

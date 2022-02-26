@@ -94,17 +94,6 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lsgolayfiltd
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -liseven
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lisevend
-
-INCLUDEPATH += $$PWD/include
-DEPENDPATH += $$PWD/include
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -lerrorIf
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lerrorIfd
-
-INCLUDEPATH += $$PWD/include
-DEPENDPATH += $$PWD/include
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -lad7606

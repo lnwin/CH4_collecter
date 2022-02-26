@@ -15,7 +15,7 @@
 #include <QInputDialog>
 #include <ad7606.h>
 #include <sgolayfilt.h>
-#include <iseven.h>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE

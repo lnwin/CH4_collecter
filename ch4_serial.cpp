@@ -216,8 +216,8 @@ void CH4_serial::anlyseData()
         mwArray WINSZ(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//需要和output纬度一样
         mwArray outPut(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray varargin(1);//输入参数的个数
-        mwArray Order(2);//输入参数的个数
-        mwArray framelen(31);//输入参数的个数
+        mwArray Order(order);//输入参数的个数
+        mwArray framelen(framleng);//输入参数的个数
         mwArray dim(1);
       // char str[1] = "";
       //或 CString str = "abcd"
@@ -233,16 +233,12 @@ void CH4_serial::anlyseData()
 
         weights.SetData(a,31);//将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
         matrixA.SetData(accBuffer,elementCntA);//将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
-
-        qDebug()<<"order"<<order;
-        qDebug()<<"framleng"<<framleng;
         sgolayfilt(1,outPut,matrixA,Order,framelen,weights,dim);
 
         for (int j=0; j<elementCntA;j++)
         {
-
             after_s[j]=outPut.Get(0,j+1);
-
+           // qDebug()<<after_s[j];
         }
         double *B=new double[200];
         double *B1=new double[200];

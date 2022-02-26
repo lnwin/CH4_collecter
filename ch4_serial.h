@@ -16,8 +16,6 @@
 #include <fstream>
 #include <ad7606.h>
 #include <sgolayfilt.h>
-#include <iseven.h>
-#include <errorIf.h>
 struct Max_Min
 {
 
