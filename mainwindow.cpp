@@ -60,24 +60,16 @@ MainWindow::MainWindow(QWidget *parent)
 //    msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
 //    msgBox.setText("开始加载配置，点击OK继续");
 //    msgBox.exec();
-    if(smoothdataInitialize()&&envelopeInitialize())//必须加载
-    {
-
-//        QMessageBox msgBox ;
-//       // msgBox.setIcon(QMessageBox::Icon::Warning);
-//        msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
-//        msgBox.setText("配置加载完毕");
-//        msgBox.exec();
-    }
+    sgolayfiltInitialize();
     connect(clock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
 
     clock->start();
     readConf();
     comboxinit();
     Delay_MSec(20);
-    on_pushButton_clicked();
+   // on_pushButton_clicked();
     Delay_MSec(20);
-    on_pushButton_2_clicked();
+   // on_pushButton_2_clicked();
 
 }
 
@@ -274,6 +266,9 @@ void MainWindow::readConf()
         M_parameter.COCN_intercal=sk.at(21).toDouble();
         ui->COCN_interval->setCurrentIndex(sk.at(21).toDouble());
         M_parameter.USE_envelope=sk.at(23).toDouble();
+        M_parameter.order =sk.at(25).toDouble();
+        M_parameter.framelen=sk.at(27).toDouble();
+
         emit sendCof2serial(M_parameter);
         confFile.close();
 

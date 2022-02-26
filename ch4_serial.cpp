@@ -6,6 +6,7 @@ bool needread=false;
 bool cNeedData;
 double use_smooth;
 double use_envelope;
+double order,framleng;
 double acc=0,a_n=0.0015,b_n=4,win_n=3,COCN;
 QString spectrumfilepath,COCNfilepath;
 double saveSpectrum,saveCOCN,COCN_interval,cocn_win,cocn_win_count=0;
@@ -215,12 +216,20 @@ void CH4_serial::anlyseData()
         mwArray WINSZ(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//需要和output纬度一样
         mwArray outPut(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray varargin(1);//输入参数的个数
+        mwArray Order(order);//输入参数的个数
+        mwArray framelen(framleng);//输入参数的个数
+        mwArray dim(1);
+        mwArray weights(31);
         mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
         mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray d(win_n);//串窗口平滑参数
         mwArray method("peak");
         matrixA.SetData(accBuffer,elementCntA);//将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
+
+
+
+/*
         if((use_smooth==1)&&(use_envelope==1))
         {
             smoothdata(1,outPut,WINSZ,matrixA,varargin);//
@@ -396,7 +405,7 @@ void CH4_serial::anlyseData()
             }
         }
 
-
+*/
 
         //==============================================
 
@@ -492,22 +501,23 @@ void CH4_serial::anlyseData()
             for(int i=0;i<500;i++)
             {
                  sp_data.append(QString::number(accBuffer[i]));
-                 if((use_smooth==1)&&(use_envelope==1))
-                 {
-                     sp_data_AP.append(QString::number(mid_01[i]));
-                 }
-                 else if((use_smooth!=1)&&(use_envelope!=1))
-                 {
-                     sp_data_AP.append(QString::number(accBuffer[i]));
-                 }
-                 else if((use_smooth==1)&&(use_envelope!=1))
-                 {
-                     sp_data_AP.append(QString::number(AK[i]));
-                 }
-                 else if((use_smooth!=1)&&(use_envelope==1))
-                 {
-                     sp_data_AP.append(QString::number(mid_01[i]));
-                 }
+                 sp_data_AP.append(QString::number(mid_01[i]));
+//                 if((use_smooth==1)&&(use_envelope==1))
+//                 {
+//                     sp_data_AP.append(QString::number(mid_01[i]));
+//                 }
+//                 else if((use_smooth!=1)&&(use_envelope!=1))
+//                 {
+//                     sp_data_AP.append(QString::number(accBuffer[i]));
+//                 }
+//                 else if((use_smooth==1)&&(use_envelope!=1))
+//                 {
+//                     sp_data_AP.append(QString::number(AK[i]));
+//                 }
+//                 else if((use_smooth!=1)&&(use_envelope==1))
+//                 {
+//                     sp_data_AP.append(QString::number(mid_01[i]));
+//                 }
 
 
             }
@@ -629,8 +639,10 @@ void CH4_serial::receiveCof(Parameter PM)
     Serial_Port_Number=PM.portname;
     cocn_win=PM.COCN_WIN;
     use_envelope=PM.USE_envelope;
-   // qDebug()<<"an"<<a_n;
-   // qDebug()<<"b_n"<<b_n;
+    order=PM.order;
+    framleng=PM.framelen;
+    qDebug()<<"order"<<order;
+    qDebug()<<"framleng"<<framleng;
 
 }
 void CH4_serial::receiveNeedSIG(bool need)

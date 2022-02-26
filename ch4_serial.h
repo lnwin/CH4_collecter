@@ -15,6 +15,7 @@
 #include <iostream>
 #include <fstream>
 #include <ad7606.h>
+#include <sgolayfilt.h>
 struct Max_Min
 {
 
@@ -39,6 +40,8 @@ struct Parameter
    double USE_SMOOTH;
    double COCN_WIN;
    double USE_envelope;
+   double order;
+   double framelen;
 };
 
 Q_DECLARE_METATYPE(Parameter);

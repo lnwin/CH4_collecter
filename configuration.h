@@ -7,6 +7,7 @@
 #include <ch4_chart.h>
 #include <QCloseEvent>
 #include <QProcess>
+#include <sgolayfilt.h>
 namespace Ui {
 class configuration;
 }
