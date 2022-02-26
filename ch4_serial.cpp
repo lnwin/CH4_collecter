@@ -145,24 +145,35 @@ void CH4_serial::setADconf()
     BYTE index;
     memcpy(&tmpcfg, &myADCCfg, sizeof(ADC_CONFIG));
 
+//
+    qDebug()<<tmpcfg.byADCOptions;
+
+
+
+
+
 
         tmpcfg.wTrigSize = 3072;
 
         tmpcfg.dwMaxCycles = 500;
 
-        tmpcfg.wPeriod = 100;
+        tmpcfg.wPeriod = 1000;
         tmpcfg.byADCOptions &= 0xC8;
         index = 0<< 5;
         tmpcfg.byADCOptions += index;
-        index = 1;
+        index = 0 ;//rangge
         index = index << 4;
         tmpcfg.byADCOptions += index;
-        index = 0;
+        index = 0;//os
         tmpcfg.byADCOptions += index;
-        index = 0;
-        index = 1;
-        index += 0<< 2;
+//        index = 0;//OS
+//        tmpcfg.byADCOptions += index;
+        index = 6;//trig mode  2=both
+       // index += 0<< 3;
+
         tmpcfg.byTrigOptions = index;
+//        index = 0;
+//        tmpcfg.byTrigOptions += index;
         if (M3F20xm_ADCSetConfig(byDevIndex, &tmpcfg))
         {
 
@@ -754,6 +765,9 @@ void CH4_serial::onTimeOut()
        WORD cycles;
        float realVol;
        int i =0;
+       if (myADCCfg.byADCOptions & 0x10)
+               MaxVol = 10;
+               MaxVol = 5;
       QList <double> originBuffer;
        if (M3F20xm_ReadFIFO(byDevIndex, lpBuffer, 320000, &pdwRealSize))
        {
@@ -770,7 +784,7 @@ void CH4_serial::onTimeOut()
 
                        if ((byDataArray[i] & 0x8000) == 0x8000)
                        {
-                           lpBuffer[i] = ~byDataArray[i];
+                           byDataArray[i] = ~byDataArray[i];
                            //realVol = -1 * MaxVol * (code + 1) / 32768;
                            realVol = -1 * MaxVol * (byDataArray[i] + 1) / 32768;
                            //str.Format("%3.6f   ",realVol);
@@ -785,7 +799,7 @@ void CH4_serial::onTimeOut()
 
                        }
                         originBuffer.append(realVol);
-                        //qDebug()<<realVol;
+                       // qDebug()<<realVol;
 
                }
 
@@ -807,7 +821,7 @@ void CH4_serial::onTimeOut()
                            {
 
                                accBuffer[i]=accBuffer[i]/localAcc;
-
+                              // qDebug()<<accBuffer[i];
                            }
 
                           // this->start();

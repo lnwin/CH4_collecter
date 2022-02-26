@@ -66,10 +66,10 @@ MainWindow::MainWindow(QWidget *parent)
     clock->start();
     readConf();
     comboxinit();
-    Delay_MSec(20);
-   // on_pushButton_clicked();
-    Delay_MSec(20);
-   // on_pushButton_2_clicked();
+    Delay_MSec(50);
+    on_pushButton_clicked();
+    Delay_MSec(50);
+    on_pushButton_2_clicked();
 
 }
 
