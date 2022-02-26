@@ -2,7 +2,7 @@
 QString sp_FP;
 QString COCN_FP,SAVETime;
 double save_SP,save_COCN;int COCNInter=0,SUB=0;
-QList <QString>COCNDATA, COCNDATA_after,  spdata,spchannel_data,spdata_after;
+QList <QString>COCNDATA, COCNDATA_after,spdata,spchannel_data,spdata_after;
 //==========================
 bool firstCount=true;
 uint startTime=0;
@@ -189,6 +189,7 @@ void savethread::saveSP_channel(QList<QString> SP_channel_data,QString PATH,QStr
                  QDir *folder = new QDir;
                  folder->mkdir(PATH);
                  cloudfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                // qDebug()<<SP_channel_data.length();
                  for( int i=0;i<SP_channel_data.length(); i++)
                  {
                       stream<< SP_channel_data[i]<<"\n";
@@ -199,6 +200,7 @@ void savethread::saveSP_channel(QList<QString> SP_channel_data,QString PATH,QStr
     else
     {
         cloudfile.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append);
+       //  qDebug()<<SP_channel_data.length();
         for( int i=0;i<SP_channel_data.length(); i++)
         {
              stream<< SP_channel_data[i]<<"\n";

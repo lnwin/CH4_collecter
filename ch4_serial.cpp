@@ -217,6 +217,7 @@ void CH4_serial::anlyseData()
         COCN=0;
         sp_data.clear();
         sp_data_AP.clear();
+        sp_channel_data.clear();
         double out_data=0;
         int elementCntA=500;//元素个数
        // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
@@ -534,9 +535,6 @@ void CH4_serial::anlyseData()
            }
        }
 
-
-
-
         //==============================================
        COCN_data.clear();
        COCN_data_after.clear();
@@ -695,8 +693,8 @@ void CH4_serial::receiveCof(Parameter PM)
     use_envelope=PM.USE_envelope;
     order=PM.order;
     framleng=PM.framelen;
-    qDebug()<<"order"<<order;
-    qDebug()<<"framleng"<<framleng;
+   // qDebug()<<"order"<<order;
+   // qDebug()<<"framleng"<<framleng;
 
 }
 void CH4_serial::receiveNeedSIG(bool need)
@@ -824,7 +822,7 @@ void CH4_serial::onTimeOut()
 
                         }
                        originBuffer_1.append(realVol_1);
-                       qDebug()<<realVol_1;
+                       //qDebug()<<realVol_1;
 
                }
 
