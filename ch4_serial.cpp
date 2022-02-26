@@ -218,12 +218,11 @@ void CH4_serial::anlyseData()
            double *B2=new double[200];
            for(int j=50; j<250;j++)
            {
-                 B[j-50]=mid_01[j];
+                 B[j-50]=after_s[j];
            }
            for(int j=0; j<100;j++)
            {
                  B1[j]=B[j];
-
            }
            for(int j=0; j<100;j++)
            {
@@ -235,8 +234,11 @@ void CH4_serial::anlyseData()
            MN_B=coutMaxMin(B,200);
            MN_B1=coutMaxMin(B1,100);
            MN_B2=coutMaxMin(B2,100);
+
            MN_B.Min=(MN_B1.Min+MN_B2.Min)/2;
-           COCN = MN_B.Max-MN_B.Min;
+           double X = MN_B.Max-MN_B.Min;
+           COCN = (a_n*X)+b_n;
+
            emit sendData2C(accBuffer,after_s,accBuffer);
 /*
            if((use_smooth==1)&&(use_envelope==1))
