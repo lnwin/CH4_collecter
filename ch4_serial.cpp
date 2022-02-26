@@ -211,23 +211,64 @@ void CH4_serial::anlyseData()
         double *mid_01=new double[elementCntA];
         double  *AK=new double[elementCntA];
        // saveData_0(QString path,QString filename);
-       // ***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
-       // sgolay
+       //***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
+
         mwArray WINSZ(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//需要和output纬度一样
         mwArray outPut(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray varargin(1);//输入参数的个数
-        mwArray Order(order);//输入参数的个数
-        mwArray framelen(framleng);//输入参数的个数
+        mwArray Order(2);//输入参数的个数
+        mwArray framelen(31);//输入参数的个数
         mwArray dim(1);
-        mwArray weights(31);
+      // char str[1] = "";
+      //或 CString str = "abcd"
+      //mwArray mwA(str);
+        mwArray weights(1,31,mxDOUBLE_CLASS, mxREAL);
+       // mwArray weights(str);
         mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
         mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
         mwArray d(win_n);//串窗口平滑参数
         mwArray method("peak");
+        double a[31] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+
+        weights.SetData(a,31);//将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
         matrixA.SetData(accBuffer,elementCntA);//将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
 
+        qDebug()<<"order"<<order;
+        qDebug()<<"framleng"<<framleng;
+        sgolayfilt(1,outPut,matrixA,Order,framelen,weights,dim);
 
+        for (int j=0; j<elementCntA;j++)
+        {
+
+            after_s[j]=outPut.Get(0,j+1);
+
+        }
+        double *B=new double[200];
+        double *B1=new double[200];
+        double *B2=new double[200];
+        for(int j=50; j<250;j++)
+        {
+              B[j-50]=mid_01[j];
+        }
+        for(int j=0; j<100;j++)
+        {
+              B1[j]=B[j];
+
+        }
+        for(int j=0; j<100;j++)
+        {
+              B2[j]=B[j+100];
+        }
+        Max_Min MN_B;
+        Max_Min MN_B1;
+        Max_Min MN_B2;
+        MN_B=coutMaxMin(B,200);
+        MN_B1=coutMaxMin(B1,100);
+        MN_B2=coutMaxMin(B2,100);
+        MN_B.Min=(MN_B1.Min+MN_B2.Min)/2;
+        COCN = MN_B.Max-MN_B.Min;
+        emit sendData2C(accBuffer,after_s,accBuffer);
 
 /*
         if((use_smooth==1)&&(use_envelope==1))
@@ -501,7 +542,7 @@ void CH4_serial::anlyseData()
             for(int i=0;i<500;i++)
             {
                  sp_data.append(QString::number(accBuffer[i]));
-                 sp_data_AP.append(QString::number(mid_01[i]));
+                 sp_data_AP.append(QString::number(after_s[i]));
 //                 if((use_smooth==1)&&(use_envelope==1))
 //                 {
 //                     sp_data_AP.append(QString::number(mid_01[i]));

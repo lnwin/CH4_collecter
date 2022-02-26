@@ -3,7 +3,7 @@ QT       += serialport
 QT       += charts
 QT       += sql
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
-
+DEFINES += __MW_STDINT_H__
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -94,6 +94,17 @@ else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lsgolayfiltd
 INCLUDEPATH += $$PWD/include
 DEPENDPATH += $$PWD/include
 
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -liseven
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lisevend
+
+INCLUDEPATH += $$PWD/include
+DEPENDPATH += $$PWD/include
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -lerrorIf
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/include/ -lerrorIfd
+
+INCLUDEPATH += $$PWD/include
+DEPENDPATH += $$PWD/include
 
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/include/ -lad7606
