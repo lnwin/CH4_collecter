@@ -7,13 +7,13 @@ a
 b
 4
 saveSpectrum
-1
+0
 spectrumfilepath
 D:/origin_DATA
 COCNfilepath
 D:/COCN_DATA
 use_smooth
-1
+0
 saveCOCN
 1
 COCN_WIN
@@ -21,8 +21,9 @@ COCN_WIN
 COCN_intercal
 0
 use_envelope
-1
+0
 order
 1
 framelen
 31
+

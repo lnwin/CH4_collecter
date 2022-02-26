@@ -212,7 +212,16 @@ void configuration::on_pushButton_3_clicked()
                 C_parameter.USE_envelope=0;
             }
             confFile.write("\n");
-
+            confFile.write("order");
+            confFile.write("\n");
+            confFile.write(ui_cof->order->text().toLatin1().data());
+            confFile.write("\n");
+            confFile.write("framelen");
+            confFile.write("\n");
+            confFile.write(ui_cof->framelen->text().toLatin1().data());
+            confFile.write("\n");
+            C_parameter.order=ui_cof->order->text().toDouble();
+            C_parameter.framelen=ui_cof->framelen->text().toDouble();
             C_parameter.acc =ui_cof->add_lin->text().toDouble();
             C_parameter.win_d=ui_cof->win_n->text().toDouble();
             C_parameter.a =ui_cof->a_n->text().toDouble();

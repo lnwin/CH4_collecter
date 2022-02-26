@@ -5,7 +5,7 @@ bool needread=false;
 bool cNeedData;
 double use_smooth;
 double use_envelope;
-double order,framelen;
+double order,Framelen;
 double acc=0,a_n=0.0015,b_n=4,win_n=3,COCN;
 QString spectrumfilepath,COCNfilepath;
 double saveSpectrum,saveCOCN,COCN_interval,cocn_win,cocn_win_count=0;
@@ -181,24 +181,32 @@ void CH4_serial::anlyseData()
           // saveData_0(QString path,QString filename);
           // ***重要***smoothdata(int nargout, mwArray& y, mwArray& winsz, const mwArray& A, const mwArray& varargin); y为处理后输出的数据 A为需要输入的数据，varargin代表输入参数的个数，
           // sgolay
-          int ORDER=order;
-          int FRAMELEN=framelen;
+
+
            mwArray WINSZ(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//需要和output纬度一样
            mwArray outPut(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
            mwArray varargin(1);//输入参数的个数
-           mwArray order(ORDER);//输入参数的个数
-           mwArray framelen(FRAMELEN);//输入参数的个数
-           mwArray dim(NULL);
-           mwArray weights(NULL);
+           mwArray Order(order);//输入参数的个数
+           mwArray framelen(Framelen);//输入参数的个数
+           mwArray dim(1);
+         // char str[1] = "";
+         //或 CString str = "abcd"
+         //mwArray mwA(str);
+           mwArray weights(1,31,mxDOUBLE_CLASS, mxREAL);
+          // mwArray weights(str);
            mwArray matrixA(elementCntA,1,mxDOUBLE_CLASS, mxREAL);//定义数组，行，列，double类型
            mwArray up_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
            mwArray lo_01(elementCntA,1,mxDOUBLE_CLASS, mxREAL);
            mwArray d(win_n);//串窗口平滑参数
            mwArray method("peak");
+           double a[31] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+
+           weights.SetData(a,31);//将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
            matrixA.SetData(accBuffer,elementCntA);//将C++ 的一维数组arrayA存储到 MATLAB的二维数组matrixA
 
-           sgolayfilt(1,outPut,matrixA,order,framelen,weights,dim);
-
+         //  qDebug()<<"order"<<order;
+           //qDebug()<<"framleng"<<framelen;
+           sgolayfilt(1,outPut,matrixA,Order,framelen,weights,dim);
            for (int j=0; j<elementCntA;j++)
            {
 
@@ -638,7 +646,7 @@ void CH4_serial::receiveCof(Parameter PM)
     use_smooth=PM.USE_SMOOTH;
     Serial_Port_Number=PM.portname;
     cocn_win=PM.COCN_WIN;
-    framelen =PM.framelen;
+    Framelen =PM.framelen;
     order=PM.order;
    // qDebug()<<"an"<<a_n;
   //  qDebug()<<"b_n"<<b_n;

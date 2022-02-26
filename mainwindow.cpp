@@ -247,6 +247,10 @@ void MainWindow::readConf()
             M_parameter.COCN_intercal=sk.at(21).toDouble();
             ui->COCN_interval->setCurrentIndex(sk.at(21).toDouble());
             M_parameter.USE_envelope=sk.at(23).toDouble();
+            M_parameter.order=sk.at(25).toDouble();
+            M_parameter.framelen= sk.at(27).toDouble();
+
+
             emit sendCof2serial(M_parameter);
             confFile.close();
 
