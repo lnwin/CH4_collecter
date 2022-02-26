@@ -14,11 +14,13 @@ QList <double> COCN_data_befor_win;
 QList <QString> COCN_data;
 QList <QString> COCN_data_after;
 QList <QString> sp_data;
+QList <QString> sp_channel_data;
 QList <QString> sp_data_AP;
 QString saveTime;
 QByteArray FBuffer;
 QString Serial_Port_Number;
 double *accBuffer=new double[500];
+double *accBuffer_1=new double[500];
 double localAcc=0;
 bool obiect_exist=false;
 bool first_count=true;
@@ -275,7 +277,7 @@ void CH4_serial::anlyseData()
         MN_B2=coutMaxMin(B2,100);
         MN_B.Min=(MN_B1.Min+MN_B2.Min)/2;
         COCN = MN_B.Max-MN_B.Min;
-        emit sendData2C(accBuffer,after_s,accBuffer);
+        emit sendData2C(accBuffer,after_s,accBuffer_1);
 
 /*
         if((use_smooth==1)&&(use_envelope==1))
@@ -550,6 +552,7 @@ void CH4_serial::anlyseData()
             {
                  sp_data.append(QString::number(accBuffer[i]));
                  sp_data_AP.append(QString::number(after_s[i]));
+                 sp_channel_data.append(QString::number(accBuffer_1[i]));
 //                 if((use_smooth==1)&&(use_envelope==1))
 //                 {
 //                     sp_data_AP.append(QString::number(mid_01[i]));
@@ -575,7 +578,8 @@ void CH4_serial::anlyseData()
         }
         for(int i=0;i<500;i++)
         {
-            accBuffer[i]=0;            
+            accBuffer[i]=0;
+            accBuffer_1[i]=0;
 
         }
 
@@ -646,7 +650,7 @@ void CH4_serial::saveData_0()
     QDateTime datatime =QDateTime::currentDateTime();
     QString saveTime =datatime.toString("yyyy-MM-dd-HH-mm-ss");
 
-    CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,COCN_data_after,sp_data,sp_data_AP,spectrumfilepath,COCNfilepath,saveTime);
+    CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,COCN_data_after,sp_data,sp_channel_data,sp_data_AP,spectrumfilepath,COCNfilepath,saveTime);
 
 };
 Max_Min CH4_serial::coutMaxMin(double *dataIn,double n)
@@ -764,11 +768,13 @@ void CH4_serial::onTimeOut()
       // char Temp[200];
        WORD cycles;
        float realVol;
+       float realVol_1;
        int i =0;
        if (myADCCfg.byADCOptions & 0x10)
                MaxVol = 10;
                MaxVol = 5;
       QList <double> originBuffer;
+      QList <double> originBuffer_1;
        if (M3F20xm_ReadFIFO(byDevIndex, lpBuffer, 320000, &pdwRealSize))
        {
            if (pdwRealSize > 0)
@@ -782,11 +788,11 @@ void CH4_serial::onTimeOut()
                   // s.Empty();
                    memcpy(byDataArray, &lpBuffer[j * 16], 16);
 
-                       if ((byDataArray[i] & 0x8000) == 0x8000)
+                       if ((byDataArray[0] & 0x8000) == 0x8000)
                        {
-                           byDataArray[i] = ~byDataArray[i];
+                           byDataArray[0] = ~byDataArray[0];
                            //realVol = -1 * MaxVol * (code + 1) / 32768;
-                           realVol = -1 * MaxVol * (byDataArray[i] + 1) / 32768;
+                           realVol = -1 * MaxVol * (byDataArray[0] + 1) / 32768;
                            //str.Format("%3.6f   ",realVol);
                            //str = String.Format("{0:0.000000}", realVol);
 
@@ -794,12 +800,29 @@ void CH4_serial::onTimeOut()
                        else
                        {
                            //realVol = MaxVol * (Sample[i] + 1) / 32768;
-                           realVol = MaxVol * (byDataArray[i] + 1) / 32768;
+                           realVol = MaxVol * (byDataArray[0] + 1) / 32768;
                            //str = String.Format("{0:0.000000}", realVol);
 
                        }
                         originBuffer.append(realVol);
-                       // qDebug()<<realVol;
+                        if ((byDataArray[1] & 0x8000) == 0x8000)
+                        {
+                            byDataArray[1] = ~byDataArray[1];
+                            //realVol = -1 * MaxVol * (code + 1) / 32768;
+                            realVol_1 = -1 * MaxVol * (byDataArray[1] + 1) / 32768;
+                            //str.Format("%3.6f   ",realVol);
+                            //str = String.Format("{0:0.000000}", realVol);
+
+                        }
+                        else
+                        {
+                            //realVol = MaxVol * (Sample[i] + 1) / 32768;
+                            realVol_1 = MaxVol * (byDataArray[1] + 1) / 32768;
+                            //str = String.Format("{0:0.000000}", realVol);
+
+                        }
+                       originBuffer_1.append(realVol_1);
+                       qDebug()<<realVol_1;
 
                }
 
@@ -811,6 +834,7 @@ void CH4_serial::onTimeOut()
                           {
 
                               accBuffer[i]+=originBuffer[i];
+                              accBuffer_1[i]+=originBuffer_1[i];
 
                           }
                           localAcc++;
@@ -821,6 +845,7 @@ void CH4_serial::onTimeOut()
                            {
 
                                accBuffer[i]=accBuffer[i]/localAcc;
+                               accBuffer_1[i]=accBuffer_1[i]/localAcc;
                               // qDebug()<<accBuffer[i];
                            }
 

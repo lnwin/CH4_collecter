@@ -137,7 +137,7 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
 
 
     ui.chart_widget->addGraph();
-    ui.chart_widget->graph(1)->setName("after smooth");
+    ui.chart_widget->graph(1)->setName("after sgolayfilt");
    // ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
     ui.chart_widget->graph(1)->setLineStyle((QCPGraph::lsLine));
     ui.chart_widget->graph(1)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
@@ -148,7 +148,7 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
     ui.chart_widget->graph(1)->setPen(graphPen1);
 
     ui.chart_widget->addGraph();
-    ui.chart_widget->graph(2)->setName("after smooth&envelop");
+    ui.chart_widget->graph(2)->setName("channel_2");
   //  ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
     ui.chart_widget->graph(2)->setLineStyle((QCPGraph::lsLine));
     ui.chart_widget->graph(2)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
@@ -231,10 +231,11 @@ void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s
 //    }
 //    else if((S==false)&&(E=true))
 //    {
-        ui.chart_widget->graph(1)->setVisible(false);
-        ui.chart_widget->graph(2)->setVisible(false);
-        ui.chart_widget->graph(3)->setVisible(true);
-        ui.chart_widget->graph(3)->setData(after_p_s_e_x,after_p_s_e_y);
+        ui.chart_widget->graph(1)->setVisible(true);
+        ui.chart_widget->graph(2)->setData(after_p_x,after_p_y);
+        ui.chart_widget->graph(2)->setVisible(true);
+      //  ui.chart_widget->graph(3)->setVisible(true);
+        ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
 
    // }
 

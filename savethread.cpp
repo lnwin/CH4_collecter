@@ -2,7 +2,7 @@
 QString sp_FP;
 QString COCN_FP,SAVETime;
 double save_SP,save_COCN;int COCNInter=0,SUB=0;
-QList <QString>COCNDATA, COCNDATA_after,  spdata,spdata_after;
+QList <QString>COCNDATA, COCNDATA_after,  spdata,spchannel_data,spdata_after;
 //==========================
 bool firstCount=true;
 uint startTime=0;
@@ -63,13 +63,15 @@ void savethread::run()
    if(save_SP==1)
    {
        saveSP(spdata,sp_FP,SAVETime);
+       saveSP_channel(spchannel_data,sp_FP,SAVETime);
        saveCOCN(COCNDATA,sp_FP);
        saveSP_afterP(spdata_after,sp_FP,SAVETime);
+
    }
 
 }
 void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
-                            QList <QString>COCN_data,QList <QString>COCN_data_after,QList <QString>sp_data,
+                            QList <QString>COCN_data,QList <QString>COCN_data_after,QList <QString>sp_data,QList <QString>sp_channel_data,
                             QList <QString>sp_data_AfterP,
                             QString spFilePath,QString COCNFilePath,QString savetime)
 {
@@ -83,6 +85,7 @@ void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
       SAVETime=savetime;
       spdata_after=sp_data_AfterP;
       COCNDATA_after=COCN_data_after;
+      spchannel_data=sp_channel_data;
       Delay_MSec(50);
       this->start();
 
@@ -166,6 +169,39 @@ void savethread::saveSP(QList<QString> SP_data,QString PATH,QString saveTime)
         for( int i=0;i<SP_data.length(); i++)
         {
              stream<< SP_data[i]<<"\n";
+
+        }
+
+    }
+    cloudfile.close();
+}
+void savethread::saveSP_channel(QList<QString> SP_channel_data,QString PATH,QString saveTime)
+{
+    QString filename =saveTime+"_origin_channel2_DATA.txt";
+    PATH+="/";
+    filename=PATH+filename;
+
+    QFile cloudfile(filename);
+    QTextStream stream(&cloudfile);
+    if(!cloudfile.exists())
+
+            {
+                 QDir *folder = new QDir;
+                 folder->mkdir(PATH);
+                 cloudfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                 for( int i=0;i<SP_channel_data.length(); i++)
+                 {
+                      stream<< SP_channel_data[i]<<"\n";
+
+                 }
+
+             }
+    else
+    {
+        cloudfile.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append);
+        for( int i=0;i<SP_channel_data.length(); i++)
+        {
+             stream<< SP_channel_data[i]<<"\n";
 
         }
 
