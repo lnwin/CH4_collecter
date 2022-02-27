@@ -191,9 +191,14 @@ void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s
 //    after_p_x.clear();
 //    after_p_s_e_y.clear();
 //    after_p_s_e_x.clear();
-    Max_Min MN_B;
-    MN_B=coutMaxMin(origin,500);
-    ui.chart_widget->yAxis->setRange(MN_B.Min-500, MN_B.Max+500);
+//    Max_Min MN_A;
+//    Max_Min MN_B;
+//    Max_Min MN_C;
+//    MN_A=coutMaxMin(origin,500);
+//    MN_A=coutMaxMin(after_s,500);
+//    MN_A=coutMaxMin(after_s_e,500);
+
+    ui.chart_widget->yAxis->setRange(-5, 5);
    // ui.chart_widget->clearGraphs();
     for (int i=0; i<500; i++)
     {
@@ -238,7 +243,7 @@ void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s
         ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
 
    // }
-
+    ui.chart_widget->rescaleAxes();
     ui.chart_widget->replot();
 
 
