@@ -110,7 +110,8 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
 
     ui.chart_widget->xAxis->setRange(0, 500);
     ui.chart_widget->yAxis->setRange(0, 500);
-
+    ui.chart_widget->yAxis2->setRange(-5, 5);
+    ui.chart_widget->yAxis2->setVisible(true);
     ui.chart_widget->axisRect()->setupFullAxesBox();
     ui.chart_widget->plotLayout()->insertRow(0);
     QCPTextElement *title = new QCPTextElement( ui.chart_widget, "光谱信号曲线图", QFont("sans", 10, QFont::Bold));
@@ -147,7 +148,7 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
     graphPen1.setWidthF(2);
     ui.chart_widget->graph(1)->setPen(graphPen1);
 
-    ui.chart_widget->addGraph();
+    ui.chart_widget->addGraph(ui.chart_widget->xAxis,ui.chart_widget->yAxis2);
     ui.chart_widget->graph(2)->setName("channel_2");
   //  ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
     ui.chart_widget->graph(2)->setLineStyle((QCPGraph::lsLine));
@@ -159,27 +160,27 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
     ui.chart_widget->graph(2)->setPen(graphPen2);
 
 
-    ui.chart_widget->addGraph();
-    ui.chart_widget->graph(3)->setName("after envelop");
-  //  ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
-    ui.chart_widget->graph(3)->setLineStyle((QCPGraph::lsLine));
-    ui.chart_widget->graph(3)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
-    QPen graphPen3;
-    graphPen2.setColor(QColor(102,2,22));
- //   qDebug()<<r<<"---"<<g<<"---"<<b;
-    graphPen2.setWidthF(3);
-    ui.chart_widget->graph(3)->setPen(graphPen2);
+//    ui.chart_widget->addGraph();
+//    ui.chart_widget->graph(3)->setName("after envelop");
+//  //  ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
+//    ui.chart_widget->graph(3)->setLineStyle((QCPGraph::lsLine));
+//    ui.chart_widget->graph(3)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
+//    QPen graphPen3;
+//    graphPen2.setColor(QColor(102,2,22));
+// //   qDebug()<<r<<"---"<<g<<"---"<<b;
+//    graphPen2.setWidthF(3);
+//    ui.chart_widget->graph(3)->setPen(graphPen2);
 
-    ui.chart_widget->addGraph();
-     ui.chart_widget->graph(4)->setName("after sgolayfilt");
-   //  ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
-     ui.chart_widget->graph(4)->setLineStyle((QCPGraph::lsLine));
-     ui.chart_widget->graph(4)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
-     QPen graphPen4;
-     graphPen2.setColor(QColor(102,2,102));
-  //   qDebug()<<r<<"---"<<g<<"---"<<b;
-     graphPen2.setWidthF(4);
-     ui.chart_widget->graph(4)->setPen(graphPen2);
+//    ui.chart_widget->addGraph();
+//     ui.chart_widget->graph(4)->setName("after XX");
+//   //  ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
+//     ui.chart_widget->graph(4)->setLineStyle((QCPGraph::lsLine));
+//     ui.chart_widget->graph(4)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
+//     QPen graphPen4;
+//     graphPen2.setColor(QColor(102,2,102));
+//  //   qDebug()<<r<<"---"<<g<<"---"<<b;
+//     graphPen2.setWidthF(4);
+//     ui.chart_widget->graph(4)->setPen(graphPen2);
     ui.chart_widget->rescaleAxes();
     qDebug()<<"chart_Int ok";
 }
@@ -198,7 +199,7 @@ void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s
 //    MN_A=coutMaxMin(after_s,500);
 //    MN_A=coutMaxMin(after_s_e,500);
 
-    ui.chart_widget->yAxis->setRange(-5, 5);
+    ui.chart_widget->yAxis->setRange(-5, 5);    
    // ui.chart_widget->clearGraphs();
     for (int i=0; i<500; i++)
     {
@@ -237,7 +238,7 @@ void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s
 //    else if((S==false)&&(E=true))
 //    {
         ui.chart_widget->graph(1)->setVisible(true);
-        ui.chart_widget->graph(2)->setData(after_p_x,after_p_y);
+        ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
         ui.chart_widget->graph(2)->setVisible(true);
       //  ui.chart_widget->graph(3)->setVisible(true);
         ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);

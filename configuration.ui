@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1155</width>
-    <height>489</height>
+    <height>526</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,380 +17,270 @@
    <iconset resource="image.qrc">
     <normaloff>:/image/image/001.jpg</normaloff>:/image/image/001.jpg</iconset>
   </property>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>320</y>
-     <width>111</width>
-     <height>71</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>标定系数</string>
-   </property>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>12</x>
-      <y>45</y>
-      <width>30</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>系数b</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>12</x>
-      <y>22</y>
-      <width>30</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>系数a</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="b_n">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>48</x>
-      <y>45</y>
-      <width>51</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>4</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="a_n">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>48</x>
-      <y>22</y>
-      <width>51</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>0.015</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>111</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>控制参数设置</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_4">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>120</y>
-     <width>51</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>滤波窗口</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>92</y>
-     <width>54</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>累加次数</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="win_n">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>120</y>
-     <width>61</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>3</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="ifSave">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>240</y>
-     <width>101</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>保存光谱数据</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="Spectrumline">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>260</y>
-     <width>71</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>260</y>
-     <width>41</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Path</string>
-   </property>
-  </widget>
-  <widget class="QCustomPlot" name="chart_widget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>10</y>
-     <width>841</width>
-     <height>411</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>390</y>
-     <width>111</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>保存配置</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="add_lin">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>90</y>
-     <width>61</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="read_Button">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>280</y>
-     <width>111</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>开始读取光谱数据</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="start_process">
-   <property name="geometry">
-    <rect>
-     <x>980</x>
-     <y>430</y>
-     <width>171</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>50</height>
-    </size>
-   </property>
-   <property name="text">
-    <string>开始处理</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="select_files">
-   <property name="geometry">
-    <rect>
-     <x>980</x>
-     <y>320</y>
-     <width>171</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>0</width>
-     <height>50</height>
-    </size>
-   </property>
-   <property name="text">
-    <string>批量选择文件</string>
-   </property>
-  </widget>
-  <widget class="QTextEdit" name="textEdit">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>430</y>
-     <width>961</width>
-     <height>51</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QTableView" name="tableView">
-   <property name="geometry">
-    <rect>
-     <x>980</x>
-     <y>10</y>
-     <width>171</width>
-     <height>301</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_4">
-   <property name="geometry">
-    <rect>
-     <x>980</x>
-     <y>380</y>
-     <width>171</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>输出路径</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="ifsmooth">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>190</y>
-     <width>71</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>是否平滑</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="COCN_WIN">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>65</y>
-     <width>61</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>65</y>
-     <width>54</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>浓度平滑</string>
-   </property>
-  </widget>
-  <widget class="QCheckBox" name="ifenvelope">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>215</y>
-     <width>81</width>
-     <height>18</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>是否求包络</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="order">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>145</y>
-     <width>61</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="frameleng">
-   <property name="geometry">
-    <rect>
-     <x>60</x>
-     <y>170</y>
-     <width>61</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_6">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>150</y>
-     <width>54</width>
-     <height>12</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>order</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_7">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>170</y>
-     <width>54</width>
-     <height>12</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>framelen</string>
-   </property>
-  </widget>
+  <layout class="QHBoxLayout" name="horizontalLayout_3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="4,1">
+     <property name="spacing">
+      <number>2</number>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_7" stretch="4,1">
+       <property name="spacing">
+        <number>1</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,9">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,3,4,4">
+           <property name="spacing">
+            <number>1</number>
+           </property>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="spacing">
+              <number>1</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>控制参数设置</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QFormLayout" name="formLayout">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>浓度平滑</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="COCN_WIN"/>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label">
+               <property name="text">
+                <string>累加次数</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="add_lin"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_4">
+               <property name="text">
+                <string>滤波窗口</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="win_n">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="text">
+                <string>3</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="label_6">
+               <property name="text">
+                <string>order</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="order"/>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="label_7">
+               <property name="text">
+                <string>framelen</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="frameleng"/>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLineEdit" name="Spectrumline"/>
+             </item>
+             <item row="5" column="1">
+              <widget class="QPushButton" name="pushButton_2">
+               <property name="text">
+                <string>Path</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QCheckBox" name="ifsmooth">
+               <property name="text">
+                <string>是否平滑</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ifenvelope">
+               <property name="text">
+                <string>是否求包络</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="ifSave">
+               <property name="text">
+                <string>保存光谱数据</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="read_Button">
+               <property name="text">
+                <string>开始读取光谱数据</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <widget class="QGroupBox" name="groupBox">
+               <property name="title">
+                <string>标定系数</string>
+               </property>
+               <widget class="QWidget" name="">
+                <property name="geometry">
+                 <rect>
+                  <x>12</x>
+                  <y>22</y>
+                  <width>91</width>
+                  <height>51</height>
+                 </rect>
+                </property>
+                <layout class="QFormLayout" name="formLayout_2">
+                 <property name="horizontalSpacing">
+                  <number>1</number>
+                 </property>
+                 <property name="verticalSpacing">
+                  <number>1</number>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_5">
+                   <property name="text">
+                    <string>系数a</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLineEdit" name="a_n">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="text">
+                    <string>0.015</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_3">
+                   <property name="text">
+                    <string>系数b</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QLineEdit" name="b_n">
+                   <property name="enabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="text">
+                    <string>4</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_3">
+               <property name="text">
+                <string>保存配置</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QCustomPlot" name="chart_widget" native="true"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="textEdit"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTableView" name="tableView"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="select_files">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>批量选择文件</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_4">
+         <property name="text">
+          <string>输出路径</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="start_process">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>开始处理</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
