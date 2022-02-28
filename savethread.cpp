@@ -64,7 +64,7 @@ void savethread::run()
    {
       // saveSP(spdata,sp_FP,SAVETime);
       // saveSP_channel(spchannel_data,sp_FP,SAVETime);
-       saveCOCN(COCNDATA,sp_FP);
+       saveCOCN(COCNDATA,sp_FP,SAVETime);
        saveORIGIN_Data(spdata,spchannel_data,spdata_after,sp_FP,SAVETime);
       // saveSP_afterP(spdata_after,sp_FP,SAVETime);
 
@@ -91,10 +91,10 @@ void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
       this->start();
 
 }
-void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH)
+void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH,QString saveTime)
 {
     QDateTime time =QDateTime::currentDateTime();
-    QString filename =time.toString("yyyy-MM-dd")+"_origin_COCN_DATA.txt";
+    QString filename =time.toString("yyyy-MM-dd")+"_COCN_DATA.txt";
     PATH+="/";
     filename=PATH+filename;
     QFile datafile(filename);
@@ -105,13 +105,13 @@ void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH)
        path->mkdir(PATH);
        datafile.open(QIODevice::WriteOnly | QIODevice::Text);
 
-           stream<<COCN_DATA[0]+"\t"+COCN_DATA[1]<<"\n";
+           stream<<saveTime+"\t"+COCN_DATA[1]<<"\n";
 
     }
     else
     {
         datafile.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append);
-        stream<<COCN_DATA[0]+"\t"+COCN_DATA[1]<<"\n";
+        stream<<saveTime+"\t"+COCN_DATA[1]<<"\n";
     }
     datafile.close();
 

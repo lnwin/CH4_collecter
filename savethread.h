@@ -33,7 +33,7 @@ public:
                          QList <QString>sp_data_AfterP,QString spFilePath,QString savetime);
     void saveData_1(double saveCOCN,double saveSp,double COCN_inter,QList <QString>COCN_data,QList <QString>COCN_data_after,QList <QString>sp_data,QList <QString>sp_channel_data,QList <QString>sp_data_AfterP,QString spFilePath,QString COCNFilePath,QString savetime);
     void saveCOCN_after(QList<QString>,QString);
-    void saveCOCN(QList<QString>,QString);
+    void saveCOCN(QList<QString>,QString,QString);
     void saveSP(QList<QString>,QString,QString);
     void saveSP_channel(QList<QString>,QString,QString);
     void saveSP_afterP(QList<QString>,QString,QString);

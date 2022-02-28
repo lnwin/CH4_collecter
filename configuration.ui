@@ -19,12 +19,12 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_3">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="4,1">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="7,1">
      <property name="spacing">
       <number>2</number>
      </property>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_7" stretch="4,1">
+      <layout class="QVBoxLayout" name="verticalLayout_7" stretch="7,1">
        <property name="spacing">
         <number>1</number>
        </property>
@@ -159,7 +159,7 @@
                <property name="title">
                 <string>标定系数</string>
                </property>
-               <widget class="QWidget" name="">
+               <widget class="QWidget" name="layoutWidget">
                 <property name="geometry">
                  <rect>
                   <x>12</x>

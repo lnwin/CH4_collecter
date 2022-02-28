@@ -59,7 +59,7 @@ public:
     QPushButton *read_Button;
     QVBoxLayout *verticalLayout_5;
     QGroupBox *groupBox;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QFormLayout *formLayout_2;
     QLabel *label_5;
     QLineEdit *a_n;
@@ -202,31 +202,31 @@ public:
         verticalLayout_5->setObjectName(QString::fromUtf8("verticalLayout_5"));
         groupBox = new QGroupBox(configuration);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        widget = new QWidget(groupBox);
-        widget->setObjectName(QString::fromUtf8("widget"));
-        widget->setGeometry(QRect(12, 22, 91, 51));
-        formLayout_2 = new QFormLayout(widget);
+        layoutWidget = new QWidget(groupBox);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(12, 22, 91, 51));
+        formLayout_2 = new QFormLayout(layoutWidget);
         formLayout_2->setObjectName(QString::fromUtf8("formLayout_2"));
         formLayout_2->setHorizontalSpacing(1);
         formLayout_2->setVerticalSpacing(1);
         formLayout_2->setContentsMargins(0, 0, 0, 0);
-        label_5 = new QLabel(widget);
+        label_5 = new QLabel(layoutWidget);
         label_5->setObjectName(QString::fromUtf8("label_5"));
 
         formLayout_2->setWidget(0, QFormLayout::LabelRole, label_5);
 
-        a_n = new QLineEdit(widget);
+        a_n = new QLineEdit(layoutWidget);
         a_n->setObjectName(QString::fromUtf8("a_n"));
         a_n->setEnabled(true);
 
         formLayout_2->setWidget(0, QFormLayout::FieldRole, a_n);
 
-        label_3 = new QLabel(widget);
+        label_3 = new QLabel(layoutWidget);
         label_3->setObjectName(QString::fromUtf8("label_3"));
 
         formLayout_2->setWidget(1, QFormLayout::LabelRole, label_3);
 
-        b_n = new QLineEdit(widget);
+        b_n = new QLineEdit(layoutWidget);
         b_n->setObjectName(QString::fromUtf8("b_n"));
         b_n->setEnabled(true);
 
@@ -270,7 +270,7 @@ public:
 
         verticalLayout_7->addWidget(textEdit);
 
-        verticalLayout_7->setStretch(0, 4);
+        verticalLayout_7->setStretch(0, 7);
         verticalLayout_7->setStretch(1, 1);
 
         horizontalLayout_2->addLayout(verticalLayout_7);
@@ -302,7 +302,7 @@ public:
 
         horizontalLayout_2->addLayout(verticalLayout_2);
 
-        horizontalLayout_2->setStretch(0, 4);
+        horizontalLayout_2->setStretch(0, 7);
         horizontalLayout_2->setStretch(1, 1);
 
         horizontalLayout_3->addLayout(horizontalLayout_2);

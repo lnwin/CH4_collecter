@@ -23,7 +23,12 @@ configuration::configuration(QWidget *parent) :
      ui_cof->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
      ui_cof->tableView->resizeColumnsToContents();
      ui_cof->tableView->show();
+         Qt::WindowFlags windowFlag  = Qt::Dialog;
+         windowFlag                  |= Qt::WindowMinimizeButtonHint;
+         windowFlag                  |= Qt::WindowMaximizeButtonHint;
+         windowFlag                  |= Qt::WindowCloseButtonHint;
 
+          setWindowFlags(windowFlag);
      //this->setAttribute(Qt::WA_DeleteOnClose,true);
 
 }
