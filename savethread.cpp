@@ -62,10 +62,11 @@ void savethread::run()
    }
    if(save_SP==1)
    {
-       saveSP(spdata,sp_FP,SAVETime);
-       saveSP_channel(spchannel_data,sp_FP,SAVETime);
+      // saveSP(spdata,sp_FP,SAVETime);
+      // saveSP_channel(spchannel_data,sp_FP,SAVETime);
        saveCOCN(COCNDATA,sp_FP);
-       saveSP_afterP(spdata_after,sp_FP,SAVETime);
+       saveORIGIN_Data(spdata,spchannel_data,spdata_after,sp_FP,SAVETime);
+      // saveSP_afterP(spdata_after,sp_FP,SAVETime);
 
    }
 
@@ -244,6 +245,53 @@ void savethread::saveSP_afterP(QList<QString> SP_data_after_p,QString PATH,QStri
     cloudfile.close();
 
 };
+
+void savethread::saveORIGIN_Data(QList <QString>sp_channel1_data,QList <QString>sp_channel2_data,
+                     QList <QString>sp_data_AfterP,QString spFilePath,QString savetime)
+{
+
+
+    QString filename =savetime+"_CN_1/2_DATA.txt";
+    spFilePath+="/";
+    filename=spFilePath+filename;
+
+    QFile cloudfile(filename);
+    QTextStream stream(&cloudfile);
+    if(!cloudfile.exists())
+
+            {
+
+                 QDir *folder = new QDir;
+                 folder->mkdir(spFilePath);
+                 cloudfile.open(QIODevice::WriteOnly | QIODevice::Text);
+                 stream<< "CN_1_origin"<<" "<<"CN_2_origin"<<" "<<"CN_1_afterProcess"<<"\n";
+                 for( int i=0;i<sp_channel1_data.length(); i++)
+                 {
+                      stream<< sp_channel1_data[i]<<" "<< sp_channel2_data[i]<<" "<<sp_data_AfterP[i]<<"\n";
+
+                 }
+
+             }
+    else
+    {
+        cloudfile.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append);
+        for( int i=0;i<sp_channel1_data.length(); i++)
+        {
+            for( int i=0;i<sp_channel1_data.length(); i++)
+            {
+                 stream<< sp_channel1_data[i]<<" "<< sp_channel2_data[i]<<" "<<sp_data_AfterP[i]<<"\n";
+
+            }
+
+        }
+
+    }
+    cloudfile.close();
+
+
+
+}
+
 void savethread::Delay_MSec(unsigned int msec)
 {
 

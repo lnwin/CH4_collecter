@@ -14,6 +14,7 @@ void CH4_chart::Chart_Minit(Ui::MainWindow ui)
     ui.customPlot->xAxis->setTicker(dateTicker);
    // ui.customPlot->xAxis->setRange(-100, 100);
     ui.customPlot->yAxis->setRange(-100, 100);
+
     ui.customPlot->axisRect()->setupFullAxesBox();
     ui.customPlot->plotLayout()->insertRow(0);
     QCPTextElement *title = new QCPTextElement(ui.customPlot, "气体浓度曲线", QFont("sans", 17, QFont::Bold));
@@ -110,14 +111,15 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
 
     ui.chart_widget->xAxis->setRange(0, 500);
     ui.chart_widget->yAxis->setRange(0, 500);
-    ui.chart_widget->yAxis2->setRange(-5, 5);
     ui.chart_widget->yAxis2->setVisible(true);
-    ui.chart_widget->axisRect()->setupFullAxesBox();
+    ui.chart_widget->yAxis2->setRange(-5, 5);
+
     ui.chart_widget->plotLayout()->insertRow(0);
     QCPTextElement *title = new QCPTextElement( ui.chart_widget, "光谱信号曲线图", QFont("sans", 10, QFont::Bold));
     ui.chart_widget->plotLayout()->addElement(0, 0, title);
     ui.chart_widget->xAxis->setLabel("数据个数");
-    ui.chart_widget->yAxis->setLabel("光谱信号");
+    ui.chart_widget->yAxis->setLabel("通道1");
+    ui.chart_widget->yAxis2->setLabel("通道2");
     ui.chart_widget->legend->setVisible(true);
     QFont legendFont("Times", 10, QFont::Bold);
     legendFont.setPointSize(10);
@@ -126,7 +128,7 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
     ui.chart_widget->legend->setSelectableParts(QCPLegend::spItems);
 //=======================================================================
     ui.chart_widget->addGraph();
-    ui.chart_widget->graph(0)->setName("origin data");
+    ui.chart_widget->graph(0)->setName("通道_1_origin data");
    // ui.chart_widget->graph(0)->setData(origin_x,origin_y);
     ui.chart_widget->graph(0)->setLineStyle((QCPGraph::lsLine));
     ui.chart_widget->graph(0)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
@@ -138,7 +140,7 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
 
 
     ui.chart_widget->addGraph();
-    ui.chart_widget->graph(1)->setName("after sgolayfilt");
+    ui.chart_widget->graph(1)->setName("通道_1_after_sgolayfilt");
    // ui.chart_widget->graph(1)->setData(after_p_x,after_p_y);
     ui.chart_widget->graph(1)->setLineStyle((QCPGraph::lsLine));
     ui.chart_widget->graph(1)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
@@ -148,8 +150,10 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
     graphPen1.setWidthF(2);
     ui.chart_widget->graph(1)->setPen(graphPen1);
 
+
+
     ui.chart_widget->addGraph(ui.chart_widget->xAxis,ui.chart_widget->yAxis2);
-    ui.chart_widget->graph(2)->setName("channel_2");
+    ui.chart_widget->graph(2)->setName("通道_2_origin data");
   //  ui.chart_widget->graph(2)->setData(after_p_s_e_x,after_p_s_e_y);
     ui.chart_widget->graph(2)->setLineStyle((QCPGraph::lsLine));
     ui.chart_widget->graph(2)->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));
@@ -181,8 +185,8 @@ void CH4_chart::Chart_Pinit(Ui::configuration ui)
 //  //   qDebug()<<r<<"---"<<g<<"---"<<b;
 //     graphPen2.setWidthF(4);
 //     ui.chart_widget->graph(4)->setPen(graphPen2);
-    ui.chart_widget->rescaleAxes();
-    qDebug()<<"chart_Int ok";
+     ui.chart_widget->rescaleAxes();
+     qDebug()<<"chart_Int ok";
 }
 void CH4_chart::Chart_Pupdata(Ui::configuration ui,double *origin,double*after_s,double *after_s_e,bool S,bool E)
 {
