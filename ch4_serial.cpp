@@ -254,26 +254,26 @@ void CH4_serial::anlyseData()
             after_s[j]=outPut.Get(0,j+1);
            // qDebug()<<after_s[j];
         }
-        double *B=new double[200];
-        double *B1=new double[200];
-        double *B2=new double[200];
-        for(int j=50; j<250;j++)
+        double *B=new double[100];
+        double *B1=new double[100];
+        double *B2=new double[100];
+        for(int j=200; j<300;j++)
         {
-              B[j-50]=after_s[j];
+              B[j-200]=after_s[j];
         }
-        for(int j=0; j<100;j++)
+        for(int j=100; j<200;j++)
         {
-              B1[j]=B[j];
+              B1[j-100]=after_s[j];
 
         }
-        for(int j=0; j<100;j++)
+        for(int j=300; j<400;j++)
         {
-              B2[j]=B[j+100];
+              B2[j-300]=after_s[j];
         }
         Max_Min MN_B;
         Max_Min MN_B1;
         Max_Min MN_B2;
-        MN_B=coutMaxMin(B,200);
+        MN_B=coutMaxMin(B,100);
         MN_B1=coutMaxMin(B1,100);
         MN_B2=coutMaxMin(B2,100);
         MN_B.Min=(MN_B1.Min+MN_B2.Min)/2;
