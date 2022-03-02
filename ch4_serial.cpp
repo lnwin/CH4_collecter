@@ -143,40 +143,31 @@ void CH4_serial::startADC()
 void CH4_serial::setADconf()
 {
 
-
     ADC_CONFIG tmpcfg;
     BYTE index;
     memcpy(&tmpcfg, &myADCCfg, sizeof(ADC_CONFIG));
-
 //
     qDebug()<<tmpcfg.byADCOptions;
 
 
-
-
-
-
         tmpcfg.wTrigSize = 3072;
-
         tmpcfg.dwMaxCycles = 500;
-
         tmpcfg.wPeriod = 1000;
         tmpcfg.byADCOptions &= 0xC8;
         index = 0<< 5;
         tmpcfg.byADCOptions += index;
-        index = 0 ;//rangge
+        index = 0;//rangge
         index = index << 4;
         tmpcfg.byADCOptions += index;
         index = 0;//os
         tmpcfg.byADCOptions += index;
-//        index = 0;//OS
-//        tmpcfg.byADCOptions += index;
+//      index = 0;//OS
+//      tmpcfg.byADCOptions += index;
         index = 6;//trig mode  2=both
-       // index += 0<< 3;
-
+//      index += 0<<3;
         tmpcfg.byTrigOptions = index;
-//        index = 0;
-//        tmpcfg.byTrigOptions += index;
+//      index = 0;
+//      tmpcfg.byTrigOptions += index;
         if (M3F20xm_ADCSetConfig(byDevIndex, &tmpcfg))
         {
 
@@ -605,48 +596,48 @@ void CH4_serial::run()
 
    //
    // qDebug()<<"创建对象"<<QThread::currentThread();
-    if(!mainport->isOpen())
-   {
+//    if(!mainport->isOpen())
+//   {
 
-       mainport->setPortName(Serial_Port_Number);//设置串口名
-       mainport->open(QIODevice::ReadWrite);//以读写方式打开串口
-       mainport->setBaudRate(QSerialPort::Baud115200);//波特率
-       mainport->setDataBits(QSerialPort::Data8);//数据位
-       mainport->setParity(QSerialPort::NoParity);//校验位
-       mainport->setStopBits(QSerialPort::OneStop);//停止位
-       mainport->write("d");
-//        ui.comboBox->setEnabled(false);
-//        ui.pushButton->setText("停止读取");
-//        ui.pushButton_fileselect->setEnabled(false);
-//        ui.saveCOCN->setEnabled(false);
-       connect(mainport,SIGNAL(readyRead()),this,SLOT(readData()));
-       //anlyseData();
-       emit sendSSig2Conf(true);
-       emit sendSSig2Main(true);
+//       mainport->setPortName(Serial_Port_Number);//设置串口名
+//       mainport->open(QIODevice::ReadWrite);//以读写方式打开串口
+//       mainport->setBaudRate(QSerialPort::Baud115200);//波特率
+//       mainport->setDataBits(QSerialPort::Data8);//数据位
+//       mainport->setParity(QSerialPort::NoParity);//校验位
+//       mainport->setStopBits(QSerialPort::OneStop);//停止位
+//       mainport->write("d");
+////        ui.comboBox->setEnabled(false);
+////        ui.pushButton->setText("停止读取");
+////        ui.pushButton_fileselect->setEnabled(false);
+////        ui.saveCOCN->setEnabled(false);
+//       connect(mainport,SIGNAL(readyRead()),this,SLOT(readData()));
+//       //anlyseData();
+//       emit sendSSig2Conf(true);
+//       emit sendSSig2Main(true);
       // qDebug()<<"串口已打开"<<QThread::currentThread();
       // qDebug()<<mainport->isOpen();
       // return true;
 
 
 
-   }
-    else
-   {
+//   }
+//    else
+//   {
 
-       mainport->close();
-//      ui.comboBox->setEnabled(true);
-//      ui.pushButton_fileselect->setEnabled(true);
-//      ui.saveCOCN->setEnabled(true);
-//      ui.pushButton->setText("开始读取");
-       emit sendSSig2Conf(false);
-       emit sendSSig2Main(false);
-       FBuffer.clear();
-      // qDebug()<<"串口已关闭";
-     //  qDebug()<<mainport->isOpen();
-      // return false;
+//       mainport->close();
+////      ui.comboBox->setEnabled(true);
+////      ui.pushButton_fileselect->setEnabled(true);
+////      ui.saveCOCN->setEnabled(true);
+////      ui.pushButton->setText("开始读取");
+//       emit sendSSig2Conf(false);
+//       emit sendSSig2Main(false);
+//       FBuffer.clear();
+//      // qDebug()<<"串口已关闭";
+//     //  qDebug()<<mainport->isOpen();
+//      // return false;
 
 
-   }
+//   }
 
 }
 void CH4_serial::saveData_0()

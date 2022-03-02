@@ -73,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    CH4_sp->closeCAD();
 }
 void MainWindow::comboxinit()
 {
