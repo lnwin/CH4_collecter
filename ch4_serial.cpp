@@ -218,7 +218,6 @@ void CH4_serial::anlyseData()
         sp_data.clear();
         sp_data_AP.clear();
         sp_channel_data.clear();
-
         int elementCntA=500;//元素个数
        // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
         double  *after_s=new double[elementCntA];
@@ -655,10 +654,13 @@ void CH4_serial::run()
 void CH4_serial::saveData_0()
 {
     QDateTime datatime =QDateTime::currentDateTime();
-    QString saveTime =datatime.toString("yyyy-MM-dd-HH-mm-ss");
+   // QString saveTime =datatime.toString("yyyy-MM-dd-HH-mm-ss");
 
-    CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,COCN_data_after,sp_data,sp_channel_data,sp_data_AP,spectrumfilepath,COCNfilepath,saveTime);
+    CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,COCN_data_after,sp_data,sp_channel_data,sp_data_AP,spectrumfilepath,COCNfilepath,datatime);
     COCN_data_after.clear();
+    sp_data.clear();
+    sp_channel_data.clear();
+    sp_data_AP.clear();
 };
 Max_Min CH4_serial::coutMaxMin(double *dataIn,double n)
 {
