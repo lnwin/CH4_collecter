@@ -250,7 +250,7 @@ void savethread::saveORIGIN_Data(QList <QString>sp_channel1_data,QList <QString>
 {
 
     QDateTime time =QDateTime::currentDateTime();
-    QString filename =time.toString("yyyy-MM-dd-HH:mm:ss")+"_ORIGION_DATA.txt";
+    QString filename =time.toString("yyyy-MM-dd-HH-mm-ss")+"_ORIGION_DATA.txt";
     spFilePath+="/";
     filename=spFilePath+filename;
 
