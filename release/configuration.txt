@@ -9,9 +9,9 @@ b
 saveSpectrum
 1
 spectrumfilepath
-D:/origin_DATA
+C:/origin_DATA
 COCNfilepath
-D:/COCN_DATA
+C:/COCN_DATA
 use_smooth
 1
 saveCOCN

@@ -65,7 +65,7 @@ void savethread::run()
       // saveSP(spdata,sp_FP,SAVETime);
       // saveSP_channel(spchannel_data,sp_FP,SAVETime);
        saveCOCN(COCNDATA,sp_FP,SAVETime);
-       saveORIGIN_Data(spdata,spchannel_data,spdata_after,sp_FP,SAVETime);
+       saveORIGIN_Data(spdata,spchannel_data,spdata_after,sp_FP);
       // saveSP_afterP(spdata_after,sp_FP,SAVETime);
 
    }
@@ -246,12 +246,11 @@ void savethread::saveSP_afterP(QList<QString> SP_data_after_p,QString PATH,QStri
 
 };
 
-void savethread::saveORIGIN_Data(QList <QString>sp_channel1_data,QList <QString>sp_channel2_data,
-                     QList <QString>sp_data_AfterP,QString spFilePath,QString savetime)
+void savethread::saveORIGIN_Data(QList <QString>sp_channel1_data,QList <QString>sp_channel2_data,QList <QString>sp_data_AfterP,QString spFilePath)
 {
 
-
-    QString filename =savetime+"_CN_1/2_DATA.txt";
+    QDateTime time =QDateTime::currentDateTime();
+    QString filename =time.toString("yyyy-MM-dd-HH:mm:ss")+"_ORIGION_DATA.txt";
     spFilePath+="/";
     filename=spFilePath+filename;
 
@@ -264,10 +263,10 @@ void savethread::saveORIGIN_Data(QList <QString>sp_channel1_data,QList <QString>
                  QDir *folder = new QDir;
                  folder->mkdir(spFilePath);
                  cloudfile.open(QIODevice::WriteOnly | QIODevice::Text);
-                 stream<< "CN_1_origin"<<" "<<"CN_2_origin"<<" "<<"CN_1_afterProcess"<<"\n";
+                 stream<< "CN_1_origin"<<"\t"<<"CN_2_origin"<<"\t"<<"CN_1_afterProcess"<<"\n";
                  for( int i=0;i<sp_channel1_data.length(); i++)
                  {
-                      stream<< sp_channel1_data[i]<<" "<< sp_channel2_data[i]<<" "<<sp_data_AfterP[i]<<"\n";
+                      stream<< sp_channel1_data[i]<<"\t"<< sp_channel2_data[i]<<"\t"<<sp_data_AfterP[i]<<"\n";
 
                  }
 
@@ -279,7 +278,7 @@ void savethread::saveORIGIN_Data(QList <QString>sp_channel1_data,QList <QString>
         {
             for( int i=0;i<sp_channel1_data.length(); i++)
             {
-                 stream<< sp_channel1_data[i]<<" "<< sp_channel2_data[i]<<" "<<sp_data_AfterP[i]<<"\n";
+                 stream<< sp_channel1_data[i]<<"\t"<< sp_channel2_data[i]<<"\t"<<sp_data_AfterP[i]<<"\n";
 
             }
 

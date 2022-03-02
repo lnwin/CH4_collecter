@@ -62,7 +62,7 @@ public:
     float Hex2Dec_yrp(QByteArray hex);
     void Delay_MSec(unsigned int msec);
     void InitObject();
-
+    double out_data;
     //==========新采集卡
     BYTE byDevIndex =0xFF;
     DWORD dwReadCycle;

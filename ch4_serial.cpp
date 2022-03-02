@@ -218,7 +218,7 @@ void CH4_serial::anlyseData()
         sp_data.clear();
         sp_data_AP.clear();
         sp_channel_data.clear();
-        double out_data=0;
+
         int elementCntA=500;//元素个数
        // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
         double  *after_s=new double[elementCntA];
@@ -481,7 +481,7 @@ void CH4_serial::anlyseData()
         {
 
 
-           out_data=0;
+          // out_data=0;
            for(int i=0;i<COCN_data_befor_win.length();i++)
            {
                out_data+=COCN_data_befor_win[i];
@@ -515,6 +515,10 @@ void CH4_serial::anlyseData()
 
                double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
                emit sendData2M(nowTime,COCN);
+               QDateTime datatime =QDateTime::currentDateTime();
+               QString timeString =datatime.toString("HH:mm:ss");
+               COCN_data_after.append(timeString);
+               COCN_data_after.append(QString::number(COCN));
            }
            else
            {
@@ -531,18 +535,21 @@ void CH4_serial::anlyseData()
            out_data=out_data/cocn_win;
            double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
            emit sendData2M(nowTime,out_data);
+           QDateTime datatime =QDateTime::currentDateTime();
+           QString timeString =datatime.toString("HH:mm:ss");
+           COCN_data_after.append(timeString);
+           COCN_data_after.append(QString::number(out_data));
 
            }
        }
 
         //==============================================
        COCN_data.clear();
-       COCN_data_after.clear();
+      // COCN_data_after.clear();
        Delay_MSec(20);
        QDateTime datatime =QDateTime::currentDateTime();
        QString timeString =datatime.toString("HH:mm:ss");
-       COCN_data_after.append(timeString);
-       COCN_data_after.append(QString::number(out_data));
+
        COCN_data.append(timeString);
        COCN_data.append(QString::number(COCN));
 
@@ -651,7 +658,7 @@ void CH4_serial::saveData_0()
     QString saveTime =datatime.toString("yyyy-MM-dd-HH-mm-ss");
 
     CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,COCN_data_after,sp_data,sp_channel_data,sp_data_AP,spectrumfilepath,COCNfilepath,saveTime);
-
+    COCN_data_after.clear();
 };
 Max_Min CH4_serial::coutMaxMin(double *dataIn,double n)
 {
