@@ -268,6 +268,7 @@ void savethread::saveORIGIN_Data(QList <QString>sp_channel1_data,QList <QString>
                  {
                       stream<< sp_channel1_data[i]<<"\t"<< sp_channel2_data[i]<<"\t"<<sp_data_AfterP[i]<<"\n";
 
+
                  }
 
              }
