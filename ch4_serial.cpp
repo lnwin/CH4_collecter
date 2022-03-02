@@ -253,28 +253,28 @@ void CH4_serial::anlyseData()
             after_s[j]=outPut.Get(0,j+1);
            // qDebug()<<after_s[j];
         }
-        double *B=new double[100];
-        double *B1=new double[100];
-        double *B2=new double[100];
-        for(int j=200; j<300;j++)
+        double *B=new double[40];
+        double *B1=new double[50];
+        double *B2=new double[60];
+        for(int j=120; j<160;j++)
         {
-              B[j-200]=after_s[j];
+              B[j-120]=after_s[j];
         }
-        for(int j=100; j<200;j++)
+        for(int j=180; j<230;j++)
         {
-              B1[j-100]=after_s[j];
+              B1[j-180]=after_s[j];
 
         }
-        for(int j=300; j<400;j++)
+        for(int j=40; j<100;j++)
         {
-              B2[j-300]=after_s[j];
+              B2[j-40]=after_s[j];
         }
         Max_Min MN_B;
         Max_Min MN_B1;
         Max_Min MN_B2;
-        MN_B=coutMaxMin(B,100);
-        MN_B1=coutMaxMin(B1,100);
-        MN_B2=coutMaxMin(B2,100);
+        MN_B=coutMaxMin(B,40);
+        MN_B1=coutMaxMin(B1,50);
+        MN_B2=coutMaxMin(B2,60);
         MN_B.Min=(MN_B1.Min+MN_B2.Min)/2;
         double X = MN_B.Max-MN_B.Min;
         COCN = (a_n*X)+b_n;
@@ -501,9 +501,6 @@ void CH4_serial::anlyseData()
 
             }
 
-
-
-
        }
 
         else//(cocn_win_count==cocn_win)
@@ -655,7 +652,6 @@ void CH4_serial::saveData_0()
 {
     QDateTime datatime =QDateTime::currentDateTime();
    // QString saveTime =datatime.toString("yyyy-MM-dd-HH-mm-ss");
-
     CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,COCN_data_after,sp_data,sp_channel_data,sp_data_AP,spectrumfilepath,COCNfilepath,datatime);
     COCN_data_after.clear();
     sp_data.clear();
