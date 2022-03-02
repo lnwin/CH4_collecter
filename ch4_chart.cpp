@@ -61,7 +61,7 @@ void CH4_chart::Chart_Mupdata(Ui::MainWindow ui,double time,double data)
        COCNt.append(time);
        COCNd.append(data);
    }
-   ui.label_5->setText(QString::number(COCNd.length()));
+   ui.label_5->setText("PPM");
    ui.customPlot->graph()->setData(COCNt,COCNd);
 //   ui.customPlot->graph()->setLineStyle((QCPGraph::lsLine));
 //   ui.customPlot->graph()->setScatterStyle(QCPScatterStyle((QCPScatterStyle::ssNone)));

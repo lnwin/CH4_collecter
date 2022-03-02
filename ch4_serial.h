@@ -51,6 +51,7 @@ class CH4_serial :public QThread
     Q_OBJECT
 public:
     CH4_serial();
+    ~CH4_serial();
     QSerialPort *mainport;
     savethread  *CH4_SDT;
 
@@ -70,7 +71,7 @@ public:
     bool bHexDisplay;
     float MaxVol;
     QTimer *getADclock =new QTimer(this);
-
+    void closeCAD();
 
 signals:
     void sendData2CChart(mwArray origin,mwArray afterP);

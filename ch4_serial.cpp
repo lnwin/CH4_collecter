@@ -40,6 +40,7 @@ void CH4_serial::InitObject()
     CH4_SDT  =new savethread;
 
 }
+
 bool CH4_serial::openPort()
 {
 
@@ -872,4 +873,16 @@ void CH4_serial::onTimeOut()
 
                    }
 
+}
+void CH4_serial::closeCAD()
+{
+    if (byDevIndex != 0xFF)
+    {
+        if (myADCCfg.byTrigOptions & 0x80)   //trig mode
+        {
+            myADCCfg.byTrigOptions &= 0x7F;
+
+        }
+        M3F20xm_CloseDevice(byDevIndex);
+    }
 }

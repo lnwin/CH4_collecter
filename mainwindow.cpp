@@ -21,13 +21,10 @@ MainWindow::MainWindow(QWidget *parent)
     QTimer *clock =new QTimer(this);
     clock->setInterval(1000);
 //1
-
     searchPort();
     CH4 =new CH4_chart;
     CH4->Chart_Minit(*ui);
-
     CH4_sv =new savethread;
-
     seriai_thread =new QThread();
     CH4_sp =new CH4_serial();
    // CH4_sp =new CH4_serial("COM2");
