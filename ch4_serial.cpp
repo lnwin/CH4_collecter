@@ -274,6 +274,7 @@ void CH4_serial::anlyseData()
 //        qDebug()<<"b_n"<<b_n;
 //        qDebug()<<"COCN"<<COCN;
         emit sendData2C(accBuffer,after_s,accBuffer_1);
+        //凑
 
 /*
         if((use_smooth==1)&&(use_envelope==1))
