@@ -51,7 +51,7 @@ class CH4_serial :public QThread
     Q_OBJECT
 public:
     CH4_serial();
-    ~CH4_serial();
+    //~CH4_serial();
     QSerialPort *mainport;
     savethread  *CH4_SDT;
 

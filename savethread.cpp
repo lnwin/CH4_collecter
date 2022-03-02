@@ -105,13 +105,13 @@ void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH,QDateTime saveTi
        path->mkdir(PATH);
        datafile.open(QIODevice::WriteOnly | QIODevice::Text);
 
-           stream<<saveTime.toString("hh-mm-ss")+"\t"+COCN_DATA[1]<<"\n";
+           stream<<saveTime.toString("hh:mm:ss")+"\t"+COCN_DATA[1]<<"\n";
 
     }
     else
     {
         datafile.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append);
-        stream<<saveTime.toString("hh-mm-ss")+"\t"+COCN_DATA[1]<<"\n";
+        stream<<saveTime.toString("hh:mm:ss")+"\t"+COCN_DATA[1]<<"\n";
     }
     datafile.close();
 

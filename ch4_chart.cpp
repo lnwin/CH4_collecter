@@ -49,7 +49,7 @@ void CH4_chart::receiveDataFromS(double *originData,double  *after_s,double  *af
 void CH4_chart::Chart_Mupdata(Ui::MainWindow ui,double time,double data)
 {
 
-   if(COCNd.length()>500)
+   if(COCNd.length()>20)
    {
        COCNt.removeAt(0);
        COCNd.removeAt(0);
