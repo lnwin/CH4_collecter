@@ -13,7 +13,7 @@ double saveSpectrum,saveCOCN,COCN_interval,cocn_win,cocn_win_count=0;
 int max_start,max_end,min_1_start,min_1_end,min_2_start,min_2_end;
 QList <double> COCN_data_befor_win;
 QList <QString> COCN_data;
-QList <QString> COCN_data_after;
+QString COCN_data_after;
 QList <QString> sp_data;
 QList <QString> sp_channel_data;
 QList <QString> sp_data_AP;
@@ -508,10 +508,7 @@ void CH4_serial::anlyseData()
 
                double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
                emit sendData2M(nowTime,COCN);
-               QDateTime datatime =QDateTime::currentDateTime();
-               QString timeString =datatime.toString("HH:mm:ss");
-               COCN_data_after.append(timeString);
-               COCN_data_after.append(QString::number(COCN));
+               COCN_data_after=QString::number(COCN);
            }
            else
            {
@@ -528,10 +525,7 @@ void CH4_serial::anlyseData()
            out_data=out_data/cocn_win;
            double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
            emit sendData2M(nowTime,out_data);
-           QDateTime datatime =QDateTime::currentDateTime();
-           QString timeString =datatime.toString("HH:mm:ss");
-           COCN_data_after.append(timeString);
-           COCN_data_after.append(QString::number(out_data));
+           COCN_data_after=(QString::number(out_data));
 
            }
        }
@@ -651,7 +645,7 @@ void CH4_serial::saveData_0()
    // QString saveTime =datatime.toString("yyyy-MM-dd-HH-mm-ss");
     CH4_SDT->saveData_1(saveCOCN,saveSpectrum,COCN_interval,COCN_data,COCN_data_after,sp_data,sp_channel_data,sp_data_AP,spectrumfilepath,COCNfilepath,datatime);
     COCN_data.clear();
-    COCN_data_after.clear();
+    //COCN_data_after.clear();
     sp_data.clear();
     sp_channel_data.clear();
     sp_data_AP.clear();

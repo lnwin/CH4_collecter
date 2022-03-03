@@ -2,7 +2,8 @@
 QString sp_FP;
 QString COCN_FP;QDateTime SAVETime;
 double save_SP,save_COCN;int COCNInter=0,SUB=0;
-QList <QString>COCNDATA, COCNDATA_after,spdata,spchannel_data,spdata_after;
+QList <QString>COCNDATA,spdata,spchannel_data,spdata_after;
+ QString COCNDATA_after;
 //==========================
 bool firstCount=true;
 uint startTime=0;
@@ -73,7 +74,7 @@ void savethread::run()
 
 }
 void savethread::saveData_1(double saveCOCN,double saveSp,double COCN_inter,
-                            QList <QString>COCN_data,QList <QString>COCN_data_after,QList <QString>sp_data,QList <QString>sp_channel_data,
+                            QList <QString>COCN_data,QString COCN_data_after,QList <QString>sp_data,QList <QString>sp_channel_data,
                             QList <QString>sp_data_AfterP,
                             QString spFilePath,QString COCNFilePath,QDateTime savetime)
 {
@@ -118,11 +119,12 @@ void savethread::saveCOCN(QList<QString>COCN_DATA, QString PATH,QDateTime saveTi
 
 
 }
-void savethread::saveCOCN_after(QList<QString>COCN_DATA_after, QString PATH)
+void savethread::saveCOCN_after(QString COCN_DATA_after, QString PATH)
 {
 
     QDateTime time =QDateTime::currentDateTime();
     QString filename =time.toString("yyyy-MM-dd")+"_COCN_DATA.txt";
+    QString datetime =time.toString("hh:mm:ss");
    // PATH+="/";
     filename=PATH+"/"+filename;
     QFile datafile(filename);
@@ -133,13 +135,13 @@ void savethread::saveCOCN_after(QList<QString>COCN_DATA_after, QString PATH)
        path->mkdir(PATH);
        datafile.open(QIODevice::WriteOnly | QIODevice::Text);
 
-           stream<<COCN_DATA_after[0]+"\t"+COCN_DATA_after[1]<<"\n";
+           stream<<datetime+"\t"+COCN_DATA_after<<"\n";
 
     }
     else
     {
         datafile.open(QIODevice::WriteOnly | QIODevice::Text|QIODevice::Append);
-        stream<<COCN_DATA_after[0]+"\t"+COCN_DATA_after[1]<<"\n";
+        stream<<datetime+"\t"+COCN_DATA_after<<"\n";
     }
     datafile.close();
 };
