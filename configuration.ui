@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1155</width>
-    <height>526</height>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,9">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,3,4,4">
+          <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,3,2,3">
            <property name="spacing">
             <number>1</number>
            </property>
@@ -109,12 +109,54 @@
               <widget class="QLineEdit" name="frameleng"/>
              </item>
              <item row="5" column="0">
-              <widget class="QLineEdit" name="Spectrumline"/>
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>MAX</string>
+               </property>
+              </widget>
              </item>
              <item row="5" column="1">
+              <widget class="QLineEdit" name="MAX_B">
+               <property name="text">
+                <string>100/200</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QLineEdit" name="Spectrumline"/>
+             </item>
+             <item row="8" column="1">
               <widget class="QPushButton" name="pushButton_2">
                <property name="text">
                 <string>Path</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLineEdit" name="MIN_B1">
+               <property name="text">
+                <string>200/300</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="label_9">
+               <property name="text">
+                <string>MIN_1</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QLineEdit" name="MIN_B2">
+               <property name="text">
+                <string>300/400</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>MIN_2</string>
                </property>
               </widget>
              </item>

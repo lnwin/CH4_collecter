@@ -26,3 +26,9 @@ order
 2
 framelen
 31
+MAX
+150/250
+MIN_1
+250/350
+MIN_2
+350/450

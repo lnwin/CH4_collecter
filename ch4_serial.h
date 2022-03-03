@@ -42,6 +42,13 @@ struct Parameter
    double USE_envelope;
    double order;
    double framelen;
+   int MAX_start;
+   int MAX_end;
+   int MIN_1_start;
+   int MIN_1_end;
+   int MIN_2_start;
+   int MIN_2_end;
+
 };
 
 Q_DECLARE_METATYPE(Parameter);
@@ -54,7 +61,9 @@ public:
     //~CH4_serial();
     QSerialPort *mainport;
     savethread  *CH4_SDT;
-
+    int MAX_wid;
+    int MIN_1_wid;
+    int MIN_2_wid;
     void run();
     void anlyseData();
     void saveData_0();

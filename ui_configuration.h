@@ -50,8 +50,14 @@ public:
     QLineEdit *order;
     QLabel *label_7;
     QLineEdit *frameleng;
+    QLabel *label_8;
+    QLineEdit *MAX_B;
     QLineEdit *Spectrumline;
     QPushButton *pushButton_2;
+    QLineEdit *MIN_B1;
+    QLabel *label_9;
+    QLineEdit *MIN_B2;
+    QLabel *label_10;
     QVBoxLayout *verticalLayout_4;
     QCheckBox *ifsmooth;
     QCheckBox *ifenvelope;
@@ -79,7 +85,7 @@ public:
     {
         if (configuration->objectName().isEmpty())
             configuration->setObjectName(QString::fromUtf8("configuration"));
-        configuration->resize(1155, 526);
+        configuration->resize(1155, 575);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/image/image/001.jpg"), QSize(), QIcon::Normal, QIcon::Off);
         configuration->setWindowIcon(icon);
@@ -160,15 +166,45 @@ public:
 
         formLayout->setWidget(4, QFormLayout::FieldRole, frameleng);
 
+        label_8 = new QLabel(configuration);
+        label_8->setObjectName(QString::fromUtf8("label_8"));
+
+        formLayout->setWidget(5, QFormLayout::LabelRole, label_8);
+
+        MAX_B = new QLineEdit(configuration);
+        MAX_B->setObjectName(QString::fromUtf8("MAX_B"));
+
+        formLayout->setWidget(5, QFormLayout::FieldRole, MAX_B);
+
         Spectrumline = new QLineEdit(configuration);
         Spectrumline->setObjectName(QString::fromUtf8("Spectrumline"));
 
-        formLayout->setWidget(5, QFormLayout::LabelRole, Spectrumline);
+        formLayout->setWidget(8, QFormLayout::LabelRole, Spectrumline);
 
         pushButton_2 = new QPushButton(configuration);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
 
-        formLayout->setWidget(5, QFormLayout::FieldRole, pushButton_2);
+        formLayout->setWidget(8, QFormLayout::FieldRole, pushButton_2);
+
+        MIN_B1 = new QLineEdit(configuration);
+        MIN_B1->setObjectName(QString::fromUtf8("MIN_B1"));
+
+        formLayout->setWidget(6, QFormLayout::FieldRole, MIN_B1);
+
+        label_9 = new QLabel(configuration);
+        label_9->setObjectName(QString::fromUtf8("label_9"));
+
+        formLayout->setWidget(6, QFormLayout::LabelRole, label_9);
+
+        MIN_B2 = new QLineEdit(configuration);
+        MIN_B2->setObjectName(QString::fromUtf8("MIN_B2"));
+
+        formLayout->setWidget(7, QFormLayout::FieldRole, MIN_B2);
+
+        label_10 = new QLabel(configuration);
+        label_10->setObjectName(QString::fromUtf8("label_10"));
+
+        formLayout->setWidget(7, QFormLayout::LabelRole, label_10);
 
 
         verticalLayout_6->addLayout(formLayout);
@@ -245,8 +281,8 @@ public:
 
         verticalLayout_6->setStretch(0, 1);
         verticalLayout_6->setStretch(1, 3);
-        verticalLayout_6->setStretch(2, 4);
-        verticalLayout_6->setStretch(3, 4);
+        verticalLayout_6->setStretch(2, 2);
+        verticalLayout_6->setStretch(3, 3);
 
         horizontalLayout->addLayout(verticalLayout_6);
 
@@ -323,7 +359,13 @@ public:
         win_n->setText(QCoreApplication::translate("configuration", "3", nullptr));
         label_6->setText(QCoreApplication::translate("configuration", "order", nullptr));
         label_7->setText(QCoreApplication::translate("configuration", "framelen", nullptr));
+        label_8->setText(QCoreApplication::translate("configuration", "MAX", nullptr));
+        MAX_B->setText(QCoreApplication::translate("configuration", "100/200", nullptr));
         pushButton_2->setText(QCoreApplication::translate("configuration", "Path", nullptr));
+        MIN_B1->setText(QCoreApplication::translate("configuration", "200/300", nullptr));
+        label_9->setText(QCoreApplication::translate("configuration", "MIN_1", nullptr));
+        MIN_B2->setText(QCoreApplication::translate("configuration", "300/400", nullptr));
+        label_10->setText(QCoreApplication::translate("configuration", "MIN_2", nullptr));
         ifsmooth->setText(QCoreApplication::translate("configuration", "\346\230\257\345\220\246\345\271\263\346\273\221", nullptr));
         ifenvelope->setText(QCoreApplication::translate("configuration", "\346\230\257\345\220\246\346\261\202\345\214\205\347\273\234", nullptr));
         ifSave->setText(QCoreApplication::translate("configuration", "\344\277\235\345\255\230\345\205\211\350\260\261\346\225\260\346\215\256", nullptr));

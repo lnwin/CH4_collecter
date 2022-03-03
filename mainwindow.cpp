@@ -266,7 +266,12 @@ void MainWindow::readConf()
         M_parameter.USE_envelope=sk.at(23).toDouble();
         M_parameter.order =sk.at(25).toDouble();
         M_parameter.framelen=sk.at(27).toDouble();
-
+        M_parameter.MAX_start =sk.at(29).split('/').at(0).toDouble();
+        M_parameter.MAX_end =sk.at(29).split('/').at(1).toDouble();
+        M_parameter.MIN_1_start =sk.at(31).split('/').at(0).toDouble();
+        M_parameter.MIN_1_end =sk.at(31).split('/').at(1).toDouble();
+        M_parameter.MIN_2_start =sk.at(33).split('/').at(0).toDouble();
+        M_parameter.MIN_2_end =sk.at(33).split('/').at(1).toDouble();
         emit sendCof2serial(M_parameter);
         confFile.close();
 

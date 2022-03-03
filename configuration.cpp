@@ -98,6 +98,15 @@ void configuration::readConf()
            ui_cof->ifsmooth->setChecked(true);
        }
        ui_cof->Spectrumline->setText(sk.at(11));
+
+       C_parameter.MAX_start =sk.at(29).split('/').at(0).toDouble();
+       C_parameter.MAX_end =sk.at(29).split('/').at(1).toDouble();
+       C_parameter.MIN_1_start =sk.at(31).split('/').at(0).toDouble();
+       C_parameter.MIN_1_end =sk.at(31).split('/').at(1).toDouble();
+       C_parameter.MIN_2_start =sk.at(33).split('/').at(0).toDouble();
+       C_parameter.MIN_2_end =sk.at(33).split('/').at(1).toDouble();
+
+
        confFile.close();
 
   }
@@ -235,6 +244,27 @@ void configuration::on_pushButton_3_clicked()
         C_parameter.order=ui_cof->order->text().toDouble();
         C_parameter.framelen=ui_cof->frameleng->text().toDouble();
 
+        C_parameter.MAX_start=ui_cof->MAX_B->text().split('/').at(0).toDouble();
+        C_parameter.MAX_end=ui_cof->MAX_B->text().split('/').at(1).toDouble();
+
+        confFile.write("MAX");
+        confFile.write("\n");
+        confFile.write(ui_cof->MAX_B->text().toLatin1().data());
+        confFile.write("\n");
+
+
+        C_parameter.MIN_1_start =ui_cof->MIN_B1->text().split('/').at(0).toDouble();
+        C_parameter.MIN_1_end=ui_cof->MIN_B1->text().split('/').at(1).toDouble();
+        confFile.write("MIN_1");
+        confFile.write("\n");
+        confFile.write(ui_cof->MIN_B1->text().toLatin1().data());
+        confFile.write("\n");
+        C_parameter.MIN_2_start=ui_cof->MIN_B2->text().split('/').at(0).toDouble();
+        C_parameter.MIN_2_end=ui_cof->MIN_B2->text().split('/').at(1).toDouble();
+        confFile.write("MIN_2");
+        confFile.write("\n");
+        confFile.write(ui_cof->MIN_B2->text().toLatin1().data());
+        confFile.write("\n");
 
 
        // C_parameter.COCN_intercal=ui_cof->COCN_WIN->text().toDouble();

@@ -10,6 +10,7 @@ double order,framleng;
 double acc=0,a_n=0.0015,b_n=4,win_n=3,COCN;
 QString spectrumfilepath,COCNfilepath;
 double saveSpectrum,saveCOCN,COCN_interval,cocn_win,cocn_win_count=0;
+int max_start,max_end,min_1_start,min_1_end,min_2_start,min_2_end;
 QList <double> COCN_data_befor_win;
 QList <QString> COCN_data;
 QList <QString> COCN_data_after;
@@ -245,28 +246,29 @@ void CH4_serial::anlyseData()
             after_s[j]=outPut.Get(0,j+1);
            // qDebug()<<after_s[j];
         }
-        double *B=new double[100];
-        double *B1=new double[100];
-        double *B2=new double[100];
-        for(int j=200; j<300;j++)
+
+        double *B=new double[MAX_wid];
+        double *B1=new double[MIN_1_wid];
+        double *B2=new double[MIN_2_wid];
+        for(int j=max_start; j<max_end;j++)
         {
-              B[j-200]=after_s[j];
+              B[j-max_start]=after_s[j];
         }
-        for(int j=100; j<200;j++)
+        for(int j=min_1_start; j<min_1_end;j++)
         {
-              B1[j-100]=after_s[j];
+              B1[j-min_1_start]=after_s[j];
 
         }
-        for(int j=300; j<400;j++)
+        for(int j=min_2_start; j<min_2_end;j++)
         {
-              B2[j-300]=after_s[j];
+              B2[j-min_2_start]=after_s[j];
         }
         Max_Min MN_B;
         Max_Min MN_B1;
         Max_Min MN_B2;
-        MN_B=coutMaxMin(B,100);
-        MN_B1=coutMaxMin(B1,100);
-        MN_B2=coutMaxMin(B2,100);
+        MN_B=coutMaxMin(B,MAX_wid);
+        MN_B1=coutMaxMin(B1,MIN_1_wid);
+        MN_B2=coutMaxMin(B2,MIN_2_wid);
         MN_B.Min=(MN_B1.Min+MN_B2.Min)/2;
         double X = MN_B.Max-MN_B.Min;
         COCN = (a_n*X)+b_n;
@@ -694,6 +696,16 @@ void CH4_serial::receiveCof(Parameter PM)
     use_envelope=PM.USE_envelope;
     order=PM.order;
     framleng=PM.framelen;
+    max_start=PM.MAX_start;
+    max_end=PM.MAX_end;
+    min_1_start=PM.MIN_1_start;
+    min_1_end=PM.MIN_1_end;
+    min_2_start=PM.MIN_2_start;
+    min_2_end=PM.MIN_2_end;
+
+    MAX_wid=max_end-max_start;
+    MIN_1_wid=min_1_end-min_1_start;
+    MIN_2_wid=min_2_end-min_2_start;
    // qDebug()<<"order"<<order;
    // qDebug()<<"framleng"<<framleng;
 
