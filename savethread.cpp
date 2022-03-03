@@ -24,12 +24,13 @@ void savethread::run()
         {
             firstCount=false;
             QDateTime sk=QDateTime::currentDateTime();
-            startTime = sk.toTime_t();
+            startTime = sk.currentSecsSinceEpoch();
 
         }
 
-            QDateTime sk=QDateTime::currentDateTime();
-            endTime = sk.toTime_t();
+            QDateTime AK=QDateTime::currentDateTime();
+            endTime = AK.currentSecsSinceEpoch();
+
             int ss=endTime-startTime;
 
           switch (COCNInter)
