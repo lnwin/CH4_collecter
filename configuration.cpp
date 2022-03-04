@@ -101,10 +101,13 @@ void configuration::readConf()
 
        C_parameter.MAX_start =sk.at(29).split('/').at(0).toDouble();
        C_parameter.MAX_end =sk.at(29).split('/').at(1).toDouble();
+       ui_cof->MAX_B->setText(sk.at(29));
        C_parameter.MIN_1_start =sk.at(31).split('/').at(0).toDouble();
        C_parameter.MIN_1_end =sk.at(31).split('/').at(1).toDouble();
+       ui_cof->MIN_B1->setText(sk.at(31));
        C_parameter.MIN_2_start =sk.at(33).split('/').at(0).toDouble();
        C_parameter.MIN_2_end =sk.at(33).split('/').at(1).toDouble();
+       ui_cof->MIN_B2->setText(sk.at(33));
 
 
        confFile.close();
