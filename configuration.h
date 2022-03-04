@@ -25,6 +25,7 @@ public:
 
 signals:
      void sendCof2serial(Parameter);
+     void sendCof2Main(Parameter);
      void sendSerialSIG2Main(Parameter);
      void needData(bool);
 

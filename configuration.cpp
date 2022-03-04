@@ -272,6 +272,7 @@ void configuration::on_pushButton_3_clicked()
 
        // C_parameter.COCN_intercal=ui_cof->COCN_WIN->text().toDouble();
         emit sendCof2serial(C_parameter);
+        emit sendSerialSIG2Main(C_parameter);
 
    }
     else
