@@ -47,8 +47,7 @@ bool CH4_serial::openPort()
      if(!mainport->isOpen())
     {
 
-        mainport->setPortName(Serial_Port_Number);//设置串口名
-
+        mainport->setPortName("COM2");//设置串口名
         mainport->open(QIODevice::ReadWrite);//以读写方式打开串口
         mainport->setBaudRate(QSerialPort::Baud115200);//波特率
         mainport->setDataBits(QSerialPort::Data8);//数据位
@@ -562,7 +561,7 @@ void CH4_serial::run()
     if(!mainport->isOpen())
    {
 
-       mainport->setPortName(Serial_Port_Number);//设置串口名
+       mainport->setPortName("COM2");//设置串口名
        mainport->open(QIODevice::ReadWrite);//以读写方式打开串口
        mainport->setBaudRate(QSerialPort::Baud115200);//波特率
        mainport->setDataBits(QSerialPort::Data8);//数据位

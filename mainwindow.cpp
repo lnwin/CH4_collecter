@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
     clock->start();
     readConf();
     Delay_MSec(20);
-  //  on_pushButton_clicked();
+    on_pushButton_clicked();
 }
 
 MainWindow::~MainWindow()
