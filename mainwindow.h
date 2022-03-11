@@ -15,6 +15,7 @@
 #include <QInputDialog>
 #include <ad7606.h>
 #include <sgolayfilt.h>
+#include  < windows.h >
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -48,6 +49,7 @@ private slots:
     void receiveDataFromS(double time,double data);
     void receiveSSigFromS(bool);
     void receiveSADSigFromS(bool);
+    void receiveTime();
 private:
     Ui::MainWindow *ui;
     CH4_chart *CH4;
@@ -55,7 +57,11 @@ private:
     savethread *CH4_sv;
     configuration *COF;
     QThread *seriai_thread;
+    QSerialPort *Port;
     void comboxinit();
+    void setSYStime(uint);
+    void readTime();
+
 
 
 };

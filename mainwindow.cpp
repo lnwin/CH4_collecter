@@ -5,12 +5,14 @@
 QString  srcDirPath;
 Parameter M_parameter;
 bool serialisopen;
+bool settime=false;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);  
+    Port =new QSerialPort;
     QStringList intercal_List;
     intercal_List<<"1分钟"<<"10分钟"<<"20分钟"<<"30分钟"<<"40分钟"<<"50分钟";
     ui->COCN_interval->addItems(intercal_List);
@@ -56,10 +58,13 @@ MainWindow::MainWindow(QWidget *parent)
 //   // msgBox.setIcon(QMessageBox::Icon::Warning);
 //    msgBox.setWindowIcon(QIcon(":/image/image/001.jpg"));
 //    msgBox.setText("开始加载配置，点击OK继续");
-//    msgBox.exec();
+
+    readTime();
+
+    Delay_MSec(50);
+    //    msgBox.exec();
     sgolayfiltInitialize();
     connect(clock, SIGNAL(timeout()), this, SLOT(onTimeOut()));
-
     clock->start();
     readConf();
     comboxinit();
@@ -351,3 +356,55 @@ void MainWindow::Delay_MSec(unsigned int msec)
         QCoreApplication::processEvents(QEventLoop::AllEvents, 1);
 
 };
+void MainWindow::readTime()
+{
+        if(!Port->isOpen())
+       {
+
+           Port->setPortName("COM10");//设置串口名
+           Port->open(QIODevice::ReadWrite);//以读写方式打开串口
+           Port->setBaudRate(QSerialPort::Baud115200);//波特率
+           Port->setDataBits(QSerialPort::Data8);//数据位
+           Port->setParity(QSerialPort::NoParity);//校验位
+           Port->setStopBits(QSerialPort::OneStop);//停止位
+          // Port->write("d");
+
+           connect(Port,SIGNAL(readyRead()),this,SLOT(receiveTime()));
+        }
+
+
+}
+void MainWindow::receiveTime()
+{
+    if(!settime)
+    {
+    QByteArray buf;
+       buf = Port->readAll();
+      if(!buf.isEmpty())
+       {
+
+          uint time =buf.toUInt();
+          setSYStime(time);
+
+        }
+        buf.clear();
+    }
+}
+void MainWindow::setSYStime(uint TT)
+{
+
+   QDateTime time = QDateTime::fromTime_t(TT);
+   SYSTEMTIME st;
+   GetLocalTime(&st);
+   st.wYear = time.date().year();
+   st.wMonth=time.date().month();
+   st.wDay=time.date().day();
+   st.wHour=time.time().hour();
+   st.wMinute=time.time().minute();
+   st.wSecond=time.time().second();
+   st.wMilliseconds=time.time().msec();
+   SetLocalTime(&st);
+   settime=true;
+
+
+}
