@@ -15,7 +15,7 @@
 #include <QInputDialog>
 #include <ad7606.h>
 #include <sgolayfilt.h>
-#include  < windows.h >
+#include <windows.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -40,6 +40,7 @@ signals:
 private slots:
     void on_pushButton_clicked();
     void on_pushButton_2_clicked();
+    //void on_pushButton_3_clicked();
     void contextMenuRequest(QPoint pos);
     void rescaleGraph();
     void open_Configuration();   

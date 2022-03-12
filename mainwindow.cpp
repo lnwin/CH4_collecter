@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    msgBox.setText("开始加载配置，点击OK继续");
 
     readTime();
-
+ //setSYStime(1);
     Delay_MSec(50);
     //    msgBox.exec();
     sgolayfiltInitialize();
@@ -79,6 +79,7 @@ MainWindow::~MainWindow()
 {
     delete ui;
     CH4_sp->closeCAD();
+    Port->close();
 }
 void MainWindow::comboxinit()
 {
@@ -384,7 +385,11 @@ void MainWindow::receiveTime()
        {
 
           uint time =buf.toUInt();
-          setSYStime(time);
+
+          if(time!=0)
+          {
+             setSYStime(time);
+          }
 
         }
         buf.clear();
@@ -406,5 +411,19 @@ void MainWindow::setSYStime(uint TT)
    SetLocalTime(&st);
    settime=true;
 
-
 }
+//void MainWindow::on_pushButton_3_clicked()
+//{
+//    QDateTime time = QDateTime::fromTime_t(1646962364);
+//    qDebug()<<time;
+//    SYSTEMTIME st;
+//    GetLocalTime(&st);
+//    st.wYear = time.date().year();
+//    st.wMonth=time.date().month();
+//    st.wDay=time.date().day();
+//    st.wHour=time.time().hour();
+//    st.wMinute=time.time().minute();
+//    st.wSecond=time.time().second();
+//    st.wMilliseconds=time.time().msec();
+//   qDebug()<< SetLocalTime(&st);
+//}
