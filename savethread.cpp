@@ -46,6 +46,8 @@ void savethread::run()
               break;
               case 5: SUB=50*60  ;
               break;
+              case 6: SUB=0 ;
+              break;
             }
 
           if(ss>=SUB)
