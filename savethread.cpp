@@ -46,7 +46,9 @@ void savethread::run()
               break;
               case 4: SUB=40*60  ;
               break;
-              case 5: SUB=50*60  ;
+              case 5: SUB=50*60  ;           
+              break;
+              case 6: SUB=0  ;
               break;
             }
 
@@ -124,7 +126,7 @@ void savethread::saveCOCN_after(QString COCN_DATA_after, QString PATH)
 
     QDateTime time =QDateTime::currentDateTime();
     QString filename =time.toString("yyyy-MM-dd")+"_COCN_DATA.txt";
-    QString datetime =time.toString("hh:mm:ss");
+    QString datetime =time.toString("yyyy-MM-dd hh:mm:ss");
    // PATH+="/";
     filename=PATH+"/"+filename;
     QFile datafile(filename);

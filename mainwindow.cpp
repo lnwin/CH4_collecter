@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);  
     Port =new QSerialPort;
     QStringList intercal_List;
-    intercal_List<<"1分钟"<<"10分钟"<<"20分钟"<<"30分钟"<<"40分钟"<<"50分钟";
+    intercal_List<<"1分钟"<<"10分钟"<<"20分钟"<<"30分钟"<<"40分钟"<<"50分钟"<<"及时存储";
     ui->COCN_interval->addItems(intercal_List);
     ui->lcdNumber->setDigitCount(19);
     ui->lcdNumber->setStyleSheet("border: 0px solid green;color: green; background: black;");   
