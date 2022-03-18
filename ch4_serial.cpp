@@ -500,7 +500,7 @@ void CH4_serial::anlyseData()
           COCN_data_after.clear();
           Delay_MSec(20);
           QDateTime datatime =QDateTime::currentDateTime();
-          QString timeString =datatime.toString("HH:mm:ss");
+          QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");
           COCN_data_after.append(timeString);
           COCN_data_after.append(QString::number(out_data));
           COCN_data.append(timeString);
