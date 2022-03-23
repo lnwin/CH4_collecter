@@ -21,6 +21,7 @@ double *accBuffer=new double[500];
 double localAcc=0;
 bool obiect_exist=false;
 bool first_count=true;
+double out_data=0;
 CH4_serial::CH4_serial()
 {
   // Serial_Port_Number=serialname;
@@ -168,12 +169,12 @@ void CH4_serial::readData()
 void CH4_serial::anlyseData()
 {
 
-    COCN=0;
+           COCN=0;
            sp_data.clear();
            sp_data_AP.clear();
            COCN_data.clear();
            COCN_data_after.clear();
-           double out_data=0;
+           //double out_data=0;
            int elementCntA=500;//元素个数
           // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
            double  *after_s=new double[elementCntA];
@@ -432,11 +433,7 @@ void CH4_serial::anlyseData()
 
                   out_data=COCN;
                   double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
-                  emit sendData2M(nowTime,out_data);
-                  QDateTime datatime =QDateTime::currentDateTime();
-                  QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");
-                  COCN_data_after.append(timeString);
-                  COCN_data_after.append(QString::number(out_data));
+                  emit sendData2M(nowTime,out_data);                 
                   first_count=false;
               }
 
@@ -453,11 +450,7 @@ void CH4_serial::anlyseData()
 
               out_data=out_data/cocn_win;
               double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
-              emit sendData2M(nowTime,out_data);
-              QDateTime datatime =QDateTime::currentDateTime();
-              QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");
-              COCN_data_after.append(timeString);
-              COCN_data_after.append(QString::number(out_data));
+              emit sendData2M(nowTime,out_data);              
               first_count=false;
 
             }
@@ -497,12 +490,7 @@ void CH4_serial::anlyseData()
 
               out_data=out_data/cocn_win;
               double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
-              emit sendData2M(nowTime,out_data);
-              QDateTime datatime =QDateTime::currentDateTime();
-              QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");
-              COCN_data_after.append(timeString);
-              COCN_data_after.append(QString::number(out_data));
-
+              emit sendData2M(nowTime,out_data);             
               }
           }
 
@@ -513,7 +501,19 @@ void CH4_serial::anlyseData()
 
           Delay_MSec(20);
           QDateTime datatime =QDateTime::currentDateTime();
-          QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");          
+          QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");
+          if(cocn_win==0)
+          {
+              COCN_data_after.append(timeString);
+              COCN_data_after.append(QString::number(COCN));
+          }
+          else
+          {
+              COCN_data_after.append(timeString);
+              COCN_data_after.append(QString::number(out_data));
+          }
+
+
           COCN_data.append(timeString);
           COCN_data.append(QString::number(COCN));
 
