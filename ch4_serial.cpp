@@ -171,6 +171,8 @@ void CH4_serial::anlyseData()
     COCN=0;
            sp_data.clear();
            sp_data_AP.clear();
+           COCN_data.clear();
+           COCN_data_after.clear();
            double out_data=0;
            int elementCntA=500;//元素个数
           // double  *originData=new double[elementCntA]; //一维数组，用于C++向 MATLAB数组传递数据
@@ -431,6 +433,10 @@ void CH4_serial::anlyseData()
                   out_data=COCN;
                   double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
                   emit sendData2M(nowTime,out_data);
+                  QDateTime datatime =QDateTime::currentDateTime();
+                  QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");
+                  COCN_data_after.append(timeString);
+                  COCN_data_after.append(QString::number(out_data));
                   first_count=false;
               }
 
@@ -448,6 +454,10 @@ void CH4_serial::anlyseData()
               out_data=out_data/cocn_win;
               double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
               emit sendData2M(nowTime,out_data);
+              QDateTime datatime =QDateTime::currentDateTime();
+              QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");
+              COCN_data_after.append(timeString);
+              COCN_data_after.append(QString::number(out_data));
               first_count=false;
 
             }
@@ -488,6 +498,10 @@ void CH4_serial::anlyseData()
               out_data=out_data/cocn_win;
               double nowTime = QDateTime::currentDateTime().toMSecsSinceEpoch() / 1000.0;
               emit sendData2M(nowTime,out_data);
+              QDateTime datatime =QDateTime::currentDateTime();
+              QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");
+              COCN_data_after.append(timeString);
+              COCN_data_after.append(QString::number(out_data));
 
               }
           }
@@ -496,13 +510,10 @@ void CH4_serial::anlyseData()
 
 
            //==============================================
-          COCN_data.clear();
-          COCN_data_after.clear();
+
           Delay_MSec(20);
           QDateTime datatime =QDateTime::currentDateTime();
-          QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");
-          COCN_data_after.append(timeString);
-          COCN_data_after.append(QString::number(out_data));
+          QString timeString =datatime.toString("yyyy-MM-dd HH:mm:ss");          
           COCN_data.append(timeString);
           COCN_data.append(QString::number(COCN));
 
